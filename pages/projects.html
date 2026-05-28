@@ -218,10 +218,7 @@
         <img src="../plate1.PNG" alt="Plate 1" class="plate-image plate-normal">
         <img src="../brokenplate1.png" alt="Broken Plate 1" class="plate-image plate-broken">
         <div class="project-name">Merangkai</div>
-        <a href="https://merangkai-by-adriellakristie.vercel.app/" 
-           target="_blank" 
-           rel="noopener" 
-           class="project-link"></a>
+        <a href="merangkai.html" class="project-link"></a>
       </div>
 
       <!-- Project 2: Ecobite -->
@@ -229,10 +226,7 @@
         <img src="../plate2.PNG" alt="Plate 2" class="plate-image plate-normal">
         <img src="../brokenplate2.png" alt="Broken Plate 2" class="plate-image plate-broken">
         <div class="project-name">Ecobite</div>
-        <a href="https://ecobite-five.vercel.app/" 
-           target="_blank" 
-           rel="noopener" 
-           class="project-link"></a>
+        <a href="ecobite.html" class="project-link"></a>
       </div>
 
       <!-- Project 3: STUDIO! curated -->
@@ -240,10 +234,7 @@
         <img src="../plate3.PNG" alt="Plate 3" class="plate-image plate-normal">
         <img src="../brokenplate3.png" alt="Broken Plate 3" class="plate-image plate-broken">
         <div class="project-name">STUDIO! curated</div>
-        <a href="https://studio-curated.vercel.app/" 
-           target="_blank" 
-           rel="noopener" 
-           class="project-link"></a>
+        <a href="studiocurated.html" class="project-link"></a>
       </div>
 
     </div>
@@ -255,22 +246,14 @@
 
   <script src="../grain.js"></script>
   <script>
-    // Add click interaction for plates
+    // Add click interaction for plates - navigate directly to detail page on click
     document.querySelectorAll('.project-item').forEach(item => {
+      const link = item.querySelector('.project-link');
+      
       item.addEventListener('click', function(e) {
-        // Toggle clicked state
-        this.classList.toggle('clicked');
-        
-        // If clicking on the project link while clicked, allow navigation
-        if (this.classList.contains('clicked')) {
-          // Small delay to show the broken plate before navigating
-          const link = this.querySelector('.project-link');
-          if (e.target === link) {
-            e.preventDefault();
-            setTimeout(() => {
-              window.open(link.href, '_blank');
-            }, 300);
-          }
+        // Navigate to the detail page
+        if (link) {
+          window.location.href = link.href;
         }
       });
     });
