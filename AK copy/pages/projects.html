@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #a1b161;
+      --text: #1a1814;
+      --muted: #888580;
+      --border: #c8c5bd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─────────────────────────────────────────
+       HEADER
+    ───────────────────────────────────────── */
+    .page-header {
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .back-link {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.3s;
+    }
+
+    .back-link:hover {
+      opacity: 0.6;
+    }
+
+    /* ─────────────────────────────────────────
+       PROJECTS GRID
+    ───────────────────────────────────────── */
+    .projects-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px 80px;
+    }
+
+    .projects-grid {
+      display: flex;
+      gap: 60px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 1400px;
+    }
+
+    .project-item {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .project-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .plate-image {
+      display: block;
+      width: 320px;
+      height: auto;
+      transition: opacity 0.3s ease;
+    }
+
+    .plate-normal {
+      opacity: 1;
+    }
+
+    .plate-broken {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+    }
+
+    .project-item:hover .plate-normal {
+      opacity: 0;
+    }
+
+    .project-item:hover .plate-broken {
+      opacity: 0.7;
+    }
+
+    .project-item:hover .project-name {
+      opacity: 1;
+    }
+
+    /* When clicked/active */
+    .project-item.clicked .plate-normal {
+      opacity: 0;
+    }
+
+    .project-item.clicked .plate-broken {
+      opacity: 1;
+    }
+
+    /* Project name overlay */
+    .project-name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+    }
+
+    .project-item.clicked .project-name {
+      opacity: 1;
+    }
+
+    /* Project link */
+    .project-link {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .projects-grid {
+        gap: 40px;
+      }
+
+      .plate-image {
+        width: 280px;
+      }
+
+      .page-title {
+        font-size: 2.5rem;
+      }
+
+      .project-name {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <h1 class="page-title">Projects</h1>
+    <a href="../index.html" class="back-link">← Back to Home</a>
+  </header>
+
+  <main class="projects-container">
+    <div class="projects-grid">
+      
+      <!-- Project 1: Merangkai -->
+      <div class="project-item" data-project="1">
+        <img src="../plate1.PNG" alt="Plate 1" class="plate-image plate-normal">
+        <img src="../brokenplate1.png" alt="Broken Plate 1" class="plate-image plate-broken">
+        <div class="project-name">Merangkai</div>
+        <a href="https://merangkai-by-adriellakristie.vercel.app/" 
+           target="_blank" 
+           rel="noopener" 
+           class="project-link"></a>
+      </div>
+
+      <!-- Project 2: Ecobite -->
+      <div class="project-item" data-project="2">
+        <img src="../plate2.PNG" alt="Plate 2" class="plate-image plate-normal">
+        <img src="../brokenplate2.png" alt="Broken Plate 2" class="plate-image plate-broken">
+        <div class="project-name">Ecobite</div>
+        <a href="https://ecobite-five.vercel.app/" 
+           target="_blank" 
+           rel="noopener" 
+           class="project-link"></a>
+      </div>
+
+      <!-- Project 3: STUDIO! curated -->
+      <div class="project-item" data-project="3">
+        <img src="../plate3.PNG" alt="Plate 3" class="plate-image plate-normal">
+        <img src="../brokenplate3.png" alt="Broken Plate 3" class="plate-image plate-broken">
+        <div class="project-name">STUDIO! curated</div>
+        <a href="https://studio-curated.vercel.app/" 
+           target="_blank" 
+           rel="noopener" 
+           class="project-link"></a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+
+  <script src="../grain.js"></script>
+  <script>
+    // Add click interaction for plates
+    document.querySelectorAll('.project-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        // Toggle clicked state
+        this.classList.toggle('clicked');
+        
+        // If clicking on the project link while clicked, allow navigation
+        if (this.classList.contains('clicked')) {
+          // Small delay to show the broken plate before navigating
+          const link = this.querySelector('.project-link');
+          if (e.target === link) {
+            e.preventDefault();
+            setTimeout(() => {
+              window.open(link.href, '_blank');
+            }, 300);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

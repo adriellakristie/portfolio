@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #a1b161;
+      --text: #1a1814;
+      --muted: #888580;
+      --border: #c8c5bd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─────────────────────────────────────────
+       HEADER
+    ───────────────────────────────────────── */
+    .page-header {
+      padding: 40px 24px 20px;
+      text-align: center;
+    }
+
+    .back-link {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.3s;
+    }
+
+    .back-link:hover {
+      opacity: 0.6;
+    }
+
+    /* ─────────────────────────────────────────
+       CONTACT CONTENT
+    ───────────────────────────────────────── */
+    .contact-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px 80px;
+    }
+
+    .contact-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      margin-bottom: 80px;
+      text-align: center;
+    }
+
+    .contact-icons {
+      display: flex;
+      gap: 100px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .contact-item {
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .contact-item img {
+      display: block;
+      width: 280px;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .contact-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .contact-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .contact-item:hover .contact-label {
+      opacity: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .contact-title {
+        font-size: 3rem;
+        margin-bottom: 60px;
+      }
+
+      .contact-icons {
+        gap: 60px;
+      }
+
+      .contact-item img {
+        width: 220px;
+      }
+
+      .contact-label {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <a href="../index.html" class="back-link">← Back to Home</a>
+  </header>
+
+  <main class="contact-container">
+    
+    <h1 class="contact-title">LET'S TALK!</h1>
+
+    <div class="contact-icons">
+      
+      <!-- Email -->
+      <a href="mailto:adriellakristie@gmail.com" class="contact-item">
+        <img src="../email.png" alt="Email" />
+        <span class="contact-label">Email</span>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/adriella-kristie/" target="_blank" rel="noopener" class="contact-item">
+        <img src="../linkedin.png" alt="LinkedIn" />
+        <span class="contact-label">LinkedIn</span>
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+
+  <script src="../grain.js"></script>
+</body>
+</html>
