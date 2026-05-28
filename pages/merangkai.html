@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merangkai - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #a1b161;
+      --text: #1a1814;
+      --muted: #888580;
+      --border: #c8c5bd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─────────────────────────────────────────
+       HEADER
+    ───────────────────────────────────────── */
+    .page-header {
+      padding: 40px 24px 20px;
+      text-align: center;
+    }
+
+    .back-link {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.3s;
+    }
+
+    .back-link:hover {
+      opacity: 0.6;
+    }
+
+    /* ─────────────────────────────────────────
+       PROJECT CONTENT
+    ───────────────────────────────────────── */
+    .project-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px 80px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .project-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .project-description {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 2.2;
+      color: var(--text);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      margin-bottom: 50px;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .project-button {
+      background: #f5f3e8;
+      border: none;
+      border-radius: 50px;
+      padding: 16px 48px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .project-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: #ede9d5;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .project-title {
+        font-size: 3rem;
+      }
+
+      .project-description {
+        font-size: 0.75rem;
+        line-height: 2;
+      }
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <a href="projects.html" class="back-link">← Back to Projects</a>
+  </header>
+
+  <main class="project-container">
+    
+    <h1 class="project-title">Merangkai</h1>
+
+    <p class="project-description">
+      Merangkai is a web application that celebrates Indonesian culture through interactive storytelling and design. 
+      This project combines traditional elements with modern web technologies to create an engaging user experience 
+      that educates and inspires visitors about Indonesian heritage and craftsmanship.
+    </p>
+
+    <a href="https://merangkai-by-adriellakristie.vercel.app/" target="_blank" rel="noopener" class="project-button">
+      Visit Live Site →
+    </a>
+
+  </main>
+
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+
+  <script src="../grain.js"></script>
+</body>
+</html>
