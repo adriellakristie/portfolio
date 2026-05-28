@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* --bg: #eeece6; */
+      --bg: #a1b161;
+      --text: #1a1814;
+      --muted: #888580;
+      --border: #c8c5bd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─────────────────────────────────────────
+       HERO — full viewport, centered layout
+    ───────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 24px 40px;
+      position: relative;
+    }
+
+    /* Top tagline */
+    .hero-top {
+      text-align: center;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text);
+      line-height: 1.9;
+    }
+
+    /* Photo */
+    .photo-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 4;
+    }
+
+    .photo-wrap img {
+      display: block;
+      max-width: 800px;
+      width: 150%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* Bottom statement */
+    .hero-bottom {
+      text-align: center;
+      position: relative;
+      margin-bottom: 0px;
+    }
+
+    .statement {
+      font-size: 0.62rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      line-height: 2;
+      color: var(--text);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    .scroll-cue::after {
+      content: '';
+      width: 1px;
+      height: 28px;
+      background: var(--muted);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ─────────────────────────────────────────
+       ELLIPSE BUTTONS
+    ───────────────────────────────────────── */
+    .ellipse-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      padding: 0 24px;
+    }
+
+    .ellipse-btn {
+      background: #f5f3e8;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 32px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .ellipse-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: #ede9d5;
+    }
+
+    /* ─────────────────────────────────────────
+       LINKS SECTION
+    ───────────────────────────────────────── */
+    .links-section {
+      padding: 80px 24px 100px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .links-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .links-eyebrow::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Group */
+    .link-group {
+      margin-bottom: 52px;
+    }
+
+    .group-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Individual link */
+    .link-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      gap: 12px;
+      transition: padding-left 0.2s;
+    }
+
+    .link-item:hover {
+      padding-left: 8px;
+    }
+
+    .link-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      transition: letter-spacing 0.2s;
+    }
+
+    .link-item:hover .link-name {
+      letter-spacing: 0.1em;
+    }
+
+    .link-meta {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      padding-bottom: 2px;
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    /* ─────────────────────────────────────────
+       INTRO SCREEN
+    ───────────────────────────────────────── */
+    .intro-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      animation: fadeOut 0.8s ease-in-out 3s forwards;
+    }
+
+    .intro-screen img {
+      max-width: 600px;
+      width: 90%;
+      height: auto;
+      object-fit: contain;
+      animation: scaleIn 0.6s ease-out;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+        visibility: visible;
+      }
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    @keyframes scaleIn {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Hide main content initially */
+    .main-content {
+      opacity: 0;
+      animation: fadeIn 0.8s ease-in-out 3s forwards;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── INTRO SCREEN ── -->
+  <div class="intro-screen">
+    <img src="photo1.png" alt="AK Logo" />
+  </div>
+
+  <!-- ── MAIN CONTENT ── -->
+  <div class="main-content">
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+
+    <div class="hero-top">
+      A portal to a multitude of things<br>
+      All things by<br>
+      <strong style="font-weight:400;">Adriella Kristie</strong>
+    </div>
+
+    <div class="photo-wrap">
+      <!-- Main illustration -->
+      <img src="photo.png" alt="Adriella Kristie Illustration" />
+    </div>
+
+    <div class="hero-bottom">
+      <p class="statement">
+        Learn more about me<br>
+        through my works<br>
+        intersecting between<br>
+        code and design<br>
+      </p>
+
+      <!-- Ellipse Buttons -->
+      <div class="ellipse-buttons">
+        <a href="pages/projects.html" class="ellipse-btn">Coding Projects</a>
+        <a href="pages/aboutme.html" class="ellipse-btn">About Me</a>
+        <a href="pages/contact.html" class="ellipse-btn">Contact</a>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+
+  </div>
+  <!-- End Main Content -->
+
+  <script src="grain.js"></script>
+</body>
+</html>
