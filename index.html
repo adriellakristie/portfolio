@@ -31,118 +31,80 @@
     /* ─────────────────────────────────────────
        GLASSMORPHIC NAVIGATION BAR
     ───────────────────────────────────────── */
-    .main-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      padding: 0;
-    }
+   /* ─────────────────────────────────────────
+   NAVIGATION BAR
+───────────────────────────────────────── */
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
 
-    .main-nav {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
+.main-nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
 
-    /* Left and Right Nav Zones */
-    .nav-left,
-    .nav-right {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
+.nav-left,
+.nav-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
 
-    /* Text Navigation Links */
-    .nav-link {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.85rem;
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      color: #ffffff;
-      text-decoration: none;
-      position: relative;
-      transition: color 0.3s ease;
-      white-space: nowrap;
-    }
+.nav-left {
+  justify-self: start;
+}
 
-    .nav-link:hover {
-      color: rgba(255, 255, 255, 0.7);
-    }
+.nav-center {
+  justify-self: center;
+}
 
-    /* Center Logo Zone */
-    .nav-center {
-      display: flex;
-      align-items: center;
-      margin: 0 12px;
-    }
+.nav-right {
+  justify-self: end;
+}
 
-    .logo-link {
-      display: block;
-      position: relative;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+.nav-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
 
-    .logo-link img {
-      display: block;
-      height: 60px;
-      width: auto;
-    }
+.nav-link:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
 
-    /* Logo Hover Effect */
-    .logo-link:hover {
-      transform: scale(1.15);
-    }
+.logo-link {
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .main-nav {
-        padding: 16px 24px;
-        gap: 16px;
-      }
+.logo-link img {
+  display: block;
+  height: 60px;
+  width: auto;
+}
 
-      .nav-left,
-      .nav-right {
-        gap: 16px;
-      }
+.logo-link:hover {
+  transform: scale(1.15);
+}
 
-      .nav-link {
-        font-size: 0.75rem;
-      }
-
-      .logo-link img {
-        height: 50px;
-      }
-
-      .nav-center {
-        margin: 0 12px;
-      }
-    }
-
-    @media (max-width: 580px) {
-      .main-nav {
-        flex-direction: column;
-        padding: 16px 20px;
-        gap: 16px;
-      }
-
-      .nav-left,
-      .nav-right {
-        justify-content: center;
-        gap: 20px;
-      }
-
-      .nav-center {
-        order: -1;
-        margin: 0;
-      }
-    }
-
+/* Push page content below fixed nav */
+.page-header {
+  padding: 140px 24px 40px;
+  text-align: center;
+}
     /* ─────────────────────────────────────────
        HERO — full viewport, centered layout
     ───────────────────────────────────────── */
