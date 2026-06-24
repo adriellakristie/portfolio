@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>About Me - Adriella Kristie</title>
+  <title>On The Way - Adriella Kristie</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
@@ -52,88 +52,72 @@
     }
 
     /* ─────────────────────────────────────────
-       ABOUT ME CONTENT
+       PROJECT CONTENT
     ───────────────────────────────────────── */
-    .about-container {
+    .project-container {
       flex: 1;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 60px 24px 80px;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
-    .about-content {
-      display: flex;
-      gap: 80px;
-      align-items: center;
-      justify-content: center;
-      max-width: 1200px;
-      width: 100%;
+    .project-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      margin-bottom: 40px;
+      text-align: center;
     }
 
-    /* Left side - Text */
-    .about-text {
-      flex: 1;
-      max-width: 500px;
-    }
-
-    .about-text p {
+    .project-description {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 0.85rem;
       line-height: 2.2;
       color: var(--text);
       font-weight: 300;
       letter-spacing: 0.02em;
+      margin-bottom: 50px;
+      text-align: center;
+      max-width: 600px;
     }
 
-    /* Right side - Photo */
-    .about-photo {
-      flex: 0 0 auto;
+    .project-button {
+      background: #f5f3e8;
+      border: none;
+      border-radius: 50px;
+      padding: 16px 48px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
     }
 
-    .photo-frame {
-      position: relative;
-    }
-
-    .photo-frame img {
-      display: block;
-      width: 350px;
-      height: auto;
+    .project-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: #ede9d5;
     }
 
     /* Responsive */
-    @media (max-width: 1024px) {
-      .about-content {
-        flex-direction: column;
-        gap: 50px;
-      }
-
-      .about-text {
-        order: 2;
-        max-width: 600px;
-      }
-
-      .about-photo {
-        order: 1;
-      }
-
-      .photo-frame img {
-        width: 300px;
-      }
-    }
-
     @media (max-width: 768px) {
-      .about-text p {
+      .project-title {
+        font-size: 3rem;
+      }
+
+      .project-description {
         font-size: 0.75rem;
         line-height: 2;
-      }
-
-      .photo-frame img {
-        width: 250px;
-      }
-
-      .about-content {
-        gap: 40px;
       }
     }
 
@@ -147,34 +131,30 @@
       font-size: 0.58rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--text);
+      color: var(--muted);
     }
   </style>
 </head>
 <body>
 
   <header class="page-header">
-    <a href="../index.html" class="back-link">← Back to Home</a>
+    <a href="projects.html" class="back-link">← Back to Projects</a>
   </header>
 
-  <main class="about-container">
-    <div class="about-content">
-      
-      <!-- Left side - Text -->
-      <div class="about-text">
-        <p>
-         Hi, I'm Adriella Kristie. I am an Electrical & Computer Engineering and Integrated Design & Media student at New York University. I am a Creative Technologist, bridging the gap between rigorous technology architecture and creative design. I am passionate about engineering clean, performant software that transforms technical frameworks into intuitive, creative user experiences that people love!
-        </p>
-      </div>
+  <main class="project-container">
+    
+    <h1 class="project-title">On The Way</h1>
 
-      <!-- Right side - Photo -->
-      <div class="about-photo">
-        <div class="photo-frame">
-          <img src="../aboutme.JPG" alt="Adriella Kristie" />
-        </div>
-      </div>
+    <p class="project-description">
+      On The Way is an interactive web application that helps users plan and visualize their journeys. 
+      This project combines intuitive design with practical functionality to create a seamless experience 
+      for tracking routes, managing itineraries, and exploring new destinations with ease.
+    </p>
 
-    </div>
+    <a href="https://on-the-way-sable.vercel.app/" target="_blank" rel="noopener" class="project-button">
+      Visit Live Site →
+    </a>
+
   </main>
 
   <footer class="site-footer">

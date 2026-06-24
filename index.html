@@ -25,6 +25,158 @@
       font-family: 'IBM Plex Mono', monospace;
       font-weight: 300;
       overflow-x: hidden;
+      padding-top: 80px; /* Offset for fixed navbar */
+    }
+
+    /* ─────────────────────────────────────────
+       GLASSMORPHIC NAVIGATION BAR
+    ───────────────────────────────────────── */
+    .main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(138, 171, 116, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0;
+    }
+
+    .main-nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+    }
+
+    /* Left and Right Nav Zones */
+    .nav-left,
+    .nav-right {
+      flex: 1;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-left {
+      justify-content: flex-start;
+    }
+
+    .nav-right {
+      justify-content: flex-end;
+    }
+
+    /* Text Navigation Links */
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Center Logo Zone */
+    .nav-center {
+      flex: 0 0 auto;
+      position: relative;
+    }
+
+    .logo-link {
+      display: block;
+      position: relative;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .logo-link img {
+      display: block;
+      height: 48px;
+      width: auto;
+    }
+
+    /* Logo Hover Effect */
+    .logo-link:hover {
+      transform: scale(1.05);
+    }
+
+    /* "About Me" Tooltip */
+    .logo-tooltip {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ffffff;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      transform: translateX(-50%) translateY(-4px);
+    }
+
+    .logo-link:hover .logo-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-nav {
+        padding: 16px 24px;
+        gap: 20px;
+      }
+
+      .nav-left,
+      .nav-right {
+        gap: 20px;
+      }
+
+      .nav-link {
+        font-size: 0.75rem;
+      }
+
+      .logo-link img {
+        height: 40px;
+      }
+
+      .logo-tooltip {
+        font-size: 0.65rem;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .main-nav {
+        flex-direction: column;
+        padding: 16px 20px;
+        gap: 16px;
+      }
+
+      .nav-left,
+      .nav-right {
+        justify-content: center;
+        gap: 24px;
+      }
+
+      .nav-center {
+        order: -1;
+      }
     }
 
     /* ─────────────────────────────────────────
@@ -35,19 +187,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      padding: 60px 24px 40px;
+      justify-content: center;
+      padding: 40px 24px 40px;
       position: relative;
-    }
-
-    /* Top tagline */
-    .hero-top {
-      text-align: center;
-      font-size: 0.62rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text);
-      line-height: 1.9;
     }
 
     /* Photo */
@@ -56,7 +198,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      flex: 4;
+      flex: 1;
     }
 
     .photo-wrap img {
@@ -290,7 +432,12 @@
       }
     }
 
-    /* Hide main content initially */
+    /* Hide navbar and main content initially */
+    .main-header {
+      opacity: 0;
+      animation: fadeIn 0.8s ease-in-out 3s forwards;
+    }
+
     .main-content {
       opacity: 0;
       animation: fadeIn 0.8s ease-in-out 3s forwards;
@@ -308,6 +455,33 @@
 </head>
 <body>
 
+  <!-- ── GLASSMORPHIC NAVIGATION BAR ── -->
+  <header class="main-header">
+    <nav class="main-nav">
+      
+      <!-- Left Navigation Zone -->
+      <div class="nav-left">
+        <a href="pages/projects.html" class="nav-link">Projects</a>
+        <a href="#labs" class="nav-link">Labs</a>
+      </div>
+
+      <!-- Center Logo Zone (About Me Gateway) -->
+      <div class="nav-center">
+        <a href="pages/aboutme.html" class="logo-link" aria-label="About Me">
+          <img src="photo1.png" alt="AK Logo" />
+          <span class="logo-tooltip">About Me</span>
+        </a>
+      </div>
+
+      <!-- Right Navigation Zone -->
+      <div class="nav-right">
+        <a href="#visual-design" class="nav-link">Visual Design</a>
+        <a href="pages/contact.html" class="nav-link">Contact</a>
+      </div>
+
+    </nav>
+  </header>
+
   <!-- ── INTRO SCREEN ── -->
   <div class="intro-screen">
     <img src="photo1.png" alt="AK Logo" />
@@ -318,12 +492,6 @@
 
   <!-- ── HERO ── -->
   <section class="hero">
-
-    <div class="hero-top">
-      A portal to a multitude of things<br>
-      All things by<br>
-      <strong style="font-weight:400;">Adriella Kristie</strong>
-    </div>
 
     <div class="photo-wrap">
       <!-- Main illustration -->
