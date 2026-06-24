@@ -37,38 +37,25 @@
       left: 0;
       width: 100%;
       z-index: 1000;
-      background: rgba(138, 171, 116, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
       padding: 0;
     }
 
     .main-nav {
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 20px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 40px;
+      gap: 16px;
     }
 
     /* Left and Right Nav Zones */
     .nav-left,
     .nav-right {
-      flex: 1;
       display: flex;
-      gap: 32px;
+      gap: 20px;
       align-items: center;
-    }
-
-    .nav-left {
-      justify-content: flex-start;
-    }
-
-    .nav-right {
-      justify-content: flex-end;
     }
 
     /* Text Navigation Links */
@@ -90,8 +77,9 @@
 
     /* Center Logo Zone */
     .nav-center {
-      flex: 0 0 auto;
-      position: relative;
+      display: flex;
+      align-items: center;
+      margin: 0 12px;
     }
 
     .logo-link {
@@ -102,50 +90,25 @@
 
     .logo-link img {
       display: block;
-      height: 48px;
+      height: 60px;
       width: auto;
     }
 
     /* Logo Hover Effect */
     .logo-link:hover {
-      transform: scale(1.05);
-    }
-
-    /* "About Me" Tooltip */
-    .logo-tooltip {
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      margin-top: 8px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 300;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #ffffff;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      transform: translateX(-50%) translateY(-4px);
-    }
-
-    .logo-link:hover .logo-tooltip {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+      transform: scale(1.15);
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
       .main-nav {
         padding: 16px 24px;
-        gap: 20px;
+        gap: 16px;
       }
 
       .nav-left,
       .nav-right {
-        gap: 20px;
+        gap: 16px;
       }
 
       .nav-link {
@@ -153,11 +116,11 @@
       }
 
       .logo-link img {
-        height: 40px;
+        height: 50px;
       }
 
-      .logo-tooltip {
-        font-size: 0.65rem;
+      .nav-center {
+        margin: 0 12px;
       }
     }
 
@@ -171,11 +134,12 @@
       .nav-left,
       .nav-right {
         justify-content: center;
-        gap: 24px;
+        gap: 20px;
       }
 
       .nav-center {
         order: -1;
+        margin: 0;
       }
     }
 
@@ -432,15 +396,24 @@
       }
     }
 
-    /* Hide navbar and main content initially */
-    .main-header {
+    /* Hide navbar and main content initially only on first load */
+    body:not(.skip-intro) .main-header {
       opacity: 0;
       animation: fadeIn 0.8s ease-in-out 3s forwards;
     }
 
-    .main-content {
+    body:not(.skip-intro) .main-content {
       opacity: 0;
       animation: fadeIn 0.8s ease-in-out 3s forwards;
+    }
+
+    body.skip-intro .main-header,
+    body.skip-intro .main-content {
+      opacity: 1;
+    }
+
+    body.skip-intro .intro-screen {
+      display: none;
     }
 
     @keyframes fadeIn {
@@ -455,6 +428,15 @@
 </head>
 <body>
 
+  <script>
+    // Check if user has already seen the intro
+    if (sessionStorage.getItem('introShown')) {
+      document.body.classList.add('skip-intro');
+    } else {
+      sessionStorage.setItem('introShown', 'true');
+    }
+  </script>
+
   <!-- ── GLASSMORPHIC NAVIGATION BAR ── -->
   <header class="main-header">
     <nav class="main-nav">
@@ -467,15 +449,14 @@
 
       <!-- Center Logo Zone (About Me Gateway) -->
       <div class="nav-center">
-        <a href="pages/aboutme.html" class="logo-link" aria-label="About Me">
+        <a href="index.html" class="logo-link" aria-label="Home">
           <img src="photo1.png" alt="AK Logo" />
-          <span class="logo-tooltip">About Me</span>
         </a>
       </div>
 
       <!-- Right Navigation Zone -->
       <div class="nav-right">
-        <a href="#visual-design" class="nav-link">Visual Design</a>
+        <a href="pages/aboutme.html" class="nav-link">About Me</a>
         <a href="pages/contact.html" class="nav-link">Contact</a>
       </div>
 
@@ -500,18 +481,9 @@
 
     <div class="hero-bottom">
       <p class="statement">
-        Learn more about me<br>
-        through my works<br>
-        intersecting between<br>
-        code and design<br>
+        Intersection of code and art<br>
+        by Adriella Kristie
       </p>
-
-      <!-- Ellipse Buttons -->
-      <div class="ellipse-buttons">
-        <a href="pages/projects.html" class="ellipse-btn">Coding Projects</a>
-        <a href="pages/aboutme.html" class="ellipse-btn">About Me</a>
-        <a href="pages/contact.html" class="ellipse-btn">Contact</a>
-      </div>
     </div>
 
   </section>

@@ -27,6 +27,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      padding-top: 100px;
     }
 
     /* ─────────────────────────────────────────
@@ -133,9 +134,92 @@
       text-transform: uppercase;
       color: var(--muted);
     }
+
+    /* ─────────────────────────────────────────
+       NAVIGATION BAR
+    ───────────────────────────────────────── */
+    .main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-left,
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .nav-center {
+      display: flex;
+      align-items: center;
+      margin: 0 12px;
+    }
+
+    .logo-link {
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .logo-link img {
+      display: block;
+      height: 60px;
+      width: auto;
+    }
+
+    .logo-link:hover {
+      transform: scale(1.15);
+    }
   </style>
 </head>
 <body>
+
+  <!-- Navigation Bar -->
+  <header class="main-header">
+    <nav class="main-nav">
+      <div class="nav-left">
+        <a href="projects.html" class="nav-link">Projects</a>
+        <a href="#labs" class="nav-link">Labs</a>
+      </div>
+      <div class="nav-center">
+        <a href="../index.html" class="logo-link" aria-label="Home">
+          <img src="../photo1.png" alt="AK Logo" />
+        </a>
+      </div>
+      <div class="nav-right">
+        <a href="aboutme.html" class="nav-link">About Me</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+    </nav>
+  </header>
 
   <header class="page-header">
     <a href="projects.html" class="back-link">← Back to Projects</a>
