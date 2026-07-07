@@ -7,7 +7,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; paddi      <!-- Left Navigation Zone -->
+      <div class="nav-left">
+        <a href="pages/projects.html" class="nav-link">Projects</a>
+        <div class="nav-item-with-dropdown">
+          <span class="nav-link" style="cursor: pointer;">Labs</span>
+          <div class="dropdown-menu">
+            <a href="pages/labs-code.html" class="dropdown-item">Code</a>
+            <a href="pages/labs-visual.html" class="dropdown-item">Visual Design</a>
+          </div>
+        </div>
+      </div>; }
 
     :root {
       /* --bg: #eeece6; */
@@ -79,10 +89,53 @@
   text-decoration: none;
   transition: color 0.3s ease;
   white-space: nowrap;
+  position: relative;
 }
 
 .nav-link:hover {
   color: rgba(255, 255, 255, 0.7);
+}
+
+/* Labs Dropdown */
+.nav-item-with-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  padding: 12px 0;
+  min-width: 160px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.nav-item-with-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  margin-top: 8px;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(161, 177, 97, 0.2);
 }
 
 .logo-link {
@@ -406,7 +459,7 @@
       <!-- Left Navigation Zone -->
       <div class="nav-left">
         <a href="pages/projects.html" class="nav-link">Projects</a>
-        <a href="#labs" class="nav-link">Labs (Coming Soon)</a>
+        <a href="#labs" class="nav-link">Labs</a>
       </div>
 
       <!-- Center Logo Zone (About Me Gateway) -->

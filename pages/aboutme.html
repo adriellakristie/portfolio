@@ -28,6 +28,18 @@
       display: flex;
       flex-direction: column;
       padding-top: 100px;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ─────────────────────────────────────────
@@ -81,16 +93,56 @@
   text-decoration: none;
   transition: color 0.3s ease;
   white-space: nowrap;
-}
+}    .nav-link:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
 
-.nav-link:hover {
-  color: rgba(255, 255, 255, 0.7);
-}
+    /* Labs Dropdown */
+    .nav-item-with-dropdown {
+      position: relative;
+    }
 
-.logo-link {
-  display: block;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-item-with-dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 8px;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(161, 177, 97, 0.2);
+    }
+
+    .logo-link {
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
 
 .logo-link img {
   display: block;
@@ -102,11 +154,31 @@
   transform: scale(1.15);
 }
 
-/* Push page content below fixed nav */
-.page-header {
-  padding: 140px 24px 40px;
-  text-align: center;
-}
+
+    /* ─────────────────────────────────────────
+       PAGE HEADER
+    ───────────────────────────────────────── */
+    .page-header {
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 6.5rem;
+      letter-spacing: 0.1em;
+      color: var(--header);
+      margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text2);
+    }
+
 
     /* ─────────────────────────────────────────
        ABOUT ME CONTENT
@@ -211,7 +283,13 @@
     <nav class="main-nav">
       <div class="nav-left">
         <a href="projects.html" class="nav-link">Projects</a>
-        <a href="#labs" class="nav-link">Labs (Coming Soon)</a>
+        <div class="nav-item-with-dropdown">
+          <span class="nav-link" style="cursor: pointer;">Labs</span>
+          <div class="dropdown-menu">
+            <a href="labs-code.html" class="dropdown-item">Code</a>
+            <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
+          </div>
+        </div>
       </div>
       <div class="nav-center">
         <a href="../index.html" class="logo-link" aria-label="Home">
@@ -223,10 +301,15 @@
         <a href="contact.html" class="nav-link">Contact</a>
       </div>
     </nav>
+      <header class="page-header">
+  </header>
   </header>
 
   <main class="about-container">
     <div class="about-content">
+
+
+      
       
       <!-- Left side - Text -->
       <div class="about-text">

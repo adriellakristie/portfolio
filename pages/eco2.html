@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ecobite - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #a1b161;
+      --text: #1a1814;
+      --muted: #888580;
+      --border: #c8c5bd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: 100px;
+    }
+
+    /* ─────────────────────────────────────────
+       HEADER
+    ───────────────────────────────────────── */
+    .page-header {
+      padding: 40px 24px 20px;
+      text-align: center;
+    }
+
+    .back-link {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.3s;
+    }
+
+    .back-link:hover {
+      opacity: 0.6;
+    }
+
+    /* ─────────────────────────────────────────
+       PROJECT CONTENT
+    ───────────────────────────────────────── */
+    .project-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px 80px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .project-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .project-description {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 2.2;
+      color: var(--text);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      margin-bottom: 50px;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .project-button {
+      background: #f5f3e8;
+      border: none;
+      border-radius: 50px;
+      padding: 16px 48px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .project-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: #ede9d5;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .project-title {
+        font-size: 3rem;
+      }
+
+      .project-description {
+        font-size: 0.75rem;
+        line-height: 2;
+      }
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─────────────────────────────────────────
+       NAVIGATION BAR
+    ───────────────────────────────────────── */
+    .main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    .nav-left,
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-left {
+      justify-self: start;
+    }
+
+    .nav-center {
+      justify-self: center;
+    }
+
+    .nav-right {
+      justify-self: end;
+    }
+
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Labs Dropdown */
+    .nav-item-with-dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-item-with-dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 8px;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(161, 177, 97, 0.2);
+    }
+
+    .logo-link {
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .logo-link img {
+      display: block;
+      height: 60px;
+      width: auto;
+    }
+
+    .logo-link:hover {
+      transform: scale(1.15);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="main-header">
+    <nav class="main-nav">
+      <div class="nav-left">
+        <a href="projects.html" class="nav-link">Projects</a>
+        <div class="nav-item-with-dropdown">
+          <span class="nav-link" style="cursor: pointer;">Labs</span>
+          <div class="dropdown-menu">
+            <a href="labs-code.html" class="dropdown-item">Code</a>
+            <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-center">
+        <a href="../index.html" class="logo-link" aria-label="Home">
+          <img src="../photo1.png" alt="AK Logo" />
+        </a>
+      </div>
+      <div class="nav-right">
+        <a href="aboutme.html" class="nav-link">About Me</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <header class="page-header">
+    <a href="projects.html" class="back-link">← Back to Projects</a>
+  </header>
+
+  <main class="project-container">
+    
+    <h1 class="project-title">Ecobite</h1>
+
+    <p class="project-description">
+      Ecobite is a sustainable food waste management platform that connects users with eco-friendly solutions. 
+      The application promotes environmental awareness and provides practical tools for reducing food waste, 
+      helping users make more sustainable choices in their daily lives while contributing to a greener future.
+    </p>
+
+    <a href="https://ecobite-five.vercel.app/" target="_blank" rel="noopener" class="project-button">
+      Visit Live Site →
+    </a>
+
+  </main>
+
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+
+  <script src="../grain.js"></script>
+</body>
+</html>

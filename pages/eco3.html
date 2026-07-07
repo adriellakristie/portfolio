@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoBite — Case Study</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #F6F3EC;
+            color: #2D3A22;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 300;
+        }
+        .accent-green { color: #44633F; }
+        .bg-accent-green { background-color: #44633F; }
+        .bg-card-green { background-color: #E2EAD8; }
+        .border-accent { border-color: #44633F; }
+
+        /* Navigation Bar Styles */
+        .main-header { position: relative; width: 100%; }
+        .main-nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+        }
+        .nav-left, .nav-right { display: flex; gap: 20px; align-items: center; }
+        .nav-left { justify-self: start; }
+        .nav-center { justify-self: center; }
+        .nav-right { justify-self: end; }
+        .nav-link {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: #5d692e;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            position: relative;
+        }
+        .nav-link:hover { color: rgba(93, 105, 46, 0.7); }
+        .nav-item-with-dropdown { position: relative; }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 12px 0;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .nav-item-with-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            margin-top: 8px;
+        }
+        .dropdown-item {
+            display: block;
+            padding: 10px 20px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            color: #2D3A22;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+        .dropdown-item:hover { background: rgba(161, 177, 97, 0.2); }
+        .logo-link { display: block; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .logo-link img { display: block; height: 60px; width: auto; }
+        .logo-link:hover { transform: scale(1.15); }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen">
+
+    <!-- Navigation Bar -->
+    <header class="main-header">
+        <nav class="main-nav">
+            <div class="nav-left">
+                <a href="projects.html" class="nav-link">Projects</a>
+                <div class="nav-item-with-dropdown">
+                    <span class="nav-link" style="cursor: pointer;">Labs</span>
+                    <div class="dropdown-menu">
+                        <a href="labs-code.html" class="dropdown-item">Code</a>
+                        <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-center">
+                <a href="../index.html" class="logo-link" aria-label="Home">
+                    <img src="../photo1.png" alt="AK Logo" />
+                </a>
+            </div>
+            <div class="nav-right">
+                <a href="aboutme.html" class="nav-link">About Me</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="max-w-6xl mx-auto px-6 pt-8 pb-16 text-center">
+        <span class="text-xs font-bold tracking-widest uppercase text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">NYU Tandon · 2026</span>
+        <h1 class="text-5xl md:text-7xl font-black tracking-tight mt-4 mb-3 text-[#2D3A22]">EcoBite</h1>
+        <p class="text-xl md:text-2xl font-medium text-gray-600 max-w-2xl mx-auto mb-10">
+            Think before you Bite! Reshaping the culture of eating out through data-driven sustainability.
+        </p>
+
+        <div class="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl bg-zinc-900 border-4 border-white aspect-video">
+            <video class="w-full h-full object-cover" autoplay loop muted playsinline>
+                <source src="ecobite.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="absolute bottom-4 left-4 bg-black/50 text-white text-xs px-3 py-1 rounded-md backdrop-blur-sm">
+                Project Demonstration
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-b border-stone-300">
+        <div>
+            <h3 class="text-xs uppercase tracking-wider font-bold text-stone-500 mb-1">Role</h3>
+            <p class="font-semibold text-lg">Creative Coder & Full-Stack Developer</p>
+        </div>
+        <div>
+            <h3 class="text-xs uppercase tracking-wider font-bold text-stone-500 mb-1">Core Tech</h3>
+            <p class="font-semibold text-lg">React, Mapbox GL, FastAPI, OpenAI</p>
+        </div>
+        <div>
+            <h3 class="text-xs uppercase tracking-wider font-bold text-stone-500 mb-1">Target Audience</h3>
+            <p class="font-semibold text-lg">NYU Students & Conscious Foodies</p>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 py-16 space-y-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight mb-3 accent-green flex items-center gap-2">
+                    <span class="text-red-500">●</span> The Problem
+                </h2>
+                <p class="text-stone-700 leading-relaxed">
+                    Eating out is at the heart of New York culture, but the hidden environmental and carbon impacts of every meal choices add up quickly. Students want to make greener decisions, but reliable restaurant eco-data is completely opaque and inaccessible.
+                </p>
+            </div>
+            <div class="bg-card-green p-6 rounded-xl">
+                <h2 class="text-2xl font-bold tracking-tight mb-3 accent-green flex items-center gap-2">
+                    <span class="text-emerald-600">●</span> The Solution
+                </h2>
+                <p class="text-stone-700 leading-relaxed">
+                    A vibrant social platform to promote sustainable eating habits. EcoBite maps and ranks localized neighborhoods across Manhattan and Brooklyn, enabling users to view eco-scores, scan food menus with AI, and track collective carbon savings through an engaging, gamified plant avatar.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-[#EAE5D9] py-16 my-8">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <h2 class="text-3xl font-black tracking-tight mb-4 text-[#2D3A22]">Interface Architecture</h2>
+            <p class="text-stone-600 mb-8 max-w-xl mx-auto">Seamless mapping interfaces paired with sidebar insights built to display restaurant scores at a single glance.</p>
+            
+            <div class="max-w-4xl mx-auto rounded-lg overflow-hidden shadow-xl ">
+                <img src="ecolaptop.png" alt="EcoBite Laptop Mockup" class="w-full object-cover">
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 py-16 space-y-16">
+        <div>
+            <h2 class="text-3xl font-bold tracking-tight mb-2 text-[#2D3A22]">The Green Score Model</h2>
+            <p class="text-stone-600 mb-6">Calculated transparently using real-time NYC Open Data parameters via the following allocation weights:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-white border border-stone-200 p-5 rounded-xl shadow-xs">
+                    <div class="text-3xl font-black text-emerald-700">50 pts</div>
+                    <div class="font-bold text-sm my-1">Energy Efficiency</div>
+                    <p class="text-xs text-stone-500">Sourced from NYC LL84 Building Data scaled directly using building Energy Star Scores.</p>
+                </div>
+                <div class="bg-white border border-stone-200 p-5 rounded-xl shadow-xs">
+                    <div class="text-3xl font-black text-emerald-600">25 pts</div>
+                    <div class="font-bold text-sm my-1">Water Efficiency</div>
+                    <p class="text-xs text-stone-500">Evaluates Water Use Intensity metrics against local New York city-wide medians.</p>
+                </div>
+                <div class="bg-white border border-stone-200 p-5 rounded-xl shadow-xs">
+                    <div class="text-3xl font-black text-emerald-500">25 pts</div>
+                    <div class="font-bold text-sm my-1">Health Grade</div>
+                    <p class="text-xs text-stone-500">Derived from ongoing DOHMH inspection scores and sanitation letter records.</p>
+                </div>
+            </div>
+
+            <div class="text-xs bg-stone-100 rounded-lg p-3 inline-flex gap-4 font-mono text-stone-600">
+                <span>🟢 Tier Green: &ge;70</span>
+                <span>🟡 Tier Yellow: 50-69</span>
+                <span>🔴 Tier Red: &lt;50</span>
+            </div>
+        </div>
+
+        <div>
+            <h2 class="text-3xl font-bold tracking-tight mb-6 text-[#2D3A22]">Interactive Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex gap-4">
+                    <div class="w-8 h-8 rounded-full bg-emerald-800 text-white flex items-center justify-center shrink-0 font-bold text-sm">1</div>
+                    <div>
+                        <h4 class="font-bold text-lg">Neighborhood Map Navigation</h4>
+                        <p class="text-stone-600 text-sm">Interactive Mapbox GL polygons built over 10 custom Lower Manhattan & Brooklyn zones with responsive fly-to search mechanics.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="w-8 h-8 rounded-full bg-emerald-800 text-white flex items-center justify-center shrink-0 font-bold text-sm">2</div>
+                    <div>
+                        <h4 class="font-bold text-lg">AI Menu Scanner</h4>
+                        <p class="text-stone-600 text-sm">Powered by OpenAI GPT-4o-mini Vision models to read uploaded snapshot elements and accurately break down target ingredient footprints.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="w-8 h-8 rounded-full bg-emerald-800 text-white flex items-center justify-center shrink-0 font-bold text-sm">3</div>
+                    <div>
+                        <h4 class="font-bold text-lg">Gamified Plant Avatar</h4>
+                        <p class="text-stone-600 text-sm">Encourages ongoing user commitment through a visual seed-to-bloom asset tracker that responds to cumulative logged CO₂ scores.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="w-8 h-8 rounded-full bg-emerald-800 text-white flex items-center justify-center shrink-0 font-bold text-sm">4</div>
+                    <div>
+                        <h4 class="font-bold text-lg">Granular Filters</h4>
+                        <p class="text-stone-600 text-sm">Enables immediate toggling between full restaurant locations or specialized 'Sips & Sweets' cafes and snack spaces.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 py-12 bg-white rounded-2xl shadow-xs border border-stone-200 mb-20">
+        <h2 class="text-2xl font-bold mb-6 text-center tracking-tight">System Infrastructure</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+            <div class="border-r border-stone-200 last:border-0">
+                <span class="block text-xs uppercase tracking-wider font-bold text-stone-400">Frontend</span>
+                <span class="block font-bold text-lg mt-1 text-[#44633F]">React 18</span>
+                <span class="text-xs text-stone-500">Vite 5 + Tailwind</span>
+            </div>
+            <div class="border-r border-stone-200 last:border-0">
+                <span class="block text-xs uppercase tracking-wider font-bold text-stone-400">Backend API</span>
+                <span class="block font-bold text-lg mt-1 text-[#44633F]">FastAPI</span>
+                <span class="text-xs text-stone-500">Uvicorn Server</span>
+            </div>
+            <div class="border-r border-stone-200 last:border-0">
+                <span class="block text-xs uppercase tracking-wider font-bold text-stone-400">Database</span>
+                <span class="block font-bold text-lg mt-1 text-[#44633F]">SQLite</span>
+                <span class="text-xs text-stone-500">SQLAlchemy ORM</span>
+            </div>
+            <div>
+                <span class="block text-xs uppercase tracking-wider font-bold text-stone-400">Geospatial</span>
+                <span class="block font-bold text-lg mt-1 text-[#44633F]">Mapbox GL 3</span>
+                <span class="text-xs text-stone-500">NTA GeoJSON Data</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-12 border-t border-stone-300 text-xs text-stone-500 tracking-wider font-mono">
+        © ADRIELLA KRISTIE — ALL RIGHTS RESERVED
+    </footer>
+
+</body>
+</html>

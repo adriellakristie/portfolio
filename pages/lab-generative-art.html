@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JADE - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* --bg: #a1b161; */
+      --bg:#F6F3EC;
+      /* --bg: #FFFDF7; */
+      --text: #1a1814;
+      /* --header: #79883f; */
+      --header: #60654c;
+      --muted: #272222;
+      --border: #c8c5bd;
+      --nav: #7c8944;
+      --nav-hover: #22472a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ─────────────────────────────────────────
+       NAVIGATION BAR
+    ───────────────────────────────────────── */
+    .main-header {
+      position: relative;
+      width: 100%;
+    }
+
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    .nav-left,
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-left {
+      justify-self: start;
+    }
+
+    .nav-center {
+      justify-self: center;
+    }
+
+    .nav-right {
+      justify-self: end;
+    }
+
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--nav);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--nav-hover);
+    }
+
+    /* Labs Dropdown */
+    .nav-item-with-dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-item-with-dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 8px;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(161, 177, 97, 0.2);
+    }
+
+    .logo-link {
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .logo-link img {
+      display: block;
+      height: 60px;
+      width: auto;
+    }
+
+    .logo-link:hover {
+      transform: scale(1.15);
+    }
+
+    /* ─────────────────────────────────────────
+       PAGE HEADER
+    ───────────────────────────────────────── */
+    .page-header {
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 6rem;
+      letter-spacing: 0.1em;
+      color: var(--header);
+      margin-bottom: 5px;
+    }
+
+    .page-subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      text-align: center;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .back-link {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.3s;
+      margin-top: 20px;
+    }
+
+    .back-link:hover {
+      opacity: 0.6;
+    }
+
+    /* ─────────────────────────────────────────
+       TAG PILLS (tech stack, under title)
+    ───────────────────────────────────────── */
+    .tag-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 5px;
+      margin-bottom: 35px;
+
+    }
+
+    .tag-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 999px;
+    }
+
+    .tag-pill.tag-blue { background: #267CD7; }
+    .tag-pill.tag-pink { background: #FF3D7F; }
+
+    /* ─────────────────────────────────────────
+       INFO BADGES (sound / instructions / sticker)
+    ───────────────────────────────────────── */
+     .badge-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 50px;
+      padding: 0 24px;
+    }
+ 
+    .info-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--header);
+      background: var(--bg);
+      border: 4px solid var(--header);
+      padding: 7px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+ 
+
+    @media (max-width: 768px) {
+      .badge-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .info-badge {
+        text-align: center;
+        white-space: normal;
+      }
+    }
+
+    /* ─────────────────────────────────────────
+       IMAGE GRID — square cells.
+       Every image sits in a perfect square cell.
+       If the TOTAL number of images is odd, the
+       last image spans two columns (so it reads
+       as "two squares wide") instead of sitting
+       alone and undersized.
+       Set data-count on .image-grid to the total
+       number of .image-item blocks inside it.
+    ───────────────────────────────────────── */
+    .image-gallery {
+      flex: 1;
+      padding: 40px 24px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .image-grid {
+      display: grid;
+      gap: 30px;
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 1fr;
+    }
+
+    .image-item {
+      background: rgba(255, 255, 255, 0.1);
+      /* border: 1px solid var(--border); */
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Odd total -> last item spans the full width of the grid
+       (both columns) instead of sitting alone as one square. */
+    .image-grid[data-count="3"] .image-item:last-child,
+    .image-grid[data-count="5"] .image-item:last-child,
+    .image-grid[data-count="7"] .image-item:last-child,
+    .image-grid[data-count="9"] .image-item:last-child {
+      grid-column: 1 / -1;
+      aspect-ratio: 2 / 1;
+    }
+
+    .image-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .image-item img {
+      width: 100%;
+      flex: 1;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-placeholder {
+      width: 100%;
+      flex: 1;
+      background: rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      overflow: hidden;
+    }
+
+    .image-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-caption {
+      padding: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page-title {
+        font-size: 2.5rem;
+      }
+
+      .image-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .image-grid .image-item {
+        grid-column: 1 / -1 !important;
+        aspect-ratio: 1 / 1 !important;
+      }
+    }
+
+    /* ─────────────────────────────────────────
+       PROCESS / CODE SECTION
+    ───────────────────────────────────────── */
+    .process-section {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      width: 100%;
+    }
+
+    .process-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    .process-note {
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .code-block {
+      background: rgba(0, 0, 0, 0.85);
+      /* border: 1px solid var(--border); */
+      border-radius: 6px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.7;
+      color: #e7e7e2;
+      white-space: pre;
+    }
+
+    .code-block code {
+      font-family: inherit;
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="main-header">
+    <nav class="main-nav">
+      <div class="nav-left">
+        <a href="projects.html" class="nav-link">Projects</a>
+        <div class="nav-item-with-dropdown">
+          <span class="nav-link" style="cursor: pointer;">Labs</span>
+          <div class="dropdown-menu">
+            <a href="labs-code.html" class="dropdown-item">Code</a>
+            <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-center">
+        <a href="../index.html" class="logo-link" aria-label="Home">
+          <img src="../photo1.png" alt="AK Logo" />
+        </a>
+      </div>
+      <div class="nav-right">
+        <a href="aboutme.html" class="nav-link">About Me</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1 class="page-title">GENERATIVE BATIK</h1>
+
+    <!-- Tech stack tags -->
+    <div class="tag-row">
+      <span class="tag-pill tag-blue">Processing</span>
+      <span class="tag-pill tag-pink">Java</span>
+    </div>
+
+    <!-- Instruction badges -->
+    <div class="badge-row">
+      <span class="info-badge">Indonesian Batik Pattern</span>
+      <span class="info-badge">Different colorways</span>
+
+    </div>
+  </header>
+
+
+
+  <!-- Image Gallery -->
+  <main class="image-gallery">
+    <!--
+      Set data-count on .image-grid to the total number of
+      .image-item blocks inside it. If that number is odd,
+      the last image will automatically span two square cells.
+    -->
+    <div class="image-grid" data-count="5">
+
+      <!-- Image 1 -->
+      <div class="image-item">
+        <div class="image-placeholder">
+          <img src="../batik1.PNG" alt="BATIK" />
+        </div>
+        <div class="image-caption">Caption for image 1 (optional)</div>
+      </div>
+
+      <!-- Image 2 -->
+      <div class="image-item">
+        <div class="image-placeholder">
+          <img src="../batik2.PNG" alt="BATIK" />
+        </div>
+        <div class="image-caption">Caption for image 2 (optional)</div>
+      </div>
+
+      <!-- Image 3 -->
+      <div class="image-item">
+        <div class="image-placeholder">
+          <img src="../batik3.PNG" alt="BATIK" />
+        </div>
+        <div class="image-caption">Caption for image 3 (optional)</div>
+      </div>
+
+      <!-- Image 4 -->
+      <div class="image-item">
+        <div class="image-placeholder">
+          <img src="../batik4.PNG" alt="BATIK" />
+        </div>
+        <div class="image-caption">Caption for image 4 (optional)</div>
+      </div>
+
+    <!-- Image 5 -->
+      <div class="image-item">
+        <div class="image-placeholder">
+          <img src="../batikcombo.PNG" alt="BATIK" />
+        </div>
+        <div class="image-caption">Caption for image 1 (optional)</div>
+      </div>
+
+      <!-- Add more images as needed - just copy and paste this block,
+           and update data-count above to match the new total.
+           If the new total is odd (3, 5, 7, 9), the LAST image
+           in the grid will automatically span two square cells. -->
+      <!--
+      <div class="image-item">
+        <div class="image-placeholder">
+          [Image X]
+        </div>
+        <img src="../your-image.png" alt="Description">
+        <div class="image-caption">Caption (optional)</div>
+      </div>
+      -->
+
+    </div>
+  </main>
+
+  <!-- Process / Code Section -->
+  <section class="process-section">
+    <h2 class="process-heading">PROCESS / CODE</h2>
+    <p class="process-note">
+Here is the code used to bring Wayan to life!
+    </p>
+    <div class="code-block">
+      <pre><code>
+      //BATIK GENERATED PATTERN
+      
+size(800, 800); 
+background(245, 232, 215);
+
+//beige oval set 1
+fill(217, 192, 160);
+noStroke();
+
+ellipse(420, -160, 160, 320);
+ellipse(520, -130, 160, 320);
+ellipse(620, -100, 160, 320);
+ellipse(720, -70, 160, 320);
+ellipse(820, -40, 160, 320);
+
+//flowers in beige oval set 1
+fill(153, 97, 24, 60);
+noStroke();
+ellipse(520, -103.5, 25, 77);
+ellipse(520, -10.5, 25, 77);
+ellipse(495, -57, 45, 25);
+ellipse(545, -57, 45, 25);
+
+ellipse(520, -103.5, 15, 77);
+ellipse(520, -10.5, 15, 77);
+ellipse(495, -57, 45, 40);
+ellipse(545, -57, 45, 40);
+
+ellipse(520, -103.5, 35, 77);
+ellipse(520, -10.5, 35, 77);
+ellipse(495, -57, 45, 50);
+ellipse(545, -57, 45, 50);
+
+
+ellipse(620, -73.5, 25, 77);
+ellipse(620, 19.5, 25, 77);
+ellipse(595, -27, 45, 25);
+ellipse(645, -27, 45, 25);
+
+ellipse(620, -73.5, 15, 77);
+ellipse(620, 19.5, 15, 77);
+ellipse(595, -27, 45, 40);
+ellipse(645, -27, 45, 40);
+
+ellipse(620, -73.5, 35, 77);
+ellipse(620, 19.5, 35, 77);
+ellipse(595, -27, 45, 50);
+ellipse(645, -27, 45, 50);
+
+
+
+ellipse(720, -43.5, 25, 77);
+ellipse(720, 49.5, 25, 77);
+ellipse(695, 3, 45, 25);
+ellipse(745, 3, 45, 25);
+
+ellipse(720, -43.5, 15, 77);
+ellipse(720, 49.5, 15, 77);
+ellipse(695, 3, 45, 40);
+ellipse(745, 3, 45, 40);
+
+ellipse(720, -43.5, 35, 77);
+ellipse(720, 49.5, 35, 77);
+ellipse(695, 3, 45, 50);
+ellipse(745, 3, 45, 50);
+
+
+
+ellipse(820, -13.5, 25, 77);
+ellipse(820, 79.5, 25, 77);
+ellipse(795, 33, 45, 25);
+ellipse(845, 33, 45, 25);
+
+ellipse(820, -13.5, 15, 77);
+ellipse(820, 79.5, 15, 77);
+ellipse(795, 33, 45, 40);
+ellipse(845, 33, 45, 40);
+
+ellipse(820, -13.5, 35, 77);
+ellipse(820, 79.5, 35, 77);
+ellipse(795, 33, 45, 50);
+ellipse(845, 33, 45, 50);
+
+
+fill(30, 80, 150,130);
+noStroke();
+circle(720, 3, 15);
+
+//beige outline 1
+fill(176, 148, 112,155);
+ellipse(20, 50, 160, 320);
+ellipse(120, 80, 160, 320);
+ellipse(220, 110, 160, 320);
+ellipse(320, 140, 160, 320);
+ellipse(420, 170, 160, 320);
+ellipse(520, 200, 160, 320);
+ellipse(620, 230, 160, 320);
+ellipse(720, 260, 160, 320);
+ellipse(820, 290, 160, 320);
+
+
+//blue oval set 1
+fill(30, 80, 150);
+noStroke();
+
+ellipse(20, 50, 150, 300);
+ellipse(120, 80, 150, 300);
+ellipse(220, 110, 150, 300);
+ellipse(320, 140, 150, 300);
+ellipse(420, 170, 150, 300);
+ellipse(520, 200, 150, 300);
+ellipse(620, 230, 150, 300);
+ellipse(720, 260, 150, 300);
+ellipse(820, 290, 150, 300);
+
+
+//beige leaf in blue
+fill(199, 184, 164, 205);
+
+beginShape();
+curveVertex(20, 175);
+curveVertex(20, 175);  
+curveVertex(50, 115);
+curveVertex(30, 75);
+curveVertex(45, 35);  
+curveVertex(30, -5); 
+curveVertex(40, -35); 
+curveVertex(20, -75); 
+curveVertex(-10, 45); 
+curveVertex(20, 175);
+curveVertex(20, 175);
+endShape();
+
+beginShape();
+curveVertex(120, 205);
+curveVertex(120, 205);  
+curveVertex(150, 145);
+curveVertex(130, 105);
+curveVertex(145, 65);  
+curveVertex(130, 25); 
+curveVertex(140, -5); 
+curveVertex(120, -45); 
+curveVertex(90, 75); 
+curveVertex(120, 205);
+curveVertex(120, 205);
+endShape();
+
+beginShape();
+curveVertex(220, 235);
+curveVertex(220, 235);  
+curveVertex(250, 175);
+curveVertex(230, 135);
+curveVertex(245, 95);  
+curveVertex(230, 55); 
+curveVertex(240, 25); 
+curveVertex(220, -15);
+curveVertex(190, 105); 
+curveVertex(220, 235);
+curveVertex(220, 235);
+endShape();
+
+beginShape();
+curveVertex(320, 265);
+curveVertex(320, 265);  
+curveVertex(350, 205);
+curveVertex(330, 165);
+curveVertex(345, 125);  
+curveVertex(330, 85); 
+curveVertex(340, 55); 
+curveVertex(320, 15); 
+curveVertex(290, 135); 
+curveVertex(320, 265);
+curveVertex(320, 265);
+endShape();
+
+beginShape();
+curveVertex(420, 295);
+curveVertex(420, 295);  
+curveVertex(450, 235);
+curveVertex(430, 195);
+curveVertex(445, 155);  
+curveVertex(430, 115); 
+curveVertex(440, 85); 
+curveVertex(420, 45); 
+curveVertex(390, 165); 
+curveVertex(420, 295);
+curveVertex(420, 295);
+endShape();
+
+beginShape();
+curveVertex(520, 325);
+curveVertex(520, 325);  
+curveVertex(550, 265);
+curveVertex(530, 225);
+curveVertex(545, 185);  
+curveVertex(530, 145); 
+curveVertex(540, 115); 
+curveVertex(520, 75); 
+curveVertex(490, 195); 
+curveVertex(520, 325);
+curveVertex(520, 325);
+endShape();
+
+beginShape();
+curveVertex(620, 355);
+curveVertex(620, 355);  
+curveVertex(650, 295);
+curveVertex(630, 255);
+curveVertex(645, 215);  
+curveVertex(630, 175); 
+curveVertex(640, 145); 
+curveVertex(620, 105); 
+curveVertex(590, 225); 
+curveVertex(620, 355);
+curveVertex(620, 355);
+endShape();
+
+beginShape();
+curveVertex(720, 385);
+curveVertex(720, 385);  
+curveVertex(750, 325);
+curveVertex(730, 285);
+curveVertex(745, 245);  
+curveVertex(730, 205); 
+curveVertex(740, 175); 
+curveVertex(720, 135); 
+curveVertex(690, 255); 
+curveVertex(720, 385);
+curveVertex(720, 385);
+endShape();
+
+beginShape();
+curveVertex(820, 415);
+curveVertex(820, 415);  
+curveVertex(850, 355);
+curveVertex(830, 315);
+curveVertex(845, 275);  
+curveVertex(830, 235); 
+curveVertex(840, 205); 
+curveVertex(820, 165); 
+curveVertex(790, 285); 
+curveVertex(820, 415);
+curveVertex(820, 415);
+endShape();
+
+//triangle on the side of leaf
+triangle(37, 0, 47, -20, 57, 0);
+triangle(37, 80, 47, 60, 57, 80);
+triangle(37, 160, 47, 140, 57, 160);
+
+triangle(137, 30, 147, 10, 157, 30);
+triangle(137, 110, 147, 90, 157, 110);
+triangle(137, 190, 147, 170, 157, 190);
+
+triangle(237, 60, 247, 40, 257, 60);
+triangle(237, 140, 247, 120, 257, 140);
+triangle(237, 220, 247, 200, 257, 220);
+
+triangle(337, 90, 347, 70, 357, 90);
+triangle(337, 170, 347, 150, 357, 170);
+triangle(337, 250, 347, 230, 357, 250);
+
+triangle(437, 120, 447, 100, 457, 120);
+triangle(437, 200, 447, 180, 457, 200);
+triangle(437, 280, 447, 260, 457, 280);
+
+triangle(537, 150, 547, 130, 557, 150);
+triangle(537, 230, 547, 210, 557, 230);
+triangle(537, 310, 547, 290, 557, 310);
+
+triangle(637, 180, 647, 160, 657, 180);
+triangle(637, 260, 647, 240, 657, 260);
+triangle(637, 340, 647, 320, 657, 340);
+
+triangle(737, 210, 747, 190, 757, 210);
+triangle(737, 290, 747, 270, 757, 290);
+triangle(737, 370, 747, 350, 757, 370);
+
+triangle(837, 240, 847, 220, 857, 240);
+triangle(837, 320, 847, 300, 857, 320);
+triangle(837, 400, 847, 380, 857, 400);
+
+fill(128, 95, 53, 80);
+
+//line inside leaf
+stroke(128, 95, 53, 80);
+strokeWeight(2);
+line(20, -75, 20, 175);
+line(120, -45, 120, 205);
+line(220, -15, 220, 235);
+line(320, 15, 320, 265);
+line(420, 45, 420, 295);
+line(520, 75, 520, 325);
+line(620, 105, 620, 355);
+line(720, 135, 720, 385);
+line(820, 165, 820, 415);
+
+//Diamond shaped
+fill(201, 156, 97, 200);
+noStroke();
+quad(60, 205, 40, 230, 60, 255, 80, 230);
+quad(260, 260, 240, 285, 260, 310, 280, 285);
+quad(460, 321, 440, 346, 460, 371, 480, 346); 
+quad(660, 380, 640, 405, 660, 430, 680, 405); 
+
+
+//brown small circles 1
+fill(153, 97, 24,155);
+circle(60, 230, 25);
+circle(160, 257, 25);
+circle(260, 285, 25);
+circle(360, 315, 25);
+circle(460, 346, 25);
+circle(560, 375, 25);
+circle(660, 405, 25);
+circle(760, 435, 25);
+
+
+//beige oval set 2
+fill(217, 192, 160);
+noStroke();
+ellipse(0, 299, 120, 170);
+ellipse(100, 329, 120, 170);
+ellipse(200, 359, 120, 170);
+ellipse(300, 389, 120, 170);
+ellipse(400, 419, 120, 170);
+ellipse(500, 449, 120, 170);
+ellipse(600, 479, 120, 170);
+ellipse(700, 509, 120, 170);
+ellipse(800, 539, 120, 170);
+
+//flowers inside beige oval set2
+fill(153, 97, 24, 60);
+ellipse(0, 252.5, 25, 77);
+ellipse(0, 345.5, 25, 77);
+ellipse(-25, 299, 45, 25);
+ellipse(25, 299, 45, 25);
+
+ellipse(0, 252.5, 15, 77);
+ellipse(0, 345.5, 15, 77);
+ellipse(-25, 299, 45, 40);
+ellipse(25, 299, 45, 40);
+
+ellipse(-25, 299, 45, 50);
+ellipse(25, 299, 45, 50);
+
+
+ellipse(100, 282.5, 25, 77);
+ellipse(100, 375.5, 25, 77);
+ellipse(75, 329, 45, 25);
+ellipse(125, 329, 45, 25);
+
+ellipse(100, 282.5, 15, 77);
+ellipse(100, 375.5, 15, 77);
+ellipse(75, 329, 45, 40);
+ellipse(125, 329, 45, 40);
+
+ellipse(100, 282.5, 35, 77);
+ellipse(100, 375.5, 35, 77);
+ellipse(75, 329, 45, 50);
+ellipse(125, 329, 45, 50);
+
+
+ellipse(200, 312.5, 25, 77);
+ellipse(200, 405.5, 25, 77);
+ellipse(175, 359, 45, 25);
+ellipse(225, 359, 45, 25);
+
+ellipse(200, 312.5, 15, 77);
+ellipse(200, 405.5, 15, 77);
+ellipse(175, 359, 45, 40);
+ellipse(225, 359, 45, 40);
+
+ellipse(200, 312.5, 35, 77);
+ellipse(200, 405.5, 35, 77);
+ellipse(175, 359, 45, 50);
+ellipse(225, 359, 45, 50);
+
+
+ellipse(300, 342.5, 25, 77);
+ellipse(300, 435.5, 25, 77);
+ellipse(275, 389, 45, 25);
+ellipse(325, 389, 45, 25);
+
+ellipse(300, 342.5, 15, 77);
+ellipse(300, 435.5, 15, 77);
+ellipse(275, 389, 45, 40);
+ellipse(325, 389, 45, 40);
+
+ellipse(300, 342.5, 35, 77);
+ellipse(300, 435.5, 35, 77);
+ellipse(275, 389, 45, 50);
+ellipse(325, 389, 45, 50);
+
+
+ellipse(400, 372.5, 25, 77);
+ellipse(400, 465.5, 25, 77);
+ellipse(375, 419, 45, 25);
+ellipse(425, 419, 45, 25);
+
+ellipse(400, 372.5, 15, 77);
+ellipse(400, 465.5, 15, 77);
+ellipse(375, 419, 45, 40);
+ellipse(425, 419, 45, 40);
+
+ellipse(400, 372.5, 35, 77);
+ellipse(400, 465.5, 35, 77);
+ellipse(375, 419, 45, 50);
+ellipse(425, 419, 45, 50);
+
+
+ellipse(500, 402.5, 25, 77);
+ellipse(500, 495.5, 25, 77);
+ellipse(475, 449, 45, 25);
+ellipse(525, 449, 45, 25);
+
+ellipse(500, 402.5, 15, 77);
+ellipse(500, 495.5, 15, 77);
+ellipse(475, 449, 45, 40);
+ellipse(525, 449, 45, 40);
+
+ellipse(500, 402.5, 35, 77);
+ellipse(500, 495.5, 35, 77);
+ellipse(475, 449, 45, 50);
+ellipse(525, 449, 45, 50);
+
+
+ellipse(600, 432.5, 25, 77);
+ellipse(600, 525.5, 25, 77);
+ellipse(575, 479, 45, 25);
+ellipse(625, 479, 45, 25);
+
+ellipse(600, 432.5, 15, 77);
+ellipse(600, 525.5, 15, 77);
+ellipse(575, 479, 45, 40);
+ellipse(625, 479, 45, 40);
+
+ellipse(600, 432.5, 35, 77);
+ellipse(600, 525.5, 35, 77);
+ellipse(575, 479, 45, 50);
+ellipse(625, 479, 45, 50);
+
+
+ellipse(700, 462.5, 25, 77);
+ellipse(700, 555.5, 25, 77);
+ellipse(675, 509, 45, 25);
+ellipse(725, 509, 45, 25);
+
+ellipse(700, 462.5, 15, 77);
+ellipse(700, 555.5, 15, 77);
+ellipse(675, 509, 45, 40);
+ellipse(725, 509, 45, 40);
+
+ellipse(700, 462.5, 35, 77);
+ellipse(700, 555.5, 35, 77);
+ellipse(675, 509, 45, 50);
+ellipse(725, 509, 45, 50);
+
+
+ellipse(800, 492.5, 25, 77);
+ellipse(800, 585.5, 25, 77);
+ellipse(775, 539, 45, 25);
+ellipse(825, 539, 45, 25);
+
+ellipse(800, 492.5, 15, 77);
+ellipse(800, 585.5, 15, 77);
+ellipse(775, 539, 45, 40);
+ellipse(825, 539, 45, 40);
+
+ellipse(800, 492.5, 35, 77);
+ellipse(800, 585.5, 35, 77);
+ellipse(775, 539, 45, 50);
+ellipse(825, 539, 45, 50);
+
+
+//brown small circles
+fill(30, 80, 150,130);
+noStroke();
+circle(0, 299, 15);
+circle(100, 329, 15);
+circle(200, 359, 15);
+circle(300, 389, 15);
+circle(400, 419, 15);
+circle(500, 449, 15);
+circle(600, 479, 15);
+circle(700, 509, 15);
+circle(800, 539, 15);
+
+
+
+//beige outline 2
+fill(176, 148, 112,155);
+ellipse(20, 550, 160, 320);
+ellipse(120, 580, 160, 320);
+ellipse(220, 610, 160, 320);
+ellipse(320, 640, 160, 320);
+ellipse(420, 670, 160, 320);
+ellipse(520, 700, 160, 320);
+ellipse(620, 730, 160, 320);
+ellipse(720, 760, 160, 320);
+ellipse(820, 790, 160, 320);
+
+
+
+//blue oval set 2
+fill(30, 80, 150);
+noStroke();
+
+ellipse(20, 550, 150, 300);
+ellipse(120, 580, 150, 300);
+ellipse(220, 610, 150, 300);
+ellipse(320, 640, 150, 300);
+ellipse(420, 670, 150, 300);
+ellipse(520, 700, 150, 300);
+ellipse(620, 730, 150, 300);
+ellipse(720, 760, 150, 300);
+ellipse(820, 790, 150, 300);
+
+fill(99, 137, 191,150);
+noStroke();
+bezier(232, 475, 304, 558, 287, 699, 225, 743);
+bezier(235, 649, 149, 582, 223, 830, 232, 712);
+bezier(247, 585, 190, 504, 191, 616, 233, 662);
+bezier(233, 476, 192, 541, 242, 548, 231, 600);
+
+bezier(132, 445, 204, 528, 187, 669, 125, 713);
+bezier(135, 619, 49, 552, 123, 800, 132, 682);
+bezier(147, 555, 90, 474, 91, 586, 133, 632);
+bezier(133, 446, 92, 511, 142, 518, 131, 570);
+
+bezier(32, 415, 104, 498, 87, 639, 25, 683);
+bezier(35, 589, -51, 522, 23, 770, 32, 652);
+bezier(47, 525, -10, 444, -9, 556, 33, 602);
+bezier(33, 416, -8, 481, 42, 488, 31, 540);
+
+bezier(332, 505, 404, 588, 387, 729, 325, 773);
+bezier(335, 679, 249, 612, 323, 860, 332, 742);
+bezier(347, 615, 290, 534, 291, 646, 333, 692);
+bezier(333, 506, 292, 571, 342, 578, 331, 630);
+
+bezier(432, 535, 504, 618, 487, 759, 425, 803);
+bezier(435, 709, 349, 642, 423, 890, 432, 772);
+bezier(447, 645, 390, 564, 391, 676, 433, 722);
+bezier(433, 536, 392, 601, 442, 608, 431, 660);
+
+bezier(532, 565, 604, 648, 587, 789, 525, 833);
+bezier(535, 739, 449, 672, 523, 920, 532, 802);
+bezier(547, 675, 490, 594, 491, 706, 533, 752);
+bezier(533, 566, 492, 631, 542, 638, 531, 690);
+
+bezier(632, 595, 704, 678, 687, 819, 625, 863);
+bezier(635, 769, 549, 702, 623, 950, 632, 832);
+bezier(647, 705, 590, 624, 591, 736, 633, 782);
+bezier(633, 596, 592, 661, 642, 668, 631, 720);
+
+bezier(732, 625, 804, 708, 787, 849, 725, 893);
+bezier(735, 799, 649, 732, 723, 980, 732, 862);
+bezier(747, 735, 690, 654, 691, 766, 733, 812);
+bezier(733, 626, 692, 691, 742, 698, 731, 750);
+
+
+//diamond shaped
+fill(201, 156, 97, 200);
+quad(160, 732, 140, 757, 160, 782, 180, 757);
+
+//brown small circles 2
+fill(153, 97, 24, 155);
+noStroke();
+
+circle(60, 730,25);
+circle(160, 757,25);
+circle(260, 785,25);
+
+
+//beige oval set 3
+fill(217, 192, 160);
+noStroke();
+ellipse(0, 799, 120, 170);
+ellipse(100, 829, 120, 170);
+ellipse(200, 859, 120, 170);
+ellipse(300, 889, 120, 170);
+
+//flowers inside beige oval set 3
+fill(153, 97, 24, 60);
+ellipse(0, 752.5, 25, 77);
+ellipse(0, 845.5, 25, 77);
+ellipse(-25, 799, 45, 25);
+ellipse(25, 799, 45, 25);
+
+ellipse(0, 752.5, 15, 77);
+ellipse(0, 845.5, 15, 77);
+ellipse(-25, 799, 45, 40);
+ellipse(25, 799, 45, 40);
+
+ellipse(-25, 799, 45, 50);
+ellipse(25, 799, 45, 50);
+ellipse(100, 782.5, 25, 77);
+ellipse(100, 875.5, 25, 77);
+
+
+ellipse(75, 829, 45, 25);
+ellipse(125, 829, 45, 25);
+ellipse(100, 782.5, 15, 77);
+ellipse(100, 875.5, 15, 77);
+
+ellipse(75, 829, 45, 40);
+ellipse(125, 829, 45, 40);
+ellipse(100, 782.5, 35, 77);
+ellipse(100, 875.5, 35, 77);
+
+ellipse(75, 829, 45, 50);
+ellipse(125, 829, 45, 50);
+ellipse(200, 812.5, 25, 77);
+ellipse(200, 905.5, 25, 77);
+
+ellipse(175, 859, 45, 25);
+ellipse(225, 859, 45, 25);
+ellipse(200, 812.5, 15, 77);
+ellipse(200, 905.5, 15, 77);
+
+ellipse(175, 859, 45, 40);
+ellipse(225, 859, 45, 40);
+ellipse(200, 812.5, 35, 77);
+ellipse(200, 905.5, 35, 77);
+</code>
+</pre>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+
+  <script src="../grain.js"></script>
+</body>
+</html>

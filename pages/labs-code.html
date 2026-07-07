@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Labs - Code - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #a1b161;
+      /* --bg:#F6F3EC; */
+      --text: #c8c5bd;
+      --text2: #1a1814;
+      --header: #687534;
+      --header: #1a1814;
+      --muted: #888580;
+      --border: #c8c5bd;
+      --nav:#ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text2);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ─────────────────────────────────────────
+       NAVIGATION BAR
+    ───────────────────────────────────────── */
+    .main-header {
+      position: relative;
+      width: 100%;
+    }
+
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    .nav-left,
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-left {
+      justify-self: start;
+    }
+
+    .nav-center {
+      justify-self: center;
+    }
+
+    .nav-right {
+      justify-self: end;
+    }
+
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--nav);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Labs Dropdown */
+    .nav-item-with-dropdown {
+      position: relative;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-item-with-dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 8px;
+    }
+
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--text2);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(161, 177, 97, 0.2);
+    }
+
+    .logo-link {
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .logo-link img {
+      display: block;
+      height: 60px;
+      width: auto;
+    }
+
+    .logo-link:hover {
+      transform: scale(1.15);
+    }
+
+    /* ─────────────────────────────────────────
+       PAGE HEADER
+    ───────────────────────────────────────── */
+    .page-header {
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 6.5rem;
+      letter-spacing: 0.1em;
+      color: var(--header);
+      margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text2);
+    }
+
+    /* ─────────────────────────────────────────
+       GRID TOGGLE
+    ───────────────────────────────────────── */
+    .controls-container {
+      display: flex;
+      justify-content: center;
+      padding: 20px 24px;
+      gap: 12px;
+    }
+
+    .toggle-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.2);
+      color: var(--text2);
+      border: 1px solid var(--text);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .toggle-btn.active {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* ─────────────────────────────────────────
+       PROJECTS GRID
+    ───────────────────────────────────────── */
+    .projects-container {
+      flex: 1;
+      padding: 0px 24px 0px 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .projects-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      transition: all 0.5s ease;
+    }
+/* 
+    .projects-grid.cols-1 {
+      grid-template-columns: 1fr;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .projects-grid.cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .projects-grid.cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    } */
+
+    .project-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .project-card {
+      /* background: rgba(0, 0, 0, 0.5); */
+      /* border-radius: 10px; */
+      /* padding: 20px; */
+      /* border: 1px solid var(--border); */
+      transition: all 0.3s ease;
+      cursor: pointer;
+      /* border: 1px solid var(--border); */
+
+    }
+
+    .project-link:hover .project-card {
+      background: rgba(21, 98, 94, 0.814);
+      /* background: rgba(248, 236, 153, 0.814); */
+      /* background: rgb(11, 37, 21); */ 
+      /* dark green when pressed */
+      transform: translateY(-5px);
+    }
+
+    .project-thumbnail {
+      width: 100%;
+      height: 100%;
+      border-radius: 0px;
+      background: rgba(0, 0, 0, 0.1);
+      /* background:rgba(248, 236, 153, 0.814); */
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .project-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-thumbnail.placeholder {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .project-info h3 {
+      /* font-family: 'IBM Plex Mono', monospace;
+      font-size: 1rem;
+      font-weight: 1000;
+      letter-spacing: 0.05em; */
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .project-info p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      line-height: 1.6;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .projects-grid.cols-3 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .projects-grid.cols-2,
+      .projects-grid.cols-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .page-title {
+        font-size: 2.5rem;
+      }
+    }
+    
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="main-header">
+    <nav class="main-nav">
+      <div class="nav-left">
+        <a href="projects.html" class="nav-link">Projects</a>
+        <div class="nav-item-with-dropdown">
+          <span class="nav-link" style="cursor: pointer;">Labs</span>
+          <div class="dropdown-menu">
+            <a href="labs-code.html" class="dropdown-item">Code</a>
+            <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-center">
+        <a href="../index.html" class="logo-link" aria-label="Home">
+          <img src="../photo1.png" alt="AK Logo" />
+        </a>
+      </div>
+      <div class="nav-right">
+        <a href="aboutme.html" class="nav-link">About Me</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <h1 class="page-title">creative code</h1>
+    <p class="page-subtitle">Processing & p5.js Experiments! </p>
+  </header>
+
+  <!-- Grid Toggle Controls -->
+  <!-- <div class="controls-container">
+    <button class="toggle-btn" data-cols="1">1</button>
+    <button class="toggle-btn" data-cols="2">2</button>
+    <button class="toggle-btn active" data-cols="3">3</button>
+  </div> -->
+
+  <!-- Projects Grid -->
+  <main class="projects-container">
+    <div class="projects-grid cols-3" id="projectsGrid">
+      
+      <!-- Project 1 -->
+      <a href="lab-barong.html" class="project-link">
+        <div class="project-card">
+          <div class="project-thumbnail placeholder">
+              <img src="../labc1.png" alt="Generative Batik Pattern artwork preview" class="project-img">    
+          </div>
+          <!-- <div class="project-info">
+            <h3>Generative Batik Pattern</h3>
+            <p> desc info here later lalalalalalalalalalala</p>
+          </div> -->
+        </div>
+      </a>
+
+      <!-- Project 2 -->
+      <a href="lab-generative-art.html" class="project-link">
+        <div class="project-card">
+          <div class="project-thumbnail placeholder">
+              <img src="../labc2.png" alt="Ondel Ondel preview" class="project-img">    
+          </div>
+          <!-- <div class="project-info">
+            <h3>Ondel Ondel</h3>
+            <p> desc info here later lalalalalalalalalalala</p>
+          </div> -->
+        </div>
+      </a>
+
+      <!-- Project 3 -->
+      <a href= "lab-ondel.html" class="project-link">
+        <div class="project-card">
+          <div class="project-thumbnail placeholder">
+              <img src="../labc3.png" alt="Ondel Ondel preview" class="project-img">    
+          </div>
+          <!-- <div class="project-info">
+            <h3>Barong</h3>
+            <p> desc info here later lalalalalalalalalalala</p>
+          </div> -->
+        </div>
+      </a>
+
+      <!-- Project 4 -->
+      <a href="lab-she.html" class="project-link">
+        <div class="project-card">
+          <div class="project-thumbnail placeholder">
+              <img src="../labc4.png" alt="Ondel Ondel preview" class="project-img">    
+          </div>
+          <!-- <div class="project-info">
+            <h3>L-System Tree Generator</h3>
+            <p>Procedural tree generation using L-systems and recursive drawing in Processing.</p>
+          </div> -->
+        </div>
+      </a>
+
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+
+  <script src="../grain.js"></script>
+  <script>
+    // Grid toggle functionality
+    const grid = document.getElementById('projectsGrid');
+    const toggleBtns = document.querySelectorAll('.toggle-btn');
+
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        toggleBtns.forEach(b => b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        btn.classList.add('active');
+        
+        // Get number of columns
+        const cols = btn.getAttribute('data-cols');
+        
+        // Update grid class
+        grid.className = 'projects-grid';
+        grid.classList.add(`cols-${cols}`);
+      });
+    });
+  </script>
+</body>
+</html>

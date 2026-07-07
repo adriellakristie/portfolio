@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Mandala - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #a1b161;
+      --text: #1a1814;
+      --muted: #888580;
+      --border: #c8c5bd;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .main-header { position: relative; width: 100%; }
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+    .nav-left, .nav-right { display: flex; gap: 20px; align-items: center; }
+    .nav-left { justify-self: start; }
+    .nav-center { justify-self: center; }
+    .nav-right { justify-self: end; }
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+    .nav-link:hover { color: rgba(255, 255, 255, 0.7); }
+    .nav-item-with-dropdown { position: relative; }
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .nav-item-with-dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 8px;
+    }
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+    .dropdown-item:hover { background: rgba(161, 177, 97, 0.2); }
+    .logo-link {
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .logo-link img { display: block; height: 60px; width: auto; }
+    .logo-link:hover { transform: scale(1.15); }
+    .page-header { padding: 60px 24px 40px; text-align: center; }
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .page-subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .back-link {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.3s;
+      margin-top: 20px;
+    }
+    .back-link:hover { opacity: 0.6; }
+    .image-gallery {
+      flex: 1;
+      padding: 40px 24px 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    .image-item {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .image-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    .image-item img { width: 100%; height: auto; display: block; }
+    .image-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    @media (max-width: 768px) {
+      .page-title { font-size: 2.5rem; }
+      .image-grid { grid-template-columns: 1fr; gap: 20px; }
+    }
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <header class="main-header">
+    <nav class="main-nav">
+      <div class="nav-left">
+        <a href="projects.html" class="nav-link">Projects</a>
+        <div class="nav-item-with-dropdown">
+          <span class="nav-link" style="cursor: pointer;">Labs</span>
+          <div class="dropdown-menu">
+            <a href="labs-code.html" class="dropdown-item">Code</a>
+            <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-center">
+        <a href="../index.html" class="logo-link" aria-label="Home">
+          <img src="../photo1.png" alt="AK Logo" />
+        </a>
+      </div>
+      <div class="nav-right">
+        <a href="aboutme.html" class="nav-link">About Me</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </div>
+    </nav>
+  </header>
+  <header class="page-header">
+    <h1 class="page-title">INTERACTIVE MANDALA</h1>
+    <p class="page-subtitle">
+      Symmetrical pattern generator with mouse interaction and dynamic colors.
+    </p>
+    <a href="labs-code.html" class="back-link">← Back to Labs</a>
+  </header>
+  <main class="image-gallery">
+    <div class="image-grid">
+      <div class="image-item">
+        <div class="image-placeholder">[Image 1]</div>
+      </div>
+      <div class="image-item">
+        <div class="image-placeholder">[Image 2]</div>
+      </div>
+      <div class="image-item">
+        <div class="image-placeholder">[Image 3]</div>
+      </div>
+      <div class="image-item">
+        <div class="image-placeholder">[Image 4]</div>
+      </div>
+      <div class="image-item">
+        <div class="image-placeholder">[Image 5]</div>
+      </div>
+      <div class="image-item">
+        <div class="image-placeholder">[Image 6]</div>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+  <script src="../grain.js"></script>
+</body>
+</html>
