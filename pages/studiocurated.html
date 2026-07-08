@@ -174,5 +174,43 @@
   </footer>
 
   <script src="../grain.js"></script>
+
+  <script>
+    // Mobile dropdown toggle for Labs menu
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdownTriggers = document.querySelectorAll('.nav-item-with-dropdown');
+      
+      dropdownTriggers.forEach(trigger => {
+        const navLink = trigger.querySelector('.nav-link');
+        
+        // Handle click/tap on mobile
+        navLink.addEventListener('click', function(e) {
+          // Only prevent default and toggle on touch devices
+          if (window.matchMedia('(hover: none)').matches) {
+            e.preventDefault();
+            
+            // Close other dropdowns
+            dropdownTriggers.forEach(other => {
+              if (other !== trigger) {
+                other.classList.remove('active');
+              }
+            });
+            
+            // Toggle current dropdown
+            trigger.classList.toggle('active');
+          }
+        });
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-item-with-dropdown')) {
+          dropdownTriggers.forEach(trigger => {
+            trigger.classList.remove('active');
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>

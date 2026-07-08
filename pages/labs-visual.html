@@ -32,18 +32,6 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      animation: fadeIn 0.6s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     /* ─────────────────────────────────────────
@@ -79,8 +67,31 @@
     }
 
     .nav-right {
-      justify-self: end;
-    }
+  justify-self: end;
+}
+
+/* Mobile Navigation Adjustments */
+@media (max-width: 768px) {
+  .main-nav {
+    padding: 15px 20px;
+    gap: 10px;
+  }
+  
+  .nav-left,
+  .nav-right {
+    gap: 12px;
+  }
+  
+  .nav-link {
+    font-size: 0.7rem;
+  }
+  
+  .logo-link img {
+    height: 45px;
+  }
+}
+
+
 
     .nav-link {
       font-family: 'IBM Plex Mono', monospace;
@@ -119,11 +130,29 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    .nav-item-with-dropdown:hover .dropdown-menu {
-      opacity: 1;
-      visibility: visible;
-      margin-top: 8px;
-    }
+    /* Desktop hover behavior */
+@media (hover: hover) and (pointer: fine) {
+  .nav-item-with-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    margin-top: 8px;
+  }
+}
+
+/* Mobile tap behavior */
+.nav-item-with-dropdown.active .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .dropdown-menu {
+    left: 0;
+    transform: none;
+    min-width: 140px;
+  }
+}
 
     .dropdown-item {
       display: block;
@@ -406,7 +435,7 @@
       <a href="lab-jade.html" class="project-link full-span">
         <div class="project-card width full-span">
           <div class="project-thumbnail placeholder">
-              <img src="../jade.JPG" alt="JADE cover preview" class="project-img">    
+              <img src="../jade.JPG" alt="JADE preview" class="project-img">    
           </div>
           <!-- <div class="project-info">
             <h3>Generative Batik Pattern</h3>
@@ -458,6 +487,44 @@
         // Update grid class
         grid.className = 'projects-grid';
         grid.classList.add(`cols-${cols}`);
+      });
+    });
+  </script>
+
+  <script>
+    // Mobile dropdown toggle for Labs menu
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdownTriggers = document.querySelectorAll('.nav-item-with-dropdown');
+      
+      dropdownTriggers.forEach(trigger => {
+        const navLink = trigger.querySelector('.nav-link');
+        
+        // Handle click/tap on mobile
+        navLink.addEventListener('click', function(e) {
+          // Only prevent default and toggle on touch devices
+          if (window.matchMedia('(hover: none)').matches) {
+            e.preventDefault();
+            
+            // Close other dropdowns
+            dropdownTriggers.forEach(other => {
+              if (other !== trigger) {
+                other.classList.remove('active');
+              }
+            });
+            
+            // Toggle current dropdown
+            trigger.classList.toggle('active');
+          }
+        });
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-item-with-dropdown')) {
+          dropdownTriggers.forEach(trigger => {
+            trigger.classList.remove('active');
+          });
+        }
       });
     });
   </script>
