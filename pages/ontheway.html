@@ -619,6 +619,142 @@
     @media (max-width: 768px) {
       .page-title { font-size: 2.6rem; }
     }
+/* ─────────────────────────────────────────
+   MOBILE SIDEBAR NAV (mobile only)
+───────────────────────────────────────── */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1100;
+  padding: 0;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #ffffff;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger-btn.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-btn.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1150;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  left: -85%;
+  width: 85%;
+  max-width: 300px;
+  height: 100vh;
+  background: var(--bg);
+  z-index: 1200;
+  transition: left 0.35s ease;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.25);
+  padding: 90px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow-y: auto;
+}
+
+.mobile-sidebar.active {
+  left: 0;
+}
+
+.sidebar-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.sidebar-group-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  margin-bottom: 14px;
+}
+
+.sidebar-sublinks {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-left: 16px;
+}
+
+.sidebar-sublinks a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    position: relative;
+  }
+
+  .nav-left,
+  .nav-right {
+    display: none;
+  }
+
+  .hamburger-btn {
+    display: flex;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .nav-center {
+    justify-self: end;
+    grid-column: 3;
+    padding-right: -8px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -626,6 +762,11 @@
   <!-- Navigation Bar -->
   <header class="main-header">
     <nav class="main-nav">
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <div class="nav-left">
         <a href="projects.html" class="nav-link">Projects</a>
         <div class="nav-item-with-dropdown">
@@ -647,6 +788,21 @@
       </div>
     </nav>
   </header>
+  <!-- ── MOBILE SIDEBAR NAV ── -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <a href="projects.html" class="sidebar-link">Projects</a>
+    <div>
+      <div class="sidebar-group-label">Labs</div>
+      <div class="sidebar-sublinks">
+        <a href="labs-code.html">Code</a>
+        <a href="labs-visual.html">Visual Design</a>
+      </div>
+    </div>
+    <a href="aboutme.html" class="sidebar-link">About Me</a>
+    <a href="contact.html" class="sidebar-link">Contact</a>
+  </div>
+
 
   <!-- Page Header -->
   <header class="page-header">
@@ -823,5 +979,40 @@
       });
     });
   </script>
+  <script>
+    // Mobile sidebar toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const mobileSidebar = document.getElementById('mobileSidebar');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+      function openSidebar() {
+        hamburgerBtn.classList.add('active');
+        mobileSidebar.classList.add('active');
+        sidebarOverlay.classList.add('active');
+      }
+
+      function closeSidebar() {
+        hamburgerBtn.classList.remove('active');
+        mobileSidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+      }
+
+      hamburgerBtn.addEventListener('click', function() {
+        if (mobileSidebar.classList.contains('active')) {
+          closeSidebar();
+        } else {
+          openSidebar();
+        }
+      });
+
+      sidebarOverlay.addEventListener('click', closeSidebar);
+
+      mobileSidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', closeSidebar);
+      });
+    });
+  </script>
+
 </body>
 </html>
