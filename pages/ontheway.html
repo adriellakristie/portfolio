@@ -82,7 +82,6 @@
   .nav-left,
   .nav-right {
     gap: 8px;
-    font-size: 0;
   }
   
   .nav-left {
@@ -94,10 +93,52 @@
   }
   
   .nav-link {
-    font-size: 0.6rem;
-    letter-spacing: 0.02em;
-    padding: 4px 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.nav-link:visited,
+.nav-link:focus {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.nav-link:hover {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  opacity: 0.7;
+}
+  
+  .logo-link img {
+    height: 35px;
   }
+  
+  .nav-item-with-dropdown {
+    display: inline-block;
+  }
+}
+  
+  .nav-left,
+  .nav-right {
+    gap: 8px;
+  }
+  
+  .nav-left {
+    justify-content: flex-start;
+  }
+  
+  .nav-right {
+    justify-content: flex-end;
+  }
+  
+  
   
   .logo-link img {
     height: 35px;
@@ -122,11 +163,32 @@
     justify-content: flex-end;
   }
   
-  .nav-link {
-    font-size: 0.6rem;
-    letter-spacing: 0.02em;
-    padding: 4px 6px;
+  
+  
+  .logo-link img {
+    height: 35px;
   }
+  
+  .nav-item-with-dropdown {
+    display: inline-block;
+  }
+}
+  
+  .nav-left,
+  .nav-right {
+    gap: 8px;
+    font-size: 0;
+  }
+  
+  .nav-left {
+    justify-content: flex-start;
+  }
+  
+  .nav-right {
+    justify-content: flex-end;
+  }
+  
+  
   
   .logo-link img {
     height: 35px;
@@ -139,18 +201,19 @@
 
 
 
-    .nav-link {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 0.85rem;
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      color: var(--nav);
-      text-decoration: none;
-      transition: color 0.3s ease;
-      white-space: nowrap;
-      position: relative;
-    }
-    .nav-link:hover { color: var(--nav-hover); }
+    
+
+.nav-link:visited,
+.nav-link:focus {
+  color: var(--nav);
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: var(--nav-hover);
+  text-decoration: none;
+  opacity: 0.7;
+}
 
     .nav-item-with-dropdown { position: relative; }
     .dropdown-menu {
