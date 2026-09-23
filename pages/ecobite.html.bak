@@ -491,52 +491,6 @@
 
     .closing-space { padding: 80px 24px 60px; }
 
-    /* Make images in closing-space match placeholder block size */
-    .closing-space > img {
-      margin-top: 26px;
-      width: 100%;
-      height: 100%;
-      aspect-ratio: 14.7/8;
-      object-fit: cover;
-      display: block;
-      border-radius: 4px;
-    }
-
-    .design-grid-large {
-      margin-top: 26px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-    .design-grid-large > img {
-      margin-top: 0;
-      width: 100%;
-      aspect-ratio: 4/4;
-    }
-    .banner-block >img {
-      margin-top: 20px;
-      width: 100%;
-      aspect-ratio: 21/6;
-      /* background: var(--card-gray); */
-      border-radius: 4px;
-    }
-    @media (max-width: 768px) {
-      .design-grid-large { grid-template-columns: 1fr; }
-    }
-
-    .closing-space { padding: 80px 24px 60px; }
-
-    /* footer */
-    .site-footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 24px;
-      text-align: center;
-      font-size: 0.58rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text);
-      margin-top: 40px;
-    }
     /* footer */
     .site-footer {
       border-top: 1px solid var(--border);
@@ -945,6 +899,7 @@
 .pv-row{
   display:flex;
   gap:10px;
+  height:460px;
   max-width:1100px;
   width:100%;
   padding:1rem 24px;
@@ -976,16 +931,16 @@
 <div class="pv-row" id="pv-row"></div>
 <script>
 const steps=[
-{t:"Load the neighborhood map",d:"Mapbox GL renders 10 clickable NYC neighborhood polygons across Manhattan and Brooklyn, with hover states.",f:"NeighborhoodMap.jsx · Mapbox GL 3",bg:"#C4CBC2",fg:"#042C53"},
-{t:"Seed restaurant + building data",d:"DOHMH inspection records and LL84 building energy records are fetched and matched to each restaurant by address.",f:"services/nyc_open_data.py · scripts/seed.py",bg:"#D5DAD4",fg:"#04342C"},
-{t:"Score energy, water, health",d:"Each restaurant is scored in parallel: energy efficiency (50pts), water efficiency (25pts), health grade (25pts).",f:"services/scoring.py",bg:"#D5DAD4",fg:"#04342C"},
-{t:"Calculate the Green Score",d:"The three components sum into one 0-100 score, tiered green (≥70), yellow (50-69), red (<50).",f:"services/scoring.py · green_score()",bg:"#D5DAD4",fg:"#04342C"},
-{t:"Rank top 5 per neighborhood",d:"Sidebar surfaces the greenest restaurants in each area, filterable between Restaurants and Sips & Sweets.",f:"routers/restaurants.py",bg:"#C4CBC2",fg:"#042C53"},
-{t:"Search or browse",d:"Live search across thousands of restaurants, or click a map pin — both surface the score badge and neighborhood.",f:"SearchBar.jsx",bg:"#C4CBC2",fg:"#042C53"},
-{t:"View the score breakdown",d:"Restaurant detail view shows the full eco-score split across energy, water, and health with progress bars.",f:"MapPage.jsx",bg:"#C4CBC2",fg:"#042C53"},
-{t:"Scan a menu (optional)",d:"User uploads a photo of the menu; OpenAI Vision reads each dish and estimates its carbon footprint.",f:"menu_scanner.py",bg:"#bfc3b2",fg:"#4A1B0C"},
-{t:"Bookmark & log orders",d:"Users save restaurants and log what they ordered, building a personal history of choices.",f:"UserProfile.jsx · AuthContext.jsx",bg:"#C4CBC2",fg:"#042C53"},
-{t:"Grow the plant avatar",d:"Logged orders roll into a CO₂ savings total, and the gamified avatar grows through 5 visual stages as it accumulates.",f:"WateringAvatar.jsx",bg:"#bfc3b2",fg:"#4B1528"}
+{t:"Load the neighborhood map",d:"Mapbox GL renders 10 clickable NYC neighborhood polygons across Manhattan and Brooklyn, with hover states.",f:"NeighborhoodMap.jsx · Mapbox GL 3",bg:"#B5D4F4",fg:"#042C53"},
+{t:"Seed restaurant + building data",d:"DOHMH inspection records and LL84 building energy records are fetched and matched to each restaurant by address.",f:"services/nyc_open_data.py · scripts/seed.py",bg:"#9FE1CB",fg:"#04342C"},
+{t:"Score energy, water, health",d:"Each restaurant is scored in parallel: energy efficiency (50pts), water efficiency (25pts), health grade (25pts).",f:"services/scoring.py",bg:"#9FE1CB",fg:"#04342C"},
+{t:"Calculate the Green Score",d:"The three components sum into one 0-100 score, tiered green (≥70), yellow (50-69), red (<50).",f:"services/scoring.py · green_score()",bg:"#9FE1CB",fg:"#04342C"},
+{t:"Rank top 5 per neighborhood",d:"Sidebar surfaces the greenest restaurants in each area, filterable between Restaurants and Sips & Sweets.",f:"routers/restaurants.py",bg:"#B5D4F4",fg:"#042C53"},
+{t:"Search or browse",d:"Live search across thousands of restaurants, or click a map pin — both surface the score badge and neighborhood.",f:"SearchBar.jsx",bg:"#B5D4F4",fg:"#042C53"},
+{t:"View the score breakdown",d:"Restaurant detail view shows the full eco-score split across energy, water, and health with progress bars.",f:"MapPage.jsx",bg:"#B5D4F4",fg:"#042C53"},
+{t:"Scan a menu (optional)",d:"User uploads a photo of the menu; OpenAI Vision reads each dish and estimates its carbon footprint.",f:"menu_scanner.py",bg:"#F5C4B3",fg:"#4A1B0C"},
+{t:"Bookmark & log orders",d:"Users save restaurants and log what they ordered, building a personal history of choices.",f:"UserProfile.jsx · AuthContext.jsx",bg:"#B5D4F4",fg:"#042C53"},
+{t:"Grow the plant avatar",d:"Logged orders roll into a CO₂ savings total, and the gamified avatar grows through 5 visual stages as it accumulates.",f:"WateringAvatar.jsx",bg:"#F4C0D1",fg:"#4B1528"}
 ];
 const row=document.getElementById('pv-row');
 steps.forEach((s,i)=>{
@@ -1010,15 +965,13 @@ steps.forEach((s,i)=>{
 });
 </script>
 
-
-  <!-- Product / design imagery -->
+  <!-- Closing imagery -->
   <section class="section closing-space">
-    <img src="eco1.png" alt="OnTheWay preview">
-    <div class="design-grid-large">
-          <img src="eco3.png" alt="OnTheWay preview">
-          <img src="eco2.png" alt="OnTheWay preview">
+    <div class="image-block tall" style="max-width: none; margin: 0; padding: 0;">
+      <div class="placeholder"></div>
     </div>
   </section>
+
   <footer class="site-footer">
     © Adriella Kristie — All rights reserved
   </footer>

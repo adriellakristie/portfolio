@@ -38,144 +38,95 @@
        NAVIGATION BAR
     ───────────────────────────────────────── */
     .main-header {
-  position: static;
-  width: 100%;
-  z-index: 1000;
-}
+      position: relative;
+      width: 100%;
+    }
 
-.main-nav {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 40px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-}
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
 
-.nav-left,
-.nav-right {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
+    .nav-left,
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
 
-.nav-left { justify-self: start; }
-.nav-center { justify-self: center; }
-.nav-right { justify-self: end; }
+    .nav-left {
+      justify-self: start;
+    }
 
-.nav-link {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.8rem;
-  font-weight: 300;
-  letter-spacing: 0.05em;
-  color: #ffffff;
-  text-decoration: none;
-  transition: opacity 0.3s ease;
-  white-space: nowrap;
-  position: relative;
-}
+    .nav-center {
+      justify-self: center;
+    }
 
-.nav-link:visited,
-.nav-link:focus {
-  color: #ffffff;
-  text-decoration: none;
-}
+    .nav-right {
+      justify-self: end;
+    }
 
-.nav-link:hover {
-  color: #ffffff;
-  text-decoration: none;
-  opacity: 0.7;
-}
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--nav);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
 
-@media (max-width: 768px) {
-  .main-nav {
-    padding: 12px 16px;
-    gap: 0;
-    grid-template-columns: 1fr auto 1fr;
-    max-width: 100%;
-  }
+    .nav-link:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
 
-  .nav-left,
-  .nav-right {
-    gap: 8px;
-  }
+    /* Labs Dropdown */
+    .nav-item-with-dropdown {
+      position: relative;
+    }
 
-  .nav-left { justify-content: flex-start; }
-  .nav-right { justify-content: flex-end; }
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
 
-  .nav-link {
-    font-size: 0.8rem;
-    letter-spacing: 0.02em;
-    padding: 4px 6px;
-    color: #ffffff;
-    text-decoration: none;
-  }
+    .nav-item-with-dropdown:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 8px;
+    }
 
-  .logo-link img {
-    height: 35px;
-  }
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--text2);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
 
-  .nav-item-with-dropdown {
-    display: inline-block;
-  }
-}
-
-.nav-item-with-dropdown {
-  position: relative;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 12px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
-  padding: 12px 0;
-  min-width: 160px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .nav-item-with-dropdown:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    margin-top: 8px;
-  }
-}
-
-.nav-item-with-dropdown.active .dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  margin-top: 8px;
-}
-
-@media (max-width: 768px) {
-  .dropdown-menu {
-    left: 0;
-    transform: none;
-    min-width: 140px;
-  }
-}
-
-.dropdown-item {
-  display: block;
-  padding: 10px 20px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  color: var(--text);
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
-
-.dropdown-item:hover {
-  background: rgba(161, 177, 97, 0.2);
-}
+    .dropdown-item:hover {
+      background: rgba(161, 177, 97, 0.2);
+    }
 
     .logo-link {
       display: block;
@@ -254,7 +205,6 @@
       flex: 1;
       padding: 0px 24px 0px 24px;
       max-width: 1400px;
-      align-items: center;
       margin: 0 auto;
       width: 100%;
     }
@@ -264,7 +214,6 @@
       gap: 10px;
       grid-template-columns: repeat(2, 1fr);
       transition: all 0.5s ease;
-      justify-items: center;
     }
 /* 
     .projects-grid.cols-1 {
@@ -287,12 +236,6 @@
       display: block;
     }
 
-    .project-link.full-span {
-      grid-column: 1 / -1;
-      max-width: 700px;
-      width: 100%;
-    }
-
     .project-card {
       /* background: rgba(0, 0, 0, 0.5); */
       /* border-radius: 10px; */
@@ -310,11 +253,6 @@
       /* background: rgb(11, 37, 21); */ 
       /* dark green when pressed */
       transform: translateY(-5px);
-    }
-
-    /* Smooth page transitions */
-    a {
-      transition: all 0.3s ease;
     }
 
     .project-thumbnail {
@@ -393,142 +331,6 @@
       text-transform: uppercase;
       color: var(--text);
     }
-/* ─────────────────────────────────────────
-   MOBILE SIDEBAR NAV (mobile only)
-───────────────────────────────────────── */
-.hamburger-btn {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  width: 32px;
-  height: 32px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 1100;
-  padding: 0;
-}
-
-.hamburger-btn span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: #ffffff;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.hamburger-btn.active span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.hamburger-btn.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger-btn.active span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-.sidebar-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 1150;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.sidebar-overlay.active {
-  display: block;
-  opacity: 1;
-}
-
-.mobile-sidebar {
-  position: fixed;
-  top: 0;
-  left: -85%;
-  width: 85%;
-  max-width: 300px;
-  height: 100vh;
-  background: var(--bg);
-  z-index: 1200;
-  transition: left 0.35s ease;
-  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.25);
-  padding: 90px 32px 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  overflow-y: auto;
-}
-
-.mobile-sidebar.active {
-  left: 0;
-}
-
-.sidebar-link {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.1rem;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.sidebar-group-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.1rem;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  color: #ffffff;
-  margin-bottom: 14px;
-}
-
-.sidebar-sublinks {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-left: 16px;
-}
-
-.sidebar-sublinks a {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.75);
-  text-decoration: none;
-}
-
-@media (max-width: 768px) {
-  .main-nav {
-    position: relative;
-  }
-
-  .nav-left,
-  .nav-right {
-    display: none;
-  }
-
-  .hamburger-btn {
-    display: flex;
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .nav-center {
-    justify-self: end;
-    grid-column: 3;
-    padding-right: -8px;
-  }
-}
-
   </style>
 </head>
 <body>
@@ -536,11 +338,6 @@
   <!-- Navigation Bar -->
   <header class="main-header">
     <nav class="main-nav">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
       <div class="nav-left">
         <a href="projects.html" class="nav-link">Projects</a>
         <div class="nav-item-with-dropdown">
@@ -562,21 +359,6 @@
       </div>
     </nav>
   </header>
-  <!-- ── MOBILE SIDEBAR NAV ── -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-  <div class="mobile-sidebar" id="mobileSidebar">
-    <a href="projects.html" class="sidebar-link">Projects</a>
-    <div>
-      <div class="sidebar-group-label">Labs</div>
-      <div class="sidebar-sublinks">
-        <a href="labs-code.html">Code</a>
-        <a href="labs-visual.html">Visual Design</a>
-      </div>
-    </div>
-    <a href="aboutme.html" class="sidebar-link">About Me</a>
-    <a href="contact.html" class="sidebar-link">Contact</a>
-  </div>
-
 
   <!-- Page Header -->
   <header class="page-header">
@@ -597,9 +379,9 @@
       
       <!-- Project 1 -->
       <a href="lab-jade.html" class="project-link full-span">
-        <div class="project-card width full-span">
+        <div class="project-card full-span">
           <div class="project-thumbnail placeholder">
-              <img src="../jade.JPG" alt="JADE preview" class="project-img">    
+              <img src="../jade.jpg" alt="Generative Batik Pattern artwork preview" class="project-img">    
           </div>
           <!-- <div class="project-info">
             <h3>Generative Batik Pattern</h3>
@@ -615,13 +397,13 @@
             <p> desc info here later lalalalalalalalalalala</p>
           </div> -->
 
-    <!-- <a href="lab-generative-art.html" class="project-link">
+    <a href="lab-generative-art.html" class="project-link">
         <div class="project-card">
           <div class="project-thumbnail placeholder">
               <img src="../smb.JPG" alt="Ondel Ondel preview" class="project-img">    
           </div>
         </div>
-      </a> -->
+      </a>
 
 
     </div>
@@ -654,78 +436,5 @@
       });
     });
   </script>
-
-  <script>
-    // Mobile dropdown toggle for Labs menu
-    document.addEventListener('DOMContentLoaded', function() {
-      const dropdownTriggers = document.querySelectorAll('.nav-item-with-dropdown');
-      
-      dropdownTriggers.forEach(trigger => {
-        const navLink = trigger.querySelector('.nav-link');
-        
-        // Handle click/tap on mobile
-        navLink.addEventListener('click', function(e) {
-          // Only prevent default and toggle on touch devices
-          if (window.matchMedia('(hover: none)').matches) {
-            e.preventDefault();
-            
-            // Close other dropdowns
-            dropdownTriggers.forEach(other => {
-              if (other !== trigger) {
-                other.classList.remove('active');
-              }
-            });
-            
-            // Toggle current dropdown
-            trigger.classList.toggle('active');
-          }
-        });
-      });
-      
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.nav-item-with-dropdown')) {
-          dropdownTriggers.forEach(trigger => {
-            trigger.classList.remove('active');
-          });
-        }
-      });
-    });
-  </script>
-  <script>
-    // Mobile sidebar toggle
-    document.addEventListener('DOMContentLoaded', function() {
-      const hamburgerBtn = document.getElementById('hamburgerBtn');
-      const mobileSidebar = document.getElementById('mobileSidebar');
-      const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-      function openSidebar() {
-        hamburgerBtn.classList.add('active');
-        mobileSidebar.classList.add('active');
-        sidebarOverlay.classList.add('active');
-      }
-
-      function closeSidebar() {
-        hamburgerBtn.classList.remove('active');
-        mobileSidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-      }
-
-      hamburgerBtn.addEventListener('click', function() {
-        if (mobileSidebar.classList.contains('active')) {
-          closeSidebar();
-        } else {
-          openSidebar();
-        }
-      });
-
-      sidebarOverlay.addEventListener('click', closeSidebar);
-
-      mobileSidebar.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', closeSidebar);
-      });
-    });
-  </script>
-
 </body>
 </html>
