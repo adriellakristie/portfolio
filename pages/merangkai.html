@@ -659,49 +659,14 @@
   </style>
 </head>
 <body>
+  <script src="../nav.js" data-loc="pages"></script>
 
   <!-- Navigation Bar -->
-  <header class="main-header">
-    <nav class="main-nav">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="nav-left">
-        <a href="projects.html" class="nav-link">Projects</a>
-        <div class="nav-item-with-dropdown">
-          <span class="nav-link" style="cursor: pointer;">Labs</span>
-          <div class="dropdown-menu">
-            <a href="labs-code.html" class="dropdown-item">Code</a>
-            <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-center">
-        <a href="../index.html" class="logo-link" aria-label="Home">
-          <img src="../photo1.png" alt="AK Logo" />
-        </a>
-      </div>
-      <div class="nav-right">
-        <a href="aboutme.html" class="nav-link">About Me</a>
-        <a href="contact.html" class="nav-link">Contact</a>
-      </div>
-    </nav>
-  </header>
+  
 
   <!-- Mobile Sidebar Nav -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-  <div class="mobile-sidebar" id="mobileSidebar">
-    <a href="projects.html" class="sidebar-link">Projects</a>
-    <div>
-      <div class="sidebar-group-label">Labs</div>
-      <div class="sidebar-sublinks">
-        <a href="labs-code.html">Code</a>
-        <a href="labs-visual.html">Visual Design</a>
-      </div>
-    </div>
-    <a href="aboutme.html" class="sidebar-link">About Me</a>
-    <a href="contact.html" class="sidebar-link">Contact</a>
-  </div>
+  
+  
 
   <!-- Hero: image left, title/tags/link right -->
   <section class="hero">
@@ -850,51 +815,8 @@
   </footer>
   <script src="../grain.js"></script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const dropdownTriggers = document.querySelectorAll('.nav-item-with-dropdown');
-      dropdownTriggers.forEach(trigger => {
-        const navLink = trigger.querySelector('.nav-link');
-        navLink.addEventListener('click', function(e) {
-          if (window.matchMedia('(hover: none)').matches) {
-            e.preventDefault();
-            dropdownTriggers.forEach(other => { if (other !== trigger) other.classList.remove('active'); });
-            trigger.classList.toggle('active');
-          }
-        });
-      });
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.nav-item-with-dropdown')) {
-          dropdownTriggers.forEach(trigger => trigger.classList.remove('active'));
-        }
-      });
-    });
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const hamburgerBtn = document.getElementById('hamburgerBtn');
-      const mobileSidebar = document.getElementById('mobileSidebar');
-      const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-      function openSidebar() {
-        hamburgerBtn.classList.add('active');
-        mobileSidebar.classList.add('active');
-        sidebarOverlay.classList.add('active');
-      }
-      function closeSidebar() {
-        hamburgerBtn.classList.remove('active');
-        mobileSidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-      }
-      hamburgerBtn.addEventListener('click', function() {
-        mobileSidebar.classList.contains('active') ? closeSidebar() : openSidebar();
-      });
-      sidebarOverlay.addEventListener('click', closeSidebar);
-      mobileSidebar.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', closeSidebar);
-      });
-    });
-  </script>
+  
+  
 
 </body>
 </html>

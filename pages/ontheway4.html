@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OnTheWay: Product Case Study - Adriella Kristie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fdfcf6;
+  --ink: #2a1a1f;
+  --maroon: #5a2a38;
+  --olive: #a3b061;
+  --olive-d: #6f7d34;
+  --butter: #f4d998;
+  --card: #f7f2e2;
+  --line: #e6dfc8;
+  --onmaroon: #fdfcf6;
+  --cream: #F2FACF;
+  --nav-green: #7c8944;
+  --nav-green-hover: #22472a;
+  --nav-h: 64px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 15px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 22px; }
+
+/* ─────────────────────────────────────────
+   SITEWIDE NAVIGATION (fixed)
+───────────────────────────────────────── */
+.main-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.main-header.solid {
+  background: rgba(253, 252, 246, 0.94);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+
+.main-nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 40px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+.nav-left, .nav-right { display: flex; gap: 20px; align-items: center; }
+.nav-left { justify-self: start; }
+.nav-center { justify-self: center; }
+.nav-right { justify-self: end; }
+
+.nav-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: var(--cream);
+  text-decoration: none;
+  transition: opacity 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
+}
+.nav-link:visited, .nav-link:focus { color: var(--cream); text-decoration: none; }
+.nav-link:hover { color: var(--nav-green-hover); opacity: 0.8; }
+
+.main-header.solid .nav-link,
+.main-header.solid .nav-link:visited,
+.main-header.solid .nav-link:focus { color: var(--nav-green); }
+.main-header.solid .nav-link:hover { color: var(--nav-green-hover); }
+
+.nav-item-with-dropdown { position: relative; }
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  padding: 12px 0;
+  min-width: 160px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+@media (hover: hover) and (pointer: fine) {
+  .nav-item-with-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; margin-top: 8px; }
+}
+.nav-item-with-dropdown.active .dropdown-menu { opacity: 1; visibility: visible; margin-top: 8px; }
+.dropdown-item {
+  display: block;
+  padding: 10px 20px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.dropdown-item:hover { background: rgba(163, 176, 97, 0.25); }
+
+.logo-link { display: block; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.logo-link img { display: block; height: 48px; width: auto; }
+.logo-link:hover { transform: scale(1.15); }
+
+/* mobile nav */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 32px; height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1100;
+  padding: 0;
+}
+.hamburger-btn span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--cream);
+  transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+}
+.main-header.solid .hamburger-btn span { background: var(--ink); }
+.hamburger-btn.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn.active span:nth-child(2) { opacity: 0; }
+.hamburger-btn.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1150;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sidebar-overlay.active { display: block; opacity: 1; }
+
+.mobile-sidebar {
+  position: fixed;
+  top: 0; left: -85%;
+  width: 85%; max-width: 300px;
+  height: 100vh;
+  background: #F6F3EC;
+  z-index: 1200;
+  transition: left 0.35s ease;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.25);
+  padding: 90px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow-y: auto;
+}
+.mobile-sidebar.active { left: 0; }
+.sidebar-link, .sidebar-group-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #1a1814;
+  text-decoration: none;
+}
+.sidebar-group-label { margin-bottom: 14px; }
+.sidebar-sublinks { display: flex; flex-direction: column; gap: 14px; padding-left: 16px; }
+.sidebar-sublinks a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: #4a453d;
+  text-decoration: none;
+}
+
+/* ─────────────────────────────────────────
+   PAGE
+───────────────────────────────────────── */
+.sec { padding: 64px 0; border-top: 1px solid var(--line); }
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--olive-d);
+  margin-bottom: 10px;
+}
+h2 { font-size: clamp(38px, 6vw, 58px); color: var(--maroon); margin-bottom: 18px; }
+.lead { font-size: 17px; max-width: 680px; }
+
+/* ─────────────────────────────────────────
+   HERO (green top, laptop straddling the edge)
+───────────────────────────────────────── */
+.hero { background: var(--bg); color: var(--cream); text-align: center; }
+.hero-top { background: var(--olive); padding: calc(var(--nav-h) + 105px) 22px 70px; }
+.hero h1 { font-size: clamp(34px, 5.4vw, 78px); color: var(--cream); line-height: 0.95; }
+.hero h1 .big { display: block; font-size: 1.32em; margin-top: 0.05em; }
+.hero h1 .y { color: #fdeb8b; }
+.hero-top p { margin: 22px auto 0; max-width: 500px; font-size: 13px; line-height: 1.4; color: var(--cream); }
+
+.stage { position: relative; margin-top: -34px; padding-bottom: 56px; }
+
+.laptop { position: relative; z-index: 2; width: min(48vw, 690px); min-width: 300px; margin: 0 auto; }
+.laptop-screen { position: relative; background: #0d0d0f; border-radius: 14px 14px 0 0; padding: 1.6% 1.6% 3.2%; box-shadow: inset 0 0 0 1px #2b2b2f; }
+.laptop-screen::before { content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 9%; height: 1.8%; min-height: 4px; background: #0d0d0f; border-radius: 0 0 6px 6px; z-index: 1; }
+.laptop-screen img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; border-radius: 3px 3px 0 0; background: #e6e6e6; }
+.laptop-base { position: relative; height: clamp(10px, 1.7vw, 24px); margin: 0 -10.8%; background: linear-gradient(180deg, #dfe1e4 0%, #a4a8ae 100%); border-radius: 0 0 18px 18px; }
+.laptop-base::after { content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 16%; height: 30%; background: #8f939a; border-radius: 0 0 10px 10px; }
+
+.stage-links { display: contents; }
+.arrow-btn { position: absolute; z-index: 3; left: calc(50% - 31.3vw); top: 114px; width: min(6.4vw, 92px); min-width: 44px; aspect-ratio: 1; border-radius: 50%; background: #d9d9d9; color: var(--ink); display: grid; place-items: center; text-decoration: none; transition: background 0.25s ease; }
+.arrow-btn svg { width: 45%; height: 45%; transition: transform 0.25s ease; }
+.arrow-btn:hover { background: var(--olive); }
+.arrow-btn:hover svg { transform: translate(2px, -2px); }
+.device-tags { position: absolute; z-index: 3; left: calc(50% + 22.7vw); top: 81px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.tag-pill { font-size: clamp(0.8rem, 1.4vw, 1.25rem); color: var(--ink); background: #dedede; border-radius: 999px; padding: 0.55em 1.2em; white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .laptop { width: 86vw; }
+  .stage-links { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 30px; }
+  .arrow-btn, .device-tags { position: static; }
+  .device-tags { flex-direction: row; flex-wrap: wrap; }
+}
+
+.shot { display: block; width: 100%; height: auto; border-radius: 14px; }
+
+/* meta */
+.meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 34px 0; }
+.meta small { display: block; font-size: 11px; letter-spacing: 0.12em; color: var(--olive-d); text-transform: uppercase; }
+.meta b { font-family: 'Bebas Neue', Impact, sans-serif; font-weight: 400; font-size: 26px; color: var(--maroon); line-height: 1.05; }
+.outcome { background: var(--card); border-radius: 14px; padding: 22px 26px; font-size: 16px; }
+.outcome strong { color: var(--olive-d); }
+
+/* contrast band */
+.contrast { background: var(--maroon); color: var(--onmaroon); padding: 60px 0; margin-top: 34px; }
+.contrast .row { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: baseline; margin: 10px 0; }
+.contrast .lbl { color: var(--butter); font-size: 13px; text-transform: uppercase; min-width: 190px; }
+.contrast h2 { color: #fff; margin: 0; font-size: clamp(34px, 6vw, 64px); }
+.contrast .dim { opacity: 0.5; text-decoration: line-through; text-decoration-thickness: 2px; }
+
+/* grids + cards */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 760px) { .g2, .g3 { grid-template-columns: 1fr; } }
+.card { background: var(--card); border-radius: 14px; padding: 22px; }
+.card h3 { font-size: 28px; color: var(--maroon); margin-bottom: 8px; }
+.card p { margin: 0; font-size: 13px; }
+.sub { font-size: 32px; margin: 40px 0 4px; color: var(--maroon); }
+
+.flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 13px; margin: 12px 0; }
+.flow span { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 5px 10px; }
+.flow i { font-style: normal; color: var(--olive-d); }
+.callout { border-left: 4px solid var(--olive); padding: 6px 0 6px 16px; margin: 20px 0; font-size: 18px; color: var(--maroon); }
+
+/* placeholders to fill in */
+.fill { outline: 2px dashed var(--olive-d); outline-offset: 3px; border-radius: 4px; padding: 0 4px; }
+
+.tw { overflow-x: auto; margin-top: 14px; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 13px; }
+th, td { border-bottom: 1px solid var(--line); padding: 10px 12px; text-align: left; }
+th { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--olive-d); }
+td.y { color: var(--olive-d); font-weight: 500; }
+blockquote { margin: 0; font-size: 14px; }
+blockquote cite { display: block; margin-top: 8px; font-size: 12px; color: var(--olive-d); font-style: normal; }
+
+/* product mock */
+.mock { background: var(--maroon); border-radius: 16px; padding: 14px; max-width: 880px; margin: 26px auto 0; }
+.bar { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.bar div { flex: 1; min-width: 120px; background: #fdfcf6; color: #8a7a6a; border-radius: 99px; padding: 6px 14px; font-size: 12px; }
+.bar .go { flex: 0; background: var(--olive); color: #1e2408; white-space: nowrap; }
+.mbody { display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; }
+@media (max-width: 760px) { .mbody { grid-template-columns: 1fr; } }
+.map { background: #e8e6e0; border-radius: 10px; min-height: 280px; position: relative; overflow: hidden; }
+.map svg { width: 100%; height: 100%; position: absolute; inset: 0; }
+.list { display: flex; flex-direction: column; gap: 8px; }
+.res { background: #fdfcf6; color: #2a1a1f; border-radius: 10px; padding: 10px 12px; font-size: 12px; }
+.res b { font-size: 13px; }
+.res .bd { display: inline-block; background: var(--olive); color: #1e2408; border-radius: 99px; padding: 1px 9px; font-weight: 500; margin-left: 6px; }
+.res .bd.hi { background: #e2a29a; }
+.res .trk { height: 6px; background: #e6dfc8; border-radius: 9px; margin-top: 7px; }
+.res .trk i { display: block; height: 100%; background: var(--olive-d); border-radius: 9px; }
+.cap { text-align: center; font-size: 12px; color: var(--olive-d); margin-top: 10px; }
+
+/* roadmap + brand */
+.road { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media (max-width: 760px) { .road { grid-template-columns: 1fr; } }
+.pill { display: inline-block; font-size: 11px; background: var(--butter); color: #3a2a10; border-radius: 99px; padding: 2px 10px; margin-bottom: 8px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+@media (max-width: 760px) { .pair { grid-template-columns: 1fr; } }
+.brand { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 18px; }
+.sw { flex: 1; min-width: 110px; height: 84px; border-radius: 12px; padding: 10px; font-size: 11px; display: flex; align-items: flex-end; }
+
+/* ─────────────────────────────────────────
+   HOW IT WORKS (expanding pills)
+───────────────────────────────────────── */
+.pv-row { display: flex; gap: 10px; width: 100%; height: 440px; margin-top: 22px; }
+.pv-pill {
+  position: relative;
+  flex: 1 1 48px;
+  min-width: 0;
+  border-radius: 34px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  transition: flex-grow 0.38s cubic-bezier(.2,.8,.2,1), flex-basis 0.38s cubic-bezier(.2,.8,.2,1);
+}
+.pv-pill.t0 { background: var(--maroon); color: var(--onmaroon); }
+.pv-pill.t1 { background: var(--olive); color: #1e2408; }
+.pv-pill.t2 { background: var(--butter); color: var(--maroon); }
+
+.pv-num { font-size: 12px; font-weight: 500; text-align: center; margin-bottom: 12px; }
+.pv-collapsed {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  margin: 0 auto;
+  white-space: nowrap;
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+  transition: opacity 0.2s;
+}
+.pv-expand {
+  position: absolute;
+  inset: 0;
+  padding: 50px 20px 20px;
+  opacity: 0;
+  transition: opacity 0.25s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.pv-title { font-family: 'Bebas Neue', Impact, sans-serif; font-size: 1.8rem; line-height: 0.95; }
+.pv-desc { font-size: 0.8rem; line-height: 1.6; }
+.pv-file { margin-top: auto; font-size: 0.7rem; opacity: 0.7; word-break: break-word; }
+
+.pv-row .pv-pill.pv-expanded { flex-grow: 9; flex-basis: 220px; }
+.pv-pill.pv-expanded .pv-expand { opacity: 1; }
+.pv-pill.pv-expanded .pv-collapsed { opacity: 0; }
+
+@media (hover: hover) and (min-width: 769px) {
+  .pv-row:hover .pv-pill { flex-grow: 1; flex-basis: 48px; }
+  .pv-row:hover .pv-pill .pv-expand { opacity: 0; }
+  .pv-row:hover .pv-pill .pv-collapsed { opacity: 1; }
+  .pv-row .pv-pill:hover { flex-grow: 9; flex-basis: 220px; }
+  .pv-row .pv-pill:hover .pv-expand { opacity: 1; }
+  .pv-row .pv-pill:hover .pv-collapsed { opacity: 0; }
+}
+.pv-pill:focus-visible { outline: 2px solid var(--maroon); outline-offset: 3px; }
+
+footer {
+  padding: 40px 0 60px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--olive-d);
+  border-top: 1px solid var(--line);
+}
+footer a { color: var(--maroon); }
+
+/* ─────────────────────────────────────────
+   MOBILE
+───────────────────────────────────────── */
+@media (max-width: 768px) {
+  :root { --nav-h: 60px; }
+  .main-nav { position: relative; padding: 12px 16px; }
+  .nav-left, .nav-right { display: none; }
+  .hamburger-btn { display: flex; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
+  .nav-center { justify-self: end; grid-column: 3; }
+  .logo-link img { height: 35px; }
+  .hero-top { padding-top: calc(var(--nav-h) + 50px); }
+
+  .pv-row { flex-direction: column; height: auto; gap: 8px; }
+  .pv-pill { flex: none; height: 60px; padding: 0; border-radius: 30px; transition: height 0.38s cubic-bezier(.2,.8,.2,1); }
+  .pv-row .pv-pill.pv-expanded { flex: none; height: 290px; border-radius: 28px; }
+  .pv-num { position: absolute; left: 22px; top: 22px; margin: 0; }
+  .pv-collapsed { writing-mode: horizontal-tb; transform: none; position: absolute; left: 54px; top: 17px; margin: 0; font-size: 1.3rem; }
+  .pv-expand { padding: 54px 22px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .pv-pill, .pv-expand, .pv-collapsed { transition: none; }
+}
+</style>
+</head>
+<body>
+  <script src="../nav.js" data-loc="pages"></script>
+
+<!-- Sitewide navigation -->
+
+
+
+
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-top">
+    <h1>I'M HUNGRY. I'M IN A RUSH<span class="big">WHAT'S <span class="y">ON THE WAY?</span></span></h1>
+    <p>A route-first food discovery app that ranks restaurants by the detour they add, not just how close they are.</p>
+  </div>
+  <div class="stage">
+    <div class="laptop">
+      <div class="laptop-screen">
+        <img src="otw-img3.png" alt="OnTheWay running on a laptop showing a New York City map">
+      </div>
+      <div class="laptop-base"></div>
+    </div>
+    <div class="stage-links">
+      <a class="arrow-btn" href="https://on-the-way-sable.vercel.app/" target="_blank" rel="noopener" aria-label="Visit the live OnTheWay site">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
+      </a>
+      <div class="device-tags">
+        <span class="tag-pill">React</span>
+        <span class="tag-pill">FastAPI</span>
+        <span class="tag-pill">Mapbox</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="meta">
+    <div><small>Product</small><b>OnTheWay</b></div>
+    <div><small>My role</small><b>PM + Full-stack dev</b></div>
+    <div><small>Timeline</small><b>May to June 2026</b></div>
+    <div><small>Skills</small><b>Research, Product design, Backend, User testing</b></div>
+  </div>
+  <div class="outcome"><strong>TL;DR.</strong> Map apps answer "what's near me?" but travelers need "what's on my way?". I found that proximity ≠ convenience, built a tool that shows the real detour time of each stop, and tested it with <span class="fill">[N]</span> users: <span class="fill">[headline result, e.g. picked a place 40% faster]</span>.</div>
+</div>
+
+<section class="contrast"><div class="wrap">
+  <div class="row"><span class="lbl">Apps make us ask</span><h2 class="dim">What's near me?</h2></div>
+  <div class="row"><span class="lbl">But I want to know</span><h2>What's on the way?</h2></div>
+</div></section>
+
+<!-- 01 Research -->
+<section class="sec" id="research"><div class="wrap">
+  <div class="eyebrow">01 · Problem &amp; research</div>
+  <h2>Closest isn't the same as convenient</h2>
+  <p class="lead">When people travel and want to stop for food, map tools rank by distance from a point. But a place can be 0.3 miles away and still cost 15 minutes off the route.</p>
+
+  <div class="g2" style="margin-top:26px">
+    <div class="card">
+      <h3>Today's workflow</h3>
+      <div class="flow"><span>Plan route</span><i>→</i><span>Search restaurants</span><i>→</i><span>Compare locations</span><i>→</i><span>Check directions</span><i>→</i><span>Estimate detour</span></div>
+      <p>Five steps, two tools, and the key number (added time) is guesswork.</p>
+    </div>
+    <div class="card">
+      <h3>The insight</h3>
+      <p class="callout" style="margin:0">Useful info isn't how far a restaurant is. It's how much stopping there changes the journey.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">What I looked at</h3>
+  <div class="tw"><table>
+    <tr><th>Tool</th><th>Search by route?</th><th>Shows detour time?</th><th>Gap</th></tr>
+    <tr><td>Google Maps</td><td><span class="fill">[Partial]</span></td><td><span class="fill">[Only after tapping a stop]</span></td><td><span class="fill">[…]</span></td></tr>
+    <tr><td>Yelp</td><td><span class="fill">[No]</span></td><td><span class="fill">[No]</span></td><td><span class="fill">[…]</span></td></tr>
+    <tr><td>Uber Eats / DoorDash</td><td><span class="fill">[No]</span></td><td><span class="fill">[No]</span></td><td><span class="fill">[…]</span></td></tr>
+    <tr><td class="y">OnTheWay</td><td class="y">Yes</td><td class="y">Yes, up front</td><td class="y">Detour is the sort key</td></tr>
+  </table></div>
+
+  <div class="g3" style="margin-top:26px">
+    <div class="card"><blockquote>“<span class="fill">[Real quote from an interview or survey]</span>”<cite>Participant 1, <span class="fill">[context]</span></cite></blockquote></div>
+    <div class="card"><blockquote>“<span class="fill">[Real quote]</span>”<cite>Participant 2</cite></blockquote></div>
+    <div class="card"><blockquote>“<span class="fill">[Real quote]</span>”<cite>Participant 3</cite></blockquote></div>
+  </div>
+  <p style="font-size:12px;color:var(--olive-d);margin-top:10px">Method: <span class="fill">[N]</span> interviews / <span class="fill">[N]</span> survey responses with <span class="fill">[who]</span>.</p>
+</div></section>
+
+<!-- 02 Users -->
+<section class="sec"><div class="wrap">
+  <div class="eyebrow">02 · Who it's for</div>
+  <h2>Users &amp; job to be done</h2>
+  <div class="g2">
+    <div class="card"><h3>Primary user</h3><p style="font-size:15px"><span class="fill">[e.g. Road-tripper / commuter / delivery driver]</span>. <span class="fill">[One line on context and frustration.]</span></p></div>
+    <div class="card"><h3>Job to be done</h3><p style="font-size:15px">When I'm traveling from A to B, I want to find good food that barely changes my route, so I can eat without losing time.</p></div>
+  </div>
+</div></section>
+
+<!-- 03 Solution -->
+<section class="sec" id="solution"><div class="wrap">
+  <div class="eyebrow">03 · Solution</div>
+  <h2>Meet OnTheWay</h2>
+  <p class="lead">Enter a start and destination, see your route, and get restaurants along it, each labeled with its detour cost.</p>
+  <img class="shot" style="max-width:880px;margin:26px auto 0" src="otw-img3.png" alt="OnTheWay live app: start and destination search over a NYC map">
+  <p class="cap">The live app.</p>
+
+  <div class="mock">
+    <div class="bar"><div>Start: Brooklyn, NY</div><div>Destination: Newark, NJ</div><div class="go">Find Food</div></div>
+    <div class="mbody">
+      <div class="map">
+        <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="400" height="300" fill="#e8e6e0"/>
+          <path d="M0 200 Q120 260 240 190 T400 120 L400 300 L0 300Z" fill="#d6d9d4"/>
+          <path d="M40 230 C120 180 190 200 250 140 S340 70 370 60" stroke="#6f7d34" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <g fill="#5a2a38"><circle cx="40" cy="230" r="7"/><circle cx="370" cy="60" r="7"/></g>
+          <g fill="#a3b061" stroke="#fff" stroke-width="2"><circle cx="130" cy="192" r="8"/><circle cx="215" cy="160" r="8"/><circle cx="300" cy="140" r="8" fill="#e2a29a"/></g>
+        </svg>
+      </div>
+      <div class="list">
+        <div class="res"><b>Restaurant A</b><span class="bd">+2 min</span><div>On the route · <span class="fill">[cuisine]</span></div><div class="trk"><i style="width:12%"></i></div></div>
+        <div class="res"><b>Restaurant B</b><span class="bd">+4 min</span><div>0.2 mi off route</div><div class="trk"><i style="width:28%"></i></div></div>
+        <div class="res"><b>Restaurant C</b><span class="bd hi">+14 min</span><div>Close to you, far from your path</div><div class="trk"><i style="width:85%"></i></div></div>
+      </div>
+    </div>
+  </div>
+  <p class="cap">Illustrative results state. Swap in a screenshot of a real search result with detour times.</p>
+</div></section>
+
+<!-- 04 Decisions -->
+<section class="sec" id="decisions"><div class="wrap">
+  <div class="eyebrow">04 · Product decisions</div>
+  <h2>Trade-offs I made</h2>
+  <div class="g2">
+    <div class="card"><h3>Sort by detour, not rating</h3><p>Because <span class="fill">[reason]</span>. I kept ratings as a secondary signal. Cut: <span class="fill">[what you cut]</span>.</p></div>
+    <div class="card"><h3>Sample 5 points on the route</h3><p>Balances coverage against API cost and latency. More points found few extra places but slowed results by <span class="fill">[X]</span>.</p></div>
+    <div class="card"><h3>Filter high-detour options</h3><p>Showing everything recreated the "nearby" problem. Hiding options past <span class="fill">[threshold]</span> keeps the list decision-ready.</p></div>
+    <div class="card"><h3>Scoped to v1</h3><p>No accounts, reservations, or multi-stop trips yet. Goal was to validate the core value: <span class="fill">[hypothesis]</span>.</p></div>
+  </div>
+
+  <h3 class="sub">How it works under the hood</h3>
+  <p style="font-size:13px">Hover or tap a step to open it.</p>
+  <div class="pv-row" id="pv-row"></div>
+</div></section>
+
+<!-- 05 Results -->
+<section class="sec" id="results"><div class="wrap">
+  <div class="eyebrow">05 · Results &amp; learnings</div>
+  <h2>Did it work?</h2>
+  <div class="g3">
+    <div class="card"><h3><span class="fill">[X min]</span></h3><p>Avg detour of chosen stop vs. baseline. Metric: <span class="fill">[definition]</span></p></div>
+    <div class="card"><h3><span class="fill">[X%]</span></h3><p>Users picking from the top 3 results.</p></div>
+    <div class="card"><h3><span class="fill">[X sec]</span></h3><p>Time to decision vs. Google Maps.</p></div>
+  </div>
+  <div class="g2" style="margin-top:22px">
+    <div class="card"><h3>What surprised me</h3><p><span class="fill">[Finding from user testing]</span></p></div>
+    <div class="card"><h3>What I changed</h3><p><span class="fill">[Change you made in response]</span></p></div>
+  </div>
+</div></section>
+
+<!-- 06 Roadmap + brand -->
+<section class="sec"><div class="wrap">
+  <div class="eyebrow">06 · What's next</div>
+  <h2>Roadmap</h2>
+  <div class="road">
+    <div class="card"><span class="pill">Next</span><br>Cuisine and open-now filters</div>
+    <div class="card"><span class="pill">Later</span><br>Multi-stop trips and mobile layout</div>
+    <div class="card"><span class="pill">Explore</span><br>Traffic-aware detour time</div>
+  </div>
+
+  <h3 class="sub" style="font-size:28px;margin-top:44px">Brand</h3>
+  <p style="font-size:13px;max-width:620px">A running figure holding a burger: motion plus food. Maroon and butter for warmth, olive for "go".</p>
+  <img class="shot" style="margin-top:18px" src="otw-img6.png" alt="OnTheWay logo variations in three colors">
+  <div class="pair">
+    <img class="shot" src="otw-img4.png" alt="OnTheWay running figure logo">
+    <img class="shot" src="otw-img5.png" alt="OnTheWay wordmark">
+  </div>
+  <div class="brand">
+    <div class="sw" style="background:#5a2a38;color:#fdfcf6">Maroon</div>
+    <div class="sw" style="background:#f4d998;color:#3a2a10">Butter</div>
+    <div class="sw" style="background:#a3b061;color:#1e2408">Olive</div>
+    <div class="sw" style="background:#fdfcf6;color:#3a2a10;border:1px solid var(--line)">Cream</div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">© Adriella Kristie. All rights reserved. · <a href="contact.html">Contact me</a></div></footer>
+<script src="../grain.js"></script>
+
+<!-- Nav: dropdown, sidebar, transparent to solid on scroll -->
+
+
+<!-- How-it-works pills -->
+<script>
+  var steps = [
+    { t: "Enter start & destination",
+      d: "Mapbox Search Box API handles suggest and retrieve. Session tokens keep each search session to one bill. Autocomplete is limited to NYC.",
+      f: "js/autocomplete.js / js/mapbox-api.js" },
+    { t: "Validate the location",
+      d: "A point-in-polygon check against the real shape of the five boroughs, not a bounding box. Anything outside NYC shows an error and stops.",
+      f: "isPointInNYC() / js/borough-utils.js" },
+    { t: "Get the route",
+      d: "The Directions API returns a path. If driving finds nothing, it retries with cycling, then walking.",
+      f: "getRoute() / Directions API v5" },
+    { t: "Sample 5 points",
+      d: "Start, 25%, 50%, 75% and destination, so the search covers the whole trip.",
+      f: "js/main.js / findFoodAlongRoute()" },
+    { t: "Search three sources",
+      d: "OpenStreetMap Overpass, Mapbox Places and Foursquare (optional) are queried in parallel for each point.",
+      f: "Overpass API / Geocoding API / Places API" },
+    { t: "Merge & filter",
+      d: "Places within 50m of each other merge into one, and every result is checked against the NYC shape.",
+      f: "removeDuplicatesByProximity() / isPointInNYC()" },
+    { t: "Snap onto the route",
+      d: "Turf.js measures each place's distance from the road and progress along the trip. Anything over 0.5km off is dropped.",
+      f: "turf.nearestPointOnLine() / MAX_DISTANCE_FROM_ROUTE_KM" },
+    { t: "Calculate the real detour",
+      d: "Directions runs again with each candidate as a waypoint, giving the minutes a stop actually adds.",
+      f: "getRouteWithStop() / detourMinutes" },
+    { t: "Cut high-detour options",
+      d: "Anything adding 10+ minutes is removed, so what's left is worth stopping for.",
+      f: "reasonableOptions filter" },
+    { t: "Spread & show results",
+      d: "Results are split into near start, middle and near destination so they don't cluster, then shown as numbered markers and a ranked list.",
+      f: "pickSpreadAcrossRoute() / displayFoodOptions()" }
+  ];
+
+  var row = document.getElementById('pv-row');
+
+  function setExpanded(pill, open) {
+    row.querySelectorAll('.pv-pill').forEach(function (p) {
+      p.classList.remove('pv-expanded');
+      p.setAttribute('aria-expanded', 'false');
+    });
+    if (open) {
+      pill.classList.add('pv-expanded');
+      pill.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  steps.forEach(function (s, i) {
+    var pill = document.createElement('div');
+    pill.className = 'pv-pill t' + (i % 3);
+    pill.setAttribute('role', 'button');
+    pill.setAttribute('tabindex', '0');
+    pill.setAttribute('aria-expanded', 'false');
+    pill.innerHTML =
+      '<div class="pv-num">' + (i + 1) + '</div>' +
+      '<div class="pv-collapsed">' + s.t + '</div>' +
+      '<div class="pv-expand">' +
+        '<div class="pv-title">' + s.t + '</div>' +
+        '<div class="pv-desc">' + s.d + '</div>' +
+        '<div class="pv-file">' + s.f + '</div>' +
+      '</div>';
+    pill.addEventListener('click', function () {
+      setExpanded(pill, !pill.classList.contains('pv-expanded'));
+    });
+    pill.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setExpanded(pill, !pill.classList.contains('pv-expanded'));
+      }
+    });
+    row.appendChild(pill);
+  });
+</script>
+
+</body>
+</html>

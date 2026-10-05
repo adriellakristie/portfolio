@@ -380,7 +380,7 @@
 
     .process-heading {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem;
+      font-size: 2.8rem;
       letter-spacing: 0.08em;
       margin-bottom: 14px;
       color: var(--text);
@@ -395,12 +395,51 @@
     }
 
     .code-block {
-      background: rgba(0, 0, 0, 0.85);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 24px;
-      overflow-x: auto;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #525252;
     }
+
+    .code-block > summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 24px;
+      background: #8ab5b0;
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .code-block > summary::-webkit-details-marker { display: none; }
+
+    .code-block > summary svg {
+      flex-shrink: 0;
+      transition: transform 0.25s ease;
+    }
+
+    .code-block:not([open]) > summary svg { transform: rotate(-90deg); }
+
+    .code-block[open] > summary { border-bottom: 2px solid #fff; }
+
+    .code-scroll {
+      max-height: 420px;
+      overflow: auto;
+      padding: 24px;
+      scrollbar-color: #e7e7e2 #6e6e6e;
+    }
+
+    .code-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+    .code-scroll::-webkit-scrollbar-track { background: #6e6e6e; border-radius: 4px; }
+    .code-scroll::-webkit-scrollbar-thumb { background: #e7e7e2; border-radius: 4px; }
+    .code-scroll::-webkit-scrollbar-corner { background: transparent; }
 
     .code-block pre {
       font-family: 'IBM Plex Mono', monospace;
@@ -565,50 +604,13 @@
   </style>
 </head>
 <body>
+  <script src="../nav.js" data-loc="pages"></script>
 
   <!-- Navigation Bar -->
-  <header class="main-header">
-    <nav class="main-nav">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <div class="nav-left">
-        <a href="projects.html" class="nav-link">Projects</a>
-        <div class="nav-item-with-dropdown">
-          <span class="nav-link" style="cursor: pointer;">Labs</span>
-          <div class="dropdown-menu">
-            <a href="labs-code.html" class="dropdown-item">Code</a>
-            <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-center">
-        <a href="../index.html" class="logo-link" aria-label="Home">
-          <img src="../photo1.png" alt="AK Logo" />
-        </a>
-      </div>
-      <div class="nav-right">
-        <a href="aboutme.html" class="nav-link">About Me</a>
-        <a href="contact.html" class="nav-link">Contact</a>
-      </div>
-    </nav>
-  </header>
+  
   <!-- ── MOBILE SIDEBAR NAV ── -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-  <div class="mobile-sidebar" id="mobileSidebar">
-    <a href="projects.html" class="sidebar-link">Projects</a>
-    <div>
-      <div class="sidebar-group-label">Labs</div>
-      <div class="sidebar-sublinks">
-        <a href="labs-code.html">Code</a>
-        <a href="labs-visual.html">Visual Design</a>
-      </div>
-    </div>
-    <a href="aboutme.html" class="sidebar-link">About Me</a>
-    <a href="contact.html" class="sidebar-link">Contact</a>
-  </div>
+  
+  
 
 
   <!-- Page Header -->
@@ -701,16 +703,21 @@
 
   <!-- Process / Code Section -->
   <section class="process-section">
-    <h2 class="process-heading">PROCESS / CODE</h2>
+    <h2 class="process-heading">BEHIND THE ART</h2>
     <p class="process-note">
       Paste the code you used to generate this work below. Replace the placeholder text inside the &lt;pre&gt;&lt;code&gt; block with your actual snippet.
     </p>
-    <div class="code-block">
+    <details class="code-block" open>
+      <summary>the code
+        <svg width="28" height="16" viewBox="0 0 28 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 1l13 13L27 1"/></svg>
+      </summary>
+      <div class="code-scroll">
       <pre><code>// paste your code here
 function generate() {
   // ...
 }</code></pre>
     </div>
+    </details>
   </section>
 
   <footer class="site-footer">
@@ -719,77 +726,8 @@ function generate() {
 
   <script src="../grain.js"></script>
 
-  <script>
-    // Mobile dropdown toggle for Labs menu
-    document.addEventListener('DOMContentLoaded', function() {
-      const dropdownTriggers = document.querySelectorAll('.nav-item-with-dropdown');
-      
-      dropdownTriggers.forEach(trigger => {
-        const navLink = trigger.querySelector('.nav-link');
-        
-        // Handle click/tap on mobile
-        navLink.addEventListener('click', function(e) {
-          // Only prevent default and toggle on touch devices
-          if (window.matchMedia('(hover: none)').matches) {
-            e.preventDefault();
-            
-            // Close other dropdowns
-            dropdownTriggers.forEach(other => {
-              if (other !== trigger) {
-                other.classList.remove('active');
-              }
-            });
-            
-            // Toggle current dropdown
-            trigger.classList.toggle('active');
-          }
-        });
-      });
-      
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.nav-item-with-dropdown')) {
-          dropdownTriggers.forEach(trigger => {
-            trigger.classList.remove('active');
-          });
-        }
-      });
-    });
-  </script>
-  <script>
-    // Mobile sidebar toggle
-    document.addEventListener('DOMContentLoaded', function() {
-      const hamburgerBtn = document.getElementById('hamburgerBtn');
-      const mobileSidebar = document.getElementById('mobileSidebar');
-      const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-      function openSidebar() {
-        hamburgerBtn.classList.add('active');
-        mobileSidebar.classList.add('active');
-        sidebarOverlay.classList.add('active');
-      }
-
-      function closeSidebar() {
-        hamburgerBtn.classList.remove('active');
-        mobileSidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-      }
-
-      hamburgerBtn.addEventListener('click', function() {
-        if (mobileSidebar.classList.contains('active')) {
-          closeSidebar();
-        } else {
-          openSidebar();
-        }
-      });
-
-      sidebarOverlay.addEventListener('click', closeSidebar);
-
-      mobileSidebar.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', closeSidebar);
-      });
-    });
-  </script>
+  
+  
 
 </body>
 </html>

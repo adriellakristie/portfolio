@@ -10,8 +10,8 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --nav: #ffffff;
-      --nav-hover: rgba(255, 255, 255, 0.7);
+      --nav: #60654c;
+      --nav-hover: #3f4330;
       --bg: #FFFDF7;
       --text: #1a1814;
       --header: #60654c;
@@ -400,7 +400,7 @@
   display: block;
   width: 22px;
   height: 2px;
-  background: #ffffff;
+  background: var(--text);
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -461,7 +461,7 @@
   font-size: 1.1rem;
   font-weight: 400;
   letter-spacing: 0.05em;
-  color: #ffffff;
+  color: var(--text);
   text-decoration: none;
 }
 
@@ -470,7 +470,7 @@
   font-size: 1.1rem;
   font-weight: 400;
   letter-spacing: 0.05em;
-  color: #ffffff;
+  color: var(--text);
   margin-bottom: 14px;
 }
 
@@ -485,7 +485,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.85rem;
   letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(26, 24, 20, 0.65);
   text-decoration: none;
 }
 
@@ -517,50 +517,13 @@
   </style>
 </head>
 <body>
+  <script src="../nav.js" data-loc="pages"></script>
 
   <!-- Navigation Bar -->
-  <header class="main-header">
-    <nav class="main-nav">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <div class="nav-left">
-        <a href="projects.html" class="nav-link">Projects</a>
-        <div class="nav-item-with-dropdown">
-          <span class="nav-link" style="cursor: pointer;">Labs</span>
-          <div class="dropdown-menu">
-            <a href="labs-code.html" class="dropdown-item">Code</a>
-            <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-center">
-        <a href="../index.html" class="logo-link" aria-label="Home">
-          <img src="../photo1.png" alt="AK Logo" />
-        </a>
-      </div>
-      <div class="nav-right">
-        <a href="aboutme.html" class="nav-link">About Me</a>
-        <a href="contact.html" class="nav-link">Contact</a>
-      </div>
-    </nav>
-  </header>
+  
   <!-- ── MOBILE SIDEBAR NAV ── -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-  <div class="mobile-sidebar" id="mobileSidebar">
-    <a href="projects.html" class="sidebar-link">Projects</a>
-    <div>
-      <div class="sidebar-group-label">Labs</div>
-      <div class="sidebar-sublinks">
-        <a href="labs-code.html">Code</a>
-        <a href="labs-visual.html">Visual Design</a>
-      </div>
-    </div>
-    <a href="aboutme.html" class="sidebar-link">About Me</a>
-    <a href="contact.html" class="sidebar-link">Contact</a>
-  </div>
+  
+  
 
 
   <!-- Page Header -->
@@ -674,77 +637,8 @@ work type
 
   <script src="../grain.js"></script>
 
-  <script>
-    // Mobile dropdown toggle for Labs menu
-    document.addEventListener('DOMContentLoaded', function() {
-      const dropdownTriggers = document.querySelectorAll('.nav-item-with-dropdown');
-      
-      dropdownTriggers.forEach(trigger => {
-        const navLink = trigger.querySelector('.nav-link');
-        
-        // Handle click/tap on mobile
-        navLink.addEventListener('click', function(e) {
-          // Only prevent default and toggle on touch devices
-          if (window.matchMedia('(hover: none)').matches) {
-            e.preventDefault();
-            
-            // Close other dropdowns
-            dropdownTriggers.forEach(other => {
-              if (other !== trigger) {
-                other.classList.remove('active');
-              }
-            });
-            
-            // Toggle current dropdown
-            trigger.classList.toggle('active');
-          }
-        });
-      });
-      
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.nav-item-with-dropdown')) {
-          dropdownTriggers.forEach(trigger => {
-            trigger.classList.remove('active');
-          });
-        }
-      });
-    });
-  </script>
-  <script>
-    // Mobile sidebar toggle
-    document.addEventListener('DOMContentLoaded', function() {
-      const hamburgerBtn = document.getElementById('hamburgerBtn');
-      const mobileSidebar = document.getElementById('mobileSidebar');
-      const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-      function openSidebar() {
-        hamburgerBtn.classList.add('active');
-        mobileSidebar.classList.add('active');
-        sidebarOverlay.classList.add('active');
-      }
-
-      function closeSidebar() {
-        hamburgerBtn.classList.remove('active');
-        mobileSidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-      }
-
-      hamburgerBtn.addEventListener('click', function() {
-        if (mobileSidebar.classList.contains('active')) {
-          closeSidebar();
-        } else {
-          openSidebar();
-        }
-      });
-
-      sidebarOverlay.addEventListener('click', closeSidebar);
-
-      mobileSidebar.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', closeSidebar);
-      });
-    });
-  </script>
+  
+  
 
 </body>
 </html>

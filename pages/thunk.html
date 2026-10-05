@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thunk - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;500&family=Nunito:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #A1B161;
+      --dark: #394218;
+      --cream: #F2FACF;
+      --muted: #4C5134;
+      --border: #6d7a45;
+      --light: #EDEAE0;
+    }
+
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ───────── NAVIGATION BAR ───────── */
+    .main-header { position: relative; width: 100%; }
+
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    .nav-left, .nav-right { display: flex; gap: 20px; align-items: center; }
+    .nav-left { justify-self: start; }
+    .nav-center { justify-self: center; }
+    .nav-right { justify-self: end; }
+
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--dark);
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+    .nav-link:visited, .nav-link:focus { color: var(--dark); text-decoration: none; }
+    .nav-link:hover { color: var(--cream); text-decoration: none; opacity: 0.8; }
+
+    .nav-item-with-dropdown { position: relative; }
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .nav-item-with-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; margin-top: 8px; }
+    }
+    .nav-item-with-dropdown.active .dropdown-menu { opacity: 1; visibility: visible; margin-top: 8px; }
+    @media (max-width: 768px) {
+      .dropdown-menu { left: 0; transform: none; min-width: 140px; }
+    }
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: #1a1814;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+    .dropdown-item:hover { background: rgba(57, 66, 24, 0.12); }
+
+    .logo-link { display: block; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .logo-link img { display: block; height: 60px; width: auto; }
+    .logo-link:hover { transform: scale(1.15); }
+
+    /* ───────── HERO SECTION ───────── */
+    .main-header { position: relative; z-index: 10; }
+
+    .thunk-hero {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1440 / 901.12;
+      overflow: hidden;
+      margin-top: -10vw;
+    }
+    .hero-inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      aspect-ratio: 1440 / 1024;
+    }
+    .hero-phone {
+      position: absolute;
+      left: 43.28%;
+      top: 18.65%;
+      width: 26.16%;
+      height: 55.18%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .hero-titles {
+      position: absolute;
+      left: 14.03%;
+      top: 26.95%;
+      z-index: 2;
+      line-height: 0.8;
+    }
+    .hero-titles .thunk-title {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13.97vw;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+    }
+    .hero-titles .mobile-app-title {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 6.94vw;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      margin-top: -0.2em;
+      text-align: center;
+    }
+
+    .hero-role {
+      position: absolute;
+      right: 12.71%;
+      top: 29.4%;
+      width: 19.93%;
+      z-index: 2;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4vw;
+    }
+    .hero-role p {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.65vw;
+      line-height: 0.8;
+      letter-spacing: -0.02em;
+      color: var(--muted);
+    }
+
+    .hero-bottom {
+      position: absolute;
+      left: 0;
+      top: 68.182%;
+      bottom: 0;
+      width: 100%;
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 0 5vw;
+      z-index: 0;
+    }
+    .hero-bottom .stack-label,
+    .hero-bottom .tags-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4vw;
+      line-height: 0.8;
+      letter-spacing: -0.02em;
+      color: var(--bg);
+    }
+    .hero-bottom .tags-label { text-align: right; }
+
+    @media (max-width: 900px) {
+      .thunk-hero { margin-top: 0; aspect-ratio: auto; }
+      .hero-inner {
+        position: static; width: auto; aspect-ratio: auto;
+        display: grid;
+        grid-template-columns: 0.7fr 1.3fr;
+        column-gap: 4vw;
+        row-gap: 6vw;
+      }
+      .hero-titles, .hero-phone, .hero-role, .hero-bottom { position: static; width: auto; }
+      .hero-titles { grid-column: 1 / -1; grid-row: 1; justify-self: start; width: fit-content; padding: 10vw 6vw 0; }
+      .hero-titles .thunk-title { font-size: 4.8rem; }
+      .hero-titles .mobile-app-title { font-size: 2.4rem; text-align: center; }
+      .hero-role { grid-column: 1; grid-row: 2; align-self: start; text-align: left; padding: 0 0 0 6vw; gap: 10px; }
+      .hero-role p { font-size: 1.1rem; }
+      .hero-phone { grid-column: 2; grid-row: 2; align-self: start; height: auto; width: 100%; max-width: 320px; margin: 0 6vw 0 auto; display: block; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; gap: 16px; padding: 5vw 6vw 6vw; margin-top: -10vw; }
+      .hero-bottom .stack-label, .hero-bottom .tags-label { font-size: 1.6rem; }
+      .hero-bottom .tags-label { text-align: left; }
+    }
+
+    /* ─────────────────────────────────────────
+       FULL-SCREEN SECTIONS
+    ───────────────────────────────────────── */
+    .main-header, .screen, .logo-section { scroll-snap-align: start; }
+    .thunk-hero { scroll-snap-align: end; }
+    .site-footer { scroll-snap-align: end; }
+
+    .screen {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Welcome */
+    .welcome-section {
+      justify-content: center;
+      background: #ffffff;
+      padding: 5vw;
+    }
+    .welcome-bubble {
+      position: relative;
+      width: min(42vw, 500px);
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bubble-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .welcome-text {
+      position: relative;
+      z-index: 1;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.1rem, 2.4vw, 1.7rem);
+      color: #1a1814;
+      text-align: center;
+    }
+    @media (max-width: 700px) {
+      .welcome-bubble { width: 78vw; }
+    }
+
+    /* Showcase sections (Onboarding / App Screens) */
+    .showcase-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7vw;
+      padding: 6vw;
+    }
+    .showcase-section.on-white { background: #ffffff; }
+    .showcase-section.onboarding-section { background: #e7e3d6; }
+
+    .showcase-text { flex: 0 1 420px; text-align: center; }
+
+    /* Alignment modifiers — drive title, description, and tag-pill row together */
+    .showcase-text.align-left { text-align: left; }
+    .showcase-text.align-right { text-align: right; }
+
+    .showcase-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5vw;
+      line-height: 0.85;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6em;
+      color: var(--dark);
+    }
+    .showcase-title.olive { color: var(--bg); }
+
+    .showcase-desc {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--muted);
+      max-width: 340px;
+      margin: 0 auto 1.6em; /* default: centered */
+    }
+    .showcase-text.align-left .showcase-desc  { margin-left: 0;    margin-right: auto; }
+    .showcase-text.align-right .showcase-desc { margin-left: auto; margin-right: 0; }
+
+    .showcase-tags { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .showcase-text.align-left .showcase-tags  { justify-content: flex-start; }
+    .showcase-text.align-right .showcase-tags { justify-content: flex-end; }
+
+    .tag-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--cream);
+      background: var(--bg);
+      border-radius: 999px;
+      padding: 8px 18px;
+    }
+
+    .showcase-phone { flex: 0 0 auto; width: min(24vw, 300px); }
+    .showcase-phone > img { display: block; width: 100%; height: auto; max-height: 78svh; object-fit: contain; margin: 0 auto; }
+
+    /* ───────── CSS PHONE FRAME (wraps the screen recording) ─────────
+       All sizes use cqw (1% of the frame's width) so the bezel, corners
+       and buttons scale together at any size. */
+    .showcase-phone.framed { width: min(22vw, 280px, 35svh); container-type: inline-size; }
+
+    .phone-frame {
+      position: relative;
+      width: 100%;
+      padding: 2.2cqw;
+      border-radius: 15.1cqw;
+      background: linear-gradient(145deg, #2f3226 0%, #15170f 55%, #23261b 100%);
+      box-shadow:
+        0 0 0 0.5cqw #4a4f3a,                       /* metal rim */
+        inset 0 0 0 0.4cqw #0b0c08,                 /* inner bezel edge */
+        0 3cqw 6cqw rgba(57, 66, 24, 0.22),
+        0 10cqw 18cqw rgba(57, 66, 24, 0.18);
+    }
+
+    /* Power button (right) */
+    .phone-frame::before {
+      content: "";
+      position: absolute;
+      right: -1.4cqw;
+      top: 56cqw;
+      width: 1.2cqw;
+      height: 26cqw;
+      border-radius: 0 1cqw 1cqw 0;
+      background: #3a3e2e;
+    }
+    /* Action button (left) */
+    .phone-frame::after {
+      content: "";
+      position: absolute;
+      left: -1.4cqw;
+      top: 40cqw;
+      width: 1.2cqw;
+      height: 8cqw;
+      border-radius: 1cqw 0 0 1cqw;
+      background: #3a3e2e;
+    }
+    /* Volume buttons (left) */
+    .phone-frame .vol-up {
+      position: absolute;
+      left: -1.4cqw;
+      top: 56cqw;
+      width: 1.2cqw;
+      height: 16cqw;
+      border-radius: 1cqw 0 0 1cqw;
+      background: #3a3e2e;
+    }
+    .phone-frame .vol-down {
+      position: absolute;
+      left: -1.4cqw;
+      top: 76cqw;
+      width: 1.2cqw;
+      height: 16cqw;
+      border-radius: 1cqw 0 0 1cqw;
+      background: #3a3e2e;
+    }
+
+    .phone-screen {
+      position: relative;
+      border-radius: 12.9cqw;
+      overflow: hidden;
+      transform: translateZ(0); /* makes Safari clip the video to the radius */
+      background: #fdf8f5;
+    }
+    /* Dynamic Island overlay, matched to the recording's own island
+       (x 225-434, y 21-84 on the 660x1448 video). Covers the recorded one
+       and fills in the screens that were captured without it. */
+    .phone-island {
+      position: absolute;
+      left: 34.09%;
+      width: 31.82%;
+      top: 1.45%;
+      height: 4.42%;
+      border-radius: 999px;
+      background: #000;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* ───────── APP SCREENS CAROUSEL ───────── */
+    .phone-stack {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+    }
+    .phone-stack .showcase-phone.framed { width: min(22vw, 280px, 31svh); }
+
+    .phone-screen.slides { aspect-ratio: 660 / 1448; }
+
+    .app-shot {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: translateX(14%);
+      transition: transform .55s cubic-bezier(.22,1,.36,1),
+                  opacity .4s ease,
+                  filter .55s ease;
+    }
+    .app-shot { pointer-events: none; }
+    .app-shot.is-active { pointer-events: auto; }
+    .app-shot.is-before { transform: translateX(-14%); }
+
+    /* Home: long screen that scrolls inside the phone, tab bar pinned */
+    .app-scroll { overflow: hidden; }
+    .app-scroll-area {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .app-scroll-area::-webkit-scrollbar { display: none; }
+    .app-scroll-area img { display: block; width: 100%; height: auto; }
+    .app-statusbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* Keeps the pinned time readable while content scrolls underneath */
+    .app-status-fade {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 7%;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(to bottom, #fffbe1 55%, rgba(255, 251, 225, 0));
+    }
+    .app-tabbar {
+      position: absolute;
+      left: 3.234%;
+      width: 93.532%;
+      bottom: 4.535%;
+      height: auto;
+      z-index: 1;
+      pointer-events: none;
+      filter: drop-shadow(0 0.8cqw 1.6cqw rgba(0, 0, 0, 0.12));
+    }
+    .app-shot.is-active { opacity: 1; transform: none; }
+
+    /* History -> Entry: iOS-style push */
+    .app-shot.entry {
+      opacity: 1;
+      z-index: 1;
+      transform: translateX(101%);
+      box-shadow: -1.5cqw 0 5cqw rgba(0, 0, 0, 0.18);
+    }
+    .app-shot.entry.is-active { transform: none; }
+    .app-shot.is-under { opacity: 1; transform: translateX(-28%); filter: brightness(.82); }
+
+    /* Tap targets over the screenshot */
+    .hotspot {
+      position: absolute;
+      z-index: 3;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 5cqw;
+      display: none;
+      transition: background .2s ease, box-shadow .2s ease;
+    }
+    .hotspot:hover { background: rgba(255, 255, 255, 0.12); }
+    .hotspot:focus-visible { outline: none; box-shadow: 0 0 0 0.8cqw var(--cream), 0 0 0 1.4cqw var(--dark); }
+    .phone-screen[data-view="history"] .hotspot.entry-open { display: block; }
+    .phone-screen[data-view="entry"] .hotspot.entry-back { display: block; border-radius: 999px; }
+
+    /* ‹ SCREEN NAME › controls */
+    .screen-nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .screen-nav-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 0;
+      background: var(--bg);
+      color: var(--cream);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .screen-nav-btn:hover { background: var(--dark); }
+    .screen-nav-btn:active { transform: scale(.92); }
+    .screen-nav-btn:focus-visible { outline: 2px solid var(--dark); outline-offset: 3px; }
+    .screen-nav-btn svg { width: 16px; height: 16px; }
+
+    .screen-nav-label {
+      width: 128px;
+      white-space: nowrap;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .screen-nav-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: var(--dark);
+    }
+    .screen-nav-count {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .screen-hint {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      min-height: 1.2em;
+      margin-top: -10px;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .screen-hint.show { opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .app-shot { transition: none; }
+    }
+
+    .phone-screen video {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 660 / 1448;
+      object-fit: cover;
+    }
+
+    @media (max-width: 900px) {
+      .showcase-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 8vw;
+        padding: 14vw 6vw !important;
+      }
+      /* On mobile everything stacks and centers, regardless of desktop alignment */
+      .showcase-text.align-left,
+      .showcase-text.align-right { text-align: center; }
+      .showcase-text.align-left .showcase-desc,
+      .showcase-text.align-right .showcase-desc { margin-left: auto; margin-right: auto; }
+      .showcase-text.align-left .showcase-tags,
+      .showcase-text.align-right .showcase-tags { justify-content: center; }
+
+      .showcase-text { flex: 0 0 auto; }
+      .showcase-title { font-size: 3rem; }
+      .showcase-desc { max-width: 100%; }
+      .showcase-phone { width: 60vw; max-width: 280px; order: 2; }
+      .showcase-phone > img { max-height: 55svh; }
+      .showcase-phone.framed { width: min(60vw, 260px, 25svh); }
+      .phone-stack { order: 2; }
+      .phone-stack .showcase-phone { order: 0; }
+      .phone-stack .showcase-phone.framed { width: min(60vw, 250px, 24svh); }
+    }
+
+    /* App Store Screens */
+    .appstore-section {
+      background: #ffffff;
+      padding: 6vw;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+    }
+    .appstore-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4vw;
+      letter-spacing: -0.02em;
+      color: var(--bg);
+      margin-bottom: 2em;
+    }
+    .appstore-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.5vw;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .appstore-row img {
+      flex: 1 1 0;
+      min-width: 140px;
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    @media (max-width: 900px) {
+      .appstore-title { font-size: 2.4rem; }
+      .appstore-row { gap: 12px; }
+      .appstore-row img { min-width: 120px; }
+    }
+
+    /* ───────── SCROLL REVEAL ANIMATION ───────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(48px);
+      transition: opacity .8s cubic-bezier(.22,1,.36,1),
+                  transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay: calc(var(--i, 0) * 120ms);
+    }
+    .reveal.from-left  { transform: translateX(-70px); }
+    .reveal.from-right { transform: translateX(70px); }
+    .reveal.from-scale {
+      transform: scale(.6);
+      transition-timing-function: cubic-bezier(.34,1.56,.64,1);
+    }
+    .screen.in-view .reveal { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; scroll-snap-type: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ───────── BRANDING SECTION (2x2) ─────────
+       Cells keep the mockup's 720x512 proportion; sizes inside use cqw
+       (1% of the cell width) so everything scales with the cell. */
+    .logo-section { width: 100%; }
+    .brand-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .brand-cell {
+      container-type: inline-size;
+      aspect-ratio: 720 / 512;
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-cream { background: #fffdf7; }
+    .brand-olive { background: var(--bg); }
+    .brand-dark  { background: var(--dark); }
+
+    .brand-inner { position: absolute; inset: 0; }
+
+    /* Text cells */
+    .brand-text .brand-inner {
+      display: flex;
+      flex-direction: column;
+      padding: 16.5cqw 11.5cqw 0 9.7cqw;
+    }
+    .brand-text.right .brand-inner {
+      align-items: flex-end;
+      text-align: right;
+      padding-top: 23cqw;
+    }
+    .brand-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22cqw;
+      font-weight: 400;
+      line-height: 0.8;
+      letter-spacing: -0.01em;
+      color: #788641;
+    }
+    .brand-caption {
+      margin-top: 5cqw;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 3.4cqw;
+      letter-spacing: 0.04em;
+      color: #656565;
+    }
+    .brand-text.right .brand-caption { margin-top: 5.5cqw; }
+
+    /* Carousel cells */
+    .brand-carousel .brand-inner {
+      display: grid;
+      grid-template-rows: 1fr auto auto;
+      justify-items: center;
+      padding: 7cqw 0 9.5cqw;
+      row-gap: 3.2cqw;
+    }
+    .brand-slides {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .brand-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateX(6cqw);
+      transition: opacity .45s ease, transform .6s cubic-bezier(.22,1,.36,1);
+      pointer-events: none;
+    }
+    .brand-slide.is-before { transform: translateX(-6cqw); }
+    .brand-slide.is-active { opacity: 1; transform: none; pointer-events: auto; }
+
+    .brand-slide img { display: block; height: auto; }
+    .slide-logo    { width: 32cqw; }
+    .slide-cover   { width: 35.3cqw; border-radius: 7.5cqw; }
+    .slide-bubble  { width: 28.2cqw; margin-right: 2.5cqw; }
+    .slide-grad-1  { width: 16.3cqw; margin-right: 1.7cqw; }
+    .slide-grad-2  { width: 17.8cqw; }
+
+    .palette {
+      display: flex;
+      gap: 1.8cqw;
+    }
+    .palette span {
+      width: 12.5cqw;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--c);
+      box-shadow: 0.5cqw 0.7cqw 0.8cqw rgba(0, 0, 0, 0.35);
+    }
+
+    .brand-dots { display: flex; gap: 1cqw; }
+    .brand-dot {
+      width: 0.9cqw;
+      height: 0.9cqw;
+      min-width: 5px;
+      min-height: 5px;
+      border-radius: 50%;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      background: rgba(217, 217, 217, 0.35);
+      transition: background .25s ease;
+    }
+    .brand-dot.is-active { background: #d9d9d9; }
+
+    .brand-nav {
+      display: flex;
+      align-items: center;
+      width: 43cqw;
+      justify-content: space-between;
+    }
+    .brand-nav button {
+      border: 0;
+      background: none;
+      padding: 1.2cqw;
+      margin: -1.2cqw;
+      cursor: pointer;
+      color: #f3f5eb;
+      display: grid;
+      place-items: center;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+    .brand-nav button:hover { opacity: 0.7; }
+    .brand-nav button:active { transform: scale(.9); }
+    .brand-nav button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: 4px; }
+    .brand-nav svg { width: 2.4cqw; min-width: 12px; height: auto; }
+    .brand-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 3.4cqw;
+      letter-spacing: 0.04em;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .brand-olive .brand-label { color: #eaf2c9; }
+    .brand-dark  .brand-label { color: #96a368; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .brand-slide { transition: none; }
+    }
+
+    @media (max-width: 900px) {
+      .brand-grid { grid-template-columns: 1fr; }
+      .brand-text { aspect-ratio: auto; }
+      .brand-text .brand-inner { position: static; padding: 16vw 8vw 12vw; }
+      .brand-text.right .brand-inner { align-items: flex-start; text-align: left; padding-top: 16vw; }
+      .brand-heading { font-size: 22vw; }
+      .brand-caption, .brand-text.right .brand-caption { margin-top: 5vw; font-size: 3.8vw; }
+      .brand-carousel { aspect-ratio: 4 / 3.4; }
+      .brand-label { font-size: 4.4cqw; }
+      .brand-nav { width: 60cqw; }
+      /* keep BRANDING heading above its carousel when stacked */
+      .brand-cell:nth-child(3) { order: 4; }
+      .brand-cell:nth-child(4) { order: 3; }
+    }
+
+    /* ───────── MOBILE SIDEBAR NAV ───────── */
+    .hamburger-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1100;
+      padding: 0;
+    }
+    .hamburger-btn span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--dark);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger-btn.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger-btn.active span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 1150;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .sidebar-overlay.active { display: block; opacity: 1; }
+
+    .mobile-sidebar {
+      position: fixed;
+      top: 0; left: -85%;
+      width: 85%; max-width: 300px;
+      height: 100vh;
+      background: var(--bg);
+      z-index: 1200;
+      transition: left 0.35s ease;
+      box-shadow: 2px 0 16px rgba(0, 0, 0, 0.25);
+      padding: 90px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      overflow-y: auto;
+    }
+    .mobile-sidebar.active { left: 0; }
+
+    .sidebar-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--dark);
+      text-decoration: none;
+    }
+    .sidebar-group-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--dark);
+      margin-bottom: 14px;
+    }
+    .sidebar-sublinks { display: flex; flex-direction: column; gap: 14px; padding-left: 16px; }
+    .sidebar-sublinks a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .main-nav { position: relative; padding: 12px 16px; }
+      .nav-left, .nav-right { display: none; }
+      .hamburger-btn { display: flex; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
+      .nav-center { justify-self: end; grid-column: 3; }
+      .logo-link img { height: 35px; }
+    }
+
+    /* footer */
+    .site-footer {
+      background: var(--dark);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--bg);
+    }
+  </style>
+</head>
+<body>
+  <script src="../nav.js" data-loc="pages"></script>
+
+
+  <!-- Navigation Bar -->
+  
+
+  <!-- Mobile Sidebar Nav -->
+  
+  
+
+  <!-- Hero -->
+  <section class="thunk-hero">
+    <div class="hero-inner">
+      <div class="hero-titles">
+        <span class="thunk-title">THUNK</span>
+        <span class="mobile-app-title">MOBILE APP</span>
+      </div>
+      <img class="hero-phone" src="homescreen.png" alt="Thunk app home screen">
+      <div class="hero-role">
+        <p>FRONTEND DEVELOPER,<br>PRODUCT DESIGNER</p>
+        <p>INTERNSHIP<br>2026</p>
+      </div>
+    </div>
+    <div class="hero-bottom">
+      <div class="stack-label">REACT NATIVE, TYPESCRIPT</div>
+      <div class="tags-label">APP SCREENS, ONBOARDING, VISUALS</div>
+    </div>
+  </section>
+
+  <!-- Welcome -->
+  <section class="screen welcome-section">
+    <div class="welcome-bubble reveal from-scale">
+      <img class="bubble-img" src="bubble.png" alt="">
+      <span class="welcome-text">Welcome to THUNK</span>
+    </div>
+  </section>
+
+  <!-- Onboarding Screens -->
+  <section class="screen showcase-section onboarding-section">
+    <div class="showcase-text reveal from-left align-left">
+      <h2 class="showcase-title">ONBOARDING<br>SCREENS</h2>
+      <p class="showcase-desc">Designed and developed 5 onboarding screens with animations and visual assets</p>
+      <div class="showcase-tags">
+        <span class="tag-pill">REACT NATIVE</span>
+        <span class="tag-pill">JAVASCRIPT</span>
+      </div>
+    </div>
+    <div class="showcase-phone framed reveal from-right" style="--i:1">
+      <div class="phone-frame">
+        <span class="vol-up" aria-hidden="true"></span>
+        <span class="vol-down" aria-hidden="true"></span>
+        <div class="phone-screen">
+          <span class="phone-island" aria-hidden="true"></span>
+          <video
+            class="section-video"
+            src="onboarding.mp4"
+            poster="onboarding-poster.jpg"
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="Thunk onboarding flow recording">
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Screens -->
+  <section class="screen showcase-section app-screens-section on-white">
+    <div class="phone-stack reveal from-left" id="appCarousel">
+      <div class="showcase-phone framed">
+        <div class="phone-frame">
+          <span class="vol-up" aria-hidden="true"></span>
+          <span class="vol-down" aria-hidden="true"></span>
+          <div class="phone-screen slides" data-view="home">
+            <span class="phone-island" aria-hidden="true"></span>
+
+            <div class="app-shot app-scroll" data-index="0">
+              <div class="app-scroll-area" tabindex="0" aria-label="Thunk home screen, scrollable">
+                <img src="app-1-home-scroll.jpg" alt="Thunk home screen" decoding="async">
+              </div>
+              <span class="app-status-fade" aria-hidden="true"></span>
+              <img class="app-statusbar" src="app-1-home-statusbar.png" alt="" aria-hidden="true">
+              <img class="app-tabbar" src="app-1-home-tabbar.png" alt="" aria-hidden="true">
+            </div>
+            <img class="app-shot" data-index="1" src="app-2-trends.jpg" alt="Thunk trends screen" loading="lazy" decoding="async">
+            <img class="app-shot" data-index="2" src="app-3-history.png" alt="Thunk history screen" loading="lazy" decoding="async">
+            <img class="app-shot" data-index="3" src="app-4-summary.jpg" alt="Thunk weekly summary screen" loading="lazy" decoding="async">
+            <img class="app-shot" data-index="4" src="app-5-profile.jpg" alt="Thunk profile screen" loading="lazy" decoding="async">
+            <img class="app-shot entry" src="app-3-entry.jpg" alt="Thunk journal entry detail" loading="lazy" decoding="async">
+
+            <!-- History cards (positions match app-3-history.jpg) -->
+            <button class="hotspot entry-open" style="left:7.7%; width:85.2%; top:23.5%; height:11%;" aria-label="Open entry from 07/24/2026"></button>
+            <button class="hotspot entry-open" style="left:7.7%; width:85.2%; top:36.7%; height:11%;" aria-label="Open entry from 07/24/2026"></button>
+            <button class="hotspot entry-open" style="left:7.7%; width:85.2%; top:50%; height:11%;" aria-label="Open entry from 07/23/2026"></button>
+            <button class="hotspot entry-open" style="left:7.7%; width:85.2%; top:63.3%; height:11%;" aria-label="Open entry from 07/22/2026"></button>
+            <button class="hotspot entry-open" style="left:7.7%; width:85.2%; top:76.5%; height:11%;" aria-label="Open entry from 07/21/2026"></button>
+            <!-- Entry back arrow -->
+            <button class="hotspot entry-back" style="left:4%; width:13%; top:4.2%; height:5.6%;" aria-label="Back to history"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-nav">
+        <button class="screen-nav-btn" data-dir="-1" aria-label="Previous screen">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3 5 8l5 5"/></svg>
+        </button>
+        <div class="screen-nav-label" aria-live="polite">
+          <span class="screen-nav-name">HOME</span>
+          <span class="screen-nav-count">01 / 05</span>
+        </div>
+        <button class="screen-nav-btn" data-dir="1" aria-label="Next screen">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 5 5-5 5"/></svg>
+        </button>
+      </div>
+      <p class="screen-hint"></p>
+    </div>
+    <div class="showcase-text reveal from-right align-right" style="--i:1">
+      <h2 class="showcase-title olive">APP SCREENS</h2>
+      <p class="showcase-desc">Designed and developed 5 onboarding screens with animations and visual assets</p>
+      <div class="showcase-tags">
+        <span class="tag-pill">REACT NATIVE</span>
+        <span class="tag-pill">REACT NATIVE</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Store Screens -->
+  <section class="screen appstore-section">
+    <h2 class="appstore-title reveal">APP STORE SCREENS</h2>
+    <div class="appstore-row">
+      <img class="reveal" style="--i:1" src="appstore_preview_1.png" alt="Thunk app store preview 1">
+      <img class="reveal" style="--i:2" src="appstore_preview_2.png" alt="Thunk app store preview 2">
+      <img class="reveal" style="--i:3" src="appstore_preview_3.png" alt="Thunk app store preview 3">
+      <img class="reveal" style="--i:4" src="appstore_preview_4.png" alt="Thunk app store preview 4">
+      <img class="reveal" style="--i:5" src="appstore_preview_5.png" alt="Thunk app store preview 5">
+    </div>
+  </section>
+
+  <!-- Logo / Branding -->
+  <section class="logo-section">
+    <div class="brand-grid">
+
+      <div class="brand-cell brand-cream brand-text top">
+        <div class="brand-inner">
+          <h2 class="brand-heading">LOGO</h2>
+          <p class="brand-caption">Glassmorphic logo of Thunk</p>
+        </div>
+      </div>
+      <div class="brand-cell brand-olive brand-carousel" data-carousel>
+        <div class="brand-inner">
+          <div class="brand-slides">
+            <div class="brand-slide" data-label="Logo">
+              <img class="slide-logo" src="brand-logo.png" alt="Thunk glassmorphic theta logo" loading="lazy">
+            </div>
+            <div class="brand-slide" data-label="App Cover">
+              <img class="slide-cover" src="brand-appcover.png" alt="Thunk app icon" loading="lazy">
+            </div>
+          </div>
+          <div class="brand-dots"></div>
+          <div class="brand-nav">
+            <button data-dir="-1" aria-label="Previous"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3 3 10l6 7"/></svg></button>
+            <span class="brand-label" aria-live="polite"></span>
+            <button data-dir="1" aria-label="Next"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 6 7-6 7"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="brand-cell brand-dark brand-carousel" data-carousel>
+        <div class="brand-inner">
+          <div class="brand-slides">
+            <div class="brand-slide" data-label="Color Palette">
+              <div class="palette" role="img" aria-label="Thunk color palette: navy, sky blue, teal, green, butter yellow, cream">
+                <span style="--c:#275385"></span>
+                <span style="--c:#45c8e0"></span>
+                <span style="--c:#36bdb1"></span>
+                <span style="--c:#428659"></span>
+                <span style="--c:#eceb8c"></span>
+                <span style="--c:#fcfadf"></span>
+              </div>
+            </div>
+            <div class="brand-slide" data-label="Gradients">
+              <img class="slide-bubble" src="brand-bubble.png" alt="Glass bubble gradient" loading="lazy">
+              <img class="slide-grad-1" src="brand-gradient-1.png" alt="Background gradient, yellow to blue" loading="lazy">
+              <img class="slide-grad-2" src="brand-gradient-2.png" alt="Background gradient, blue to yellow" loading="lazy">
+            </div>
+          </div>
+          <div class="brand-dots"></div>
+          <div class="brand-nav">
+            <button data-dir="-1" aria-label="Previous"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3 3 10l6 7"/></svg></button>
+            <span class="brand-label" aria-live="polite"></span>
+            <button data-dir="1" aria-label="Next"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 6 7-6 7"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="brand-cell brand-cream brand-text right">
+        <div class="brand-inner">
+          <h2 class="brand-heading">BRANDING</h2>
+          <p class="brand-caption">Color Palette, Themes, UI</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+  <script src="../grain.js"></script>
+
+  
+  
+  <script>
+    // Branding carousels: ‹ label ›, dots, swipe
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('[data-carousel]').forEach(function(c) {
+        const slides = Array.from(c.querySelectorAll('.brand-slide'));
+        const label  = c.querySelector('.brand-label');
+        const dotsEl = c.querySelector('.brand-dots');
+        let index = 0;
+
+        const dots = slides.map(function(s, i) {
+          const d = document.createElement('button');
+          d.className = 'brand-dot';
+          d.setAttribute('aria-label', s.dataset.label);
+          d.addEventListener('click', function() { index = i; render(); });
+          dotsEl.appendChild(d);
+          return d;
+        });
+
+        function render() {
+          slides.forEach(function(s, i) {
+            s.classList.toggle('is-active', i === index);
+            s.classList.toggle('is-before', i < index);
+          });
+          dots.forEach(function(d, i) { d.classList.toggle('is-active', i === index); });
+          label.textContent = slides[index].dataset.label;
+        }
+        function go(dir) { index = (index + dir + slides.length) % slides.length; render(); }
+
+        c.querySelectorAll('.brand-nav button').forEach(function(b) {
+          b.addEventListener('click', function() { go(Number(b.dataset.dir)); });
+        });
+
+        let sx = null, sy = null;
+        c.addEventListener('touchstart', function(e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+        c.addEventListener('touchend', function(e) {
+          if (sx === null) return;
+          const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+          sx = null;
+          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1);
+        });
+
+        render();
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const root = document.getElementById('appCarousel');
+      if (!root) return;
+
+      const screen  = root.querySelector('.phone-screen');
+      const shots   = Array.from(root.querySelectorAll('.app-shot[data-index]'));
+      const entry   = root.querySelector('.app-shot.entry');
+      const nameEl  = root.querySelector('.screen-nav-name');
+      const countEl = root.querySelector('.screen-nav-count');
+      const hintEl  = root.querySelector('.screen-hint');
+
+      const NAMES = ['HOME', 'TRENDS', 'HISTORY', 'SUMMARY', 'PROFILE'];
+      const HISTORY = 2;
+      let index = 0;
+      let entryOpen = false;
+
+      function render() {
+        shots.forEach(function(img, i) {
+          img.classList.toggle('is-active', i === index && !(i === HISTORY && entryOpen));
+          img.classList.toggle('is-before', i < index);
+          img.classList.toggle('is-under', i === HISTORY && entryOpen);
+        });
+        entry.classList.toggle('is-active', index === HISTORY && entryOpen);
+
+        const view = entryOpen ? 'entry' : NAMES[index].toLowerCase();
+        screen.dataset.view = view;
+
+        nameEl.textContent = entryOpen ? 'ENTRY' : NAMES[index];
+        countEl.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(NAMES.length).padStart(2, '0');
+
+        const hint = index === HISTORY ? (entryOpen ? 'Tap the arrow to go back' : 'Tap an entry to open it')
+                   : index === 0 ? 'Scroll inside the phone' : '';
+        if (hint) hintEl.textContent = hint;
+        hintEl.classList.toggle('show', !!hint);
+      }
+
+      const scrollArea = root.querySelector('.app-scroll-area');
+
+      function go(dir) {
+        entryOpen = false;
+        index = (index + dir + NAMES.length) % NAMES.length;
+        if (index === 0 && scrollArea) scrollArea.scrollTop = 0;
+        render();
+      }
+
+      // One-time scroll peek the first time the section comes into view, so it reads as scrollable
+      if (scrollArea && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const peekIO = new IntersectionObserver(function(entries) {
+          if (!entries[0].isIntersecting) return;
+          peekIO.disconnect();
+          setTimeout(function() {
+            if (index !== 0 || scrollArea.scrollTop > 0) return;
+            scrollArea.scrollTo({ top: scrollArea.clientHeight * 0.22, behavior: 'smooth' });
+            setTimeout(function() { scrollArea.scrollTo({ top: 0, behavior: 'smooth' }); }, 900);
+          }, 1100);
+        }, { threshold: 0.6 });
+        peekIO.observe(root);
+      }
+
+      root.querySelectorAll('.screen-nav-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { go(Number(btn.dataset.dir)); });
+      });
+      root.querySelectorAll('.hotspot.entry-open').forEach(function(btn) {
+        btn.addEventListener('click', function() { entryOpen = true; render(); });
+      });
+      root.querySelector('.hotspot.entry-back').addEventListener('click', function() {
+        entryOpen = false; render();
+      });
+
+      // Swipe on the phone
+      let startX = null, startY = null;
+      screen.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+      }, { passive: true });
+      screen.addEventListener('touchend', function(e) {
+        if (startX === null) return;
+        const dx = e.changedTouches[0].clientX - startX;
+        const dy = e.changedTouches[0].clientY - startY;
+        startX = null;
+        if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+        if (entryOpen && dx > 0) { entryOpen = false; render(); return; } // swipe right = back, like iOS
+        go(dx < 0 ? 1 : -1);
+      });
+
+      // Arrow keys while the section is on screen
+      const section = root.closest('.screen');
+      document.addEventListener('keydown', function(e) {
+        if (!section.classList.contains('in-view')) return;
+        if (e.key === 'ArrowRight') go(1);
+        if (e.key === 'ArrowLeft') go(-1);
+        if (e.key === 'Escape' && entryOpen) { entryOpen = false; render(); }
+      });
+
+      render();
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          e.target.classList.toggle('in-view', e.isIntersecting);
+
+          // Play section videos from the start when the section snaps in, pause when it leaves
+          e.target.querySelectorAll('.section-video').forEach(function(v) {
+            if (e.isIntersecting && !reduceMotion) {
+              v.currentTime = 0;
+              v.play().catch(function() {});
+            } else {
+              v.pause();
+            }
+          });
+        });
+      }, { threshold: 0.3 });
+      document.querySelectorAll('.screen').forEach(function(s) { io.observe(s); });
+
+      // Reduced motion: show controls so the user can choose to play it
+      if (reduceMotion) {
+        document.querySelectorAll('.section-video').forEach(function(v) { v.controls = true; });
+      }
+    });
+  </script>
+
+</body>
+</html>

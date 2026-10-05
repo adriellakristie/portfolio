@@ -14,6 +14,7 @@
       --text: #1a1814;
       --muted: #888580;
       --border: #c8c5bd;
+      --cream: #F2FACF;
     }
 
     html { scroll-behavior: smooth; }
@@ -41,7 +42,7 @@
       font-family: 'Bebas Neue', sans-serif;
       font-size: 6.5rem;
       letter-spacing: 0.1em;
-      color: var(--header);
+      color: var(--cream);
       margin-bottom: 10px;
     }
 
@@ -50,7 +51,7 @@
       font-size: 0.7rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--text2);
+      color: var(--cream);
     }
 
     /* ─────────────────────────────────────────
@@ -59,9 +60,9 @@
     .projects-container {
       flex: 1;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      padding: 40px 24px 80px;
+      padding: 24px 24px 40px;
     }
 
     .projects-grid {
@@ -85,7 +86,7 @@
 
     .plate-image {
       display: block;
-      width: 320px;
+      width: min(320px, 38vh);
       height: auto;
       transition: opacity 0.3s ease;
     }
@@ -173,122 +174,128 @@
       }
     }
 
-/* ─────────────────────────────────────────
-   NAVIGATION BAR
-───────────────────────────────────────── */
-.main-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-}
 
-.main-nav {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 40px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-}
 
-.nav-left,
-.nav-right {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
+    /* ─────────────────────────────────────────
+       NAVIGATION BAR
+    ───────────────────────────────────────── */
+    .main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
 
-.nav-left {
-  justify-self: start;
-}
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
 
-.nav-center {
-  justify-self: center;
-}
+    .nav-left,
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
 
-.nav-right {
-  justify-self: end;
-}
+    .nav-left { justify-self: start; }
+    .nav-center { justify-self: center; }
+    .nav-right { justify-self: end; }
 
-.nav-link {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.85rem;
-  font-weight: 300;
-  letter-spacing: 0.05em;
-  color: #ffffff;
-  text-decoration: none;
-  transition: color 0.3s ease;
-  white-space: nowrap;
-}
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
 
-.nav-link:hover {
-  color: rgba(255, 255, 255, 0.7);
-}
+    .nav-link:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
 
-/* Labs Dropdown */
-.nav-item-with-dropdown {
-  position: relative;
-}
+    /* Dropdowns (Projects / Labs) */
+    .nav-item-with-dropdown {
+      position: relative;
+    }
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 12px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
-  padding: 12px 0;
-  min-width: 160px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
 
-.nav-item-with-dropdown:hover .dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  margin-top: 8px;
-}
+    @media (hover: hover) and (pointer: fine) {
+      .nav-item-with-dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        margin-top: 8px;
+      }
+    }
+    .nav-item-with-dropdown.active .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 8px;
+    }
+    @media (max-width: 768px) {
+      .dropdown-menu { left: 0; transform: none; min-width: 140px; }
+    }
 
-.dropdown-item {
-  display: block;
-  padding: 10px 20px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  color: var(--text);
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
 
-.dropdown-item:hover {
-  background: rgba(161, 177, 97, 0.2);
-}
+    .dropdown-item:hover {
+      background: rgba(161, 177, 97, 0.2);
+    }
 
-.logo-link {
-  display: block;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+    .logo-link {
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
 
-.logo-link img {
-  display: block;
-  height: 60px;
-  width: auto;
-}
+    .logo-link img {
+      display: block;
+      height: 60px;
+      width: auto;
+    }
 
-.logo-link:hover {
-  transform: scale(1.15);
-}
+    .logo-link:hover {
+      transform: scale(1.15);
+    }
 
-/* Push page content below fixed nav */
-.page-header {
-  padding: 140px 24px 40px;
-  text-align: center;
-}
+    /* Push page content below fixed nav */
+    .page-header {
+      padding: 100px 24px 16px;
+      text-align: center;
+    }
+
 
     /* ─────────────────────────────────────────
        FOOTER
@@ -305,34 +312,9 @@
   </style>
 </head>
 <body>
+  <script src="../nav.js" data-loc="pages"></script>
 
-  <header class="main-header">
-  <nav class="main-nav">
-    
-    <div class="nav-left">
-      <a href="projects.html" class="nav-link">Projects</a>
-      <div class="nav-item-with-dropdown">
-        <span class="nav-link" style="cursor: pointer;">Labs</span>
-        <div class="dropdown-menu">
-          <a href="labs-code.html" class="dropdown-item">Code</a>
-          <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="nav-center">
-      <a href="../index.html" class="logo-link" aria-label="Home">
-        <img src="../photo1.png" alt="AK Logo">
-      </a>
-    </div>
-
-    <div class="nav-right">
-      <a href="aboutme.html" class="nav-link">About Me</a>
-      <a href="contact.html" class="nav-link">Contact</a>
-    </div>
-
-  </nav>
-</header>
+  
 
   <header class="page-header">
     <h1 class="page-title">Projects</h1>
@@ -342,20 +324,20 @@
   <main class="projects-container">
     <div class="projects-grid">
       
-      <!-- Project 1:Ecobite -->
+      <!-- Project 1:OnTheWay -->
       <div class="project-item" data-project="1">
         <img src="../plate1.PNG" alt="Plate 1" class="plate-image plate-normal">
         <img src="../brokenplate1.png" alt="Broken Plate 1" class="plate-image plate-broken">
-        <div class="project-name">Ecobite</div>
-        <a href="ecobite.html" class="project-link"></a>
+        <div class="project-name">OnTheWay</div>
+        <a href="ontheway5.html" class="project-link"></a>
       </div>
 
       <!-- Project 2: Ecobite -->
       <div class="project-item" data-project="2">
         <img src="../plate2.PNG" alt="Plate 2" class="plate-image plate-normal">
         <img src="../brokenplate2.png" alt="Broken Plate 2" class="plate-image plate-broken">
-        <div class="project-name">OnTheWay</div>
-        <a href="ontheway.html" class="project-link"></a>
+        <div class="project-name">EcoBite</div>
+        <a href="ecobite2.html" class="project-link"></a>
       </div>
 
       <!-- Project 3: Merangkai -->
@@ -363,7 +345,7 @@
         <img src="../plate3.PNG" alt="Plate 3" class="plate-image plate-normal">
         <img src="../brokenplate3.png" alt="Broken Plate 3" class="plate-image plate-broken">
         <div class="project-name">Merangkai</div>
-        <a href="merangkai.html" class="project-link"></a>
+        <a href="merangkai2.html" class="project-link"></a>
       </div>
 
     </div>

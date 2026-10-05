@@ -10,8 +10,8 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --nav: #ffffff;
-      --nav-hover: rgba(255, 255, 255, 0.7);
+      --nav: #60654c;
+      --nav-hover: #3f4330;
       --bg: #FFFDF7;
       --text: #1a1814;
       --header: #60654c;
@@ -400,7 +400,7 @@
   display: block;
   width: 22px;
   height: 2px;
-  background: #ffffff;
+  background: var(--text);
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -461,7 +461,7 @@
   font-size: 1.1rem;
   font-weight: 400;
   letter-spacing: 0.05em;
-  color: #ffffff;
+  color: var(--text);
   text-decoration: none;
 }
 
@@ -470,7 +470,7 @@
   font-size: 1.1rem;
   font-weight: 400;
   letter-spacing: 0.05em;
-  color: #ffffff;
+  color: var(--text);
   margin-bottom: 14px;
 }
 
@@ -485,7 +485,7 @@
   font-family: 'IBM Plex Mono', monospace;
   font-size: 0.85rem;
   letter-spacing: 0.05em;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(26, 24, 20, 0.65);
   text-decoration: none;
 }
 
@@ -517,50 +517,13 @@
   </style>
 </head>
 <body>
+  <script src="../nav.js" data-loc="pages"></script>
 
   <!-- Navigation Bar -->
-  <header class="main-header">
-    <nav class="main-nav">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <div class="nav-left">
-        <a href="projects.html" class="nav-link">Projects</a>
-        <div class="nav-item-with-dropdown">
-          <span class="nav-link" style="cursor: pointer;">Labs</span>
-          <div class="dropdown-menu">
-            <a href="labs-code.html" class="dropdown-item">Code</a>
-            <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-center">
-        <a href="../index.html" class="logo-link" aria-label="Home">
-          <img src="../photo1.png" alt="AK Logo" />
-        </a>
-      </div>
-      <div class="nav-right">
-        <a href="aboutme.html" class="nav-link">About Me</a>
-        <a href="contact.html" class="nav-link">Contact</a>
-      </div>
-    </nav>
-  </header>
+  
   <!-- ── MOBILE SIDEBAR NAV ── -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-  <div class="mobile-sidebar" id="mobileSidebar">
-    <a href="projects.html" class="sidebar-link">Projects</a>
-    <div>
-      <div class="sidebar-group-label">Labs</div>
-      <div class="sidebar-sublinks">
-        <a href="labs-code.html">Code</a>
-        <a href="labs-visual.html">Visual Design</a>
-      </div>
-    </div>
-    <a href="aboutme.html" class="sidebar-link">About Me</a>
-    <a href="contact.html" class="sidebar-link">Contact</a>
-  </div>
+  
+  
 
 
   <!-- Page Header -->
@@ -582,7 +545,7 @@
         <div class="video-wrap">
           <video
             class="hero-video"
-            src="/pages/jade/website.mp4"
+            src="/pages/smb/smb1.mp4"
             autoplay
             muted
             loop
@@ -599,48 +562,67 @@
       <div class="text-columns">
         <div class="col col-left">
 made in
-<div class="desc">2026</div>
+<div class="desc">2024</div>
 <br>
 made with
-<div class="desc">Adobe Premiere Pro, Illustrator, Procreate </div>
+<div class="desc">Adobe Illustrator, Adobe Photoshop, Procreate</div>
 <br>
 work type
-<div class="desc">freelance</div>
+<div class="desc">Design Internship</div>
 
         </div>
         <div class="col col-right">
-          Established in 2002, Jade Boutique curates womens fashion items from worlds best designers around the globe. I was asked to help with their Eid-Al Fitr Campaign and create animations as well as elements for the brand. I illustrated visuals and animated it using Premiere Pro
+Slow Move Bazaar is Indonesia’s first and largest sustainable bazaar. For their 8th volume, I had the opportunity to bring the event’s visual identity to life through branding, promotional graphics, and set design. I created visual assets and props that helped shape the atmosphere and make the bazaar feel cohesive and inviting.
+
+
+
 
         </div>
       </div>
 
-      <!-- Row: Video beside Image -->
+      <!-- Row: Image beside Image -->
       <div class="image-item">
-        <video src="/pages/jade/story.mp4" controls></video>
-        <!-- <div class="image-caption">Caption for image 1 (optional)</div> -->
-      </div>
-
-      <div class="image-item">
-        <img src="/pages/jade/stotypic.png" alt="JADE" />
+        <img src="/pages/smb/smb2.png" alt="Slow Move Bazaar visual" />
         <!-- <div class="image-caption">Caption for image 2 (optional)</div> -->
       </div>
 
-      <!-- Full width image, alone -->
-      <div class="image-item full-span">
-        <img src="/pages/jade/elements.png" alt="JADE" />
+      <div class="image-item">
+        <img src="/pages/smb/smb3.png" alt="Slow Move Bazaar visual" />
         <!-- <div class="image-caption">Caption for image 3 (optional)</div> -->
       </div>
 
       <!-- Row: Video beside Image -->
-      <!-- <div class="image-item">
-        <video src="/pages/jade/website.mp4" controls></video>
-        <div class="image-caption">Caption for video (optional)</div>
+      <div class="image-item">
+        <video src="/pages/smb/smb4.MP4" controls></video>
+        <!-- <div class="image-caption">Caption for video (optional)</div> -->
       </div>
 
       <div class="image-item">
-        <img src="/pages/jade/cover.png" alt="JADE" />
-        <div class="image-caption">Caption for video (optional)</div>
-      </div> -->
+        <img src="/pages/smb/smb5.JPG" alt="Slow Move Bazaar visual" />
+        <!-- <div class="image-caption">Caption for image 5 (optional)</div> -->
+      </div>
+
+      <!-- Row: Image beside Image -->
+      <div class="image-item">
+        <img src="/pages/smb/smb6.JPG" alt="Slow Move Bazaar visual" />
+        <!-- <div class="image-caption">Caption for image 6 (optional)</div> -->
+      </div>
+
+      <div class="image-item">
+        <img src="/pages/smb/smb7.JPG" alt="Slow Move Bazaar visual" />
+        <!-- <div class="image-caption">Caption for image 7 (optional)</div> -->
+      </div>
+
+      <!-- Row: Image beside Image -->
+      <div class="image-item">
+        <img src="/pages/smb/smb8.png" alt="Slow Move Bazaar visual" />
+        <!-- <div class="image-caption">Caption for image 8 (optional)</div> -->
+      </div>
+
+      <div class="image-item">
+        <img src="/pages/smb/smb9.PNG" alt="Slow Move Bazaar visual" />
+        <!-- <div class="image-caption">Caption for image 9 (optional)</div> -->
+      </div>
 
       <!-- Add more items as needed. Use class="image-item full-span"
            on any item you want to span the full grid width alone. -->
@@ -674,77 +656,8 @@ work type
     <script src="../grain.js"></script>
 
 
-  <script>
-    // Mobile dropdown toggle for Labs menu
-    document.addEventListener('DOMContentLoaded', function() {
-      const dropdownTriggers = document.querySelectorAll('.nav-item-with-dropdown');
-      
-      dropdownTriggers.forEach(trigger => {
-        const navLink = trigger.querySelector('.nav-link');
-        
-        // Handle click/tap on mobile
-        navLink.addEventListener('click', function(e) {
-          // Only prevent default and toggle on touch devices
-          if (window.matchMedia('(hover: none)').matches) {
-            e.preventDefault();
-            
-            // Close other dropdowns
-            dropdownTriggers.forEach(other => {
-              if (other !== trigger) {
-                other.classList.remove('active');
-              }
-            });
-            
-            // Toggle current dropdown
-            trigger.classList.toggle('active');
-          }
-        });
-      });
-      
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.nav-item-with-dropdown')) {
-          dropdownTriggers.forEach(trigger => {
-            trigger.classList.remove('active');
-          });
-        }
-      });
-    });
-  </script>
-  <script>
-    // Mobile sidebar toggle
-    document.addEventListener('DOMContentLoaded', function() {
-      const hamburgerBtn = document.getElementById('hamburgerBtn');
-      const mobileSidebar = document.getElementById('mobileSidebar');
-      const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-      function openSidebar() {
-        hamburgerBtn.classList.add('active');
-        mobileSidebar.classList.add('active');
-        sidebarOverlay.classList.add('active');
-      }
-
-      function closeSidebar() {
-        hamburgerBtn.classList.remove('active');
-        mobileSidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-      }
-
-      hamburgerBtn.addEventListener('click', function() {
-        if (mobileSidebar.classList.contains('active')) {
-          closeSidebar();
-        } else {
-          openSidebar();
-        }
-      });
-
-      sidebarOverlay.addEventListener('click', closeSidebar);
-
-      mobileSidebar.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', closeSidebar);
-      });
-    });
-  </script>
+  
+  
 
 </body>
 </html>

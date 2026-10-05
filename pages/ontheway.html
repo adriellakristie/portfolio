@@ -492,49 +492,14 @@
   </style>
 </head>
 <body>
+  <script src="../nav.js" data-loc="pages"></script>
 
   <!-- Navigation Bar -->
-  <header class="main-header">
-    <nav class="main-nav">
-      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="nav-left">
-        <a href="projects.html" class="nav-link">Projects</a>
-        <div class="nav-item-with-dropdown">
-          <span class="nav-link" style="cursor: pointer;">Labs</span>
-          <div class="dropdown-menu">
-            <a href="labs-code.html" class="dropdown-item">Code</a>
-            <a href="labs-visual.html" class="dropdown-item">Visual Design</a>
-          </div>
-        </div>
-      </div>
-      <div class="nav-center">
-        <a href="../index.html" class="logo-link" aria-label="Home">
-          <img src="../photo1.png" alt="AK Logo" />
-        </a>
-      </div>
-      <div class="nav-right">
-        <a href="aboutme.html" class="nav-link">About Me</a>
-        <a href="contact.html" class="nav-link">Contact</a>
-      </div>
-    </nav>
-  </header>
+  
 
   <!-- Mobile Sidebar Nav -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-  <div class="mobile-sidebar" id="mobileSidebar">
-    <a href="projects.html" class="sidebar-link">Projects</a>
-    <div>
-      <div class="sidebar-group-label">Labs</div>
-      <div class="sidebar-sublinks">
-        <a href="labs-code.html">Code</a>
-        <a href="labs-visual.html">Visual Design</a>
-      </div>
-    </div>
-    <a href="aboutme.html" class="sidebar-link">About Me</a>
-    <a href="contact.html" class="sidebar-link">Contact</a>
-  </div>
+  
+  
 
   <!-- Hero: image left, title/tags/link right -->
   <section class="hero">
@@ -619,7 +584,7 @@
       
     </text><rect x="96.0" y="780" width="220" height="92" rx="14" fill="#ece3cc" stroke="#99a631" stroke-width="2"/><text x="206.0" y="806" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="14.5" fill="#582c39">OpenStreetMap</text><text x="206.0" y="823" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10.5" fill="#7c8828">Overpass API</text><text x="206.0" y="843" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">restaurant, cafe, bar,</text><text x="206.0" y="858" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">fast_food, pub tags</text><rect x="340.0" y="780" width="220" height="92" rx="14" fill="#ece3cc" stroke="#99a631" stroke-width="2"/><text x="450.0" y="806" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="14.5" fill="#582c39">Mapbox Places</text><text x="450.0" y="823" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10.5" fill="#7c8828">Geocoding API</text><text x="450.0" y="843" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">POIs tagged</text><text x="450.0" y="858" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">"restaurant"</text><rect x="584.0" y="780" width="220" height="92" rx="14" fill="#ece3cc" stroke="#99a631" stroke-width="2"/><text x="694.0" y="806" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="14.5" fill="#582c39">Foursquare</text><text x="694.0" y="823" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10.5" fill="#7c8828">Places API</text><text x="694.0" y="843" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">optional — needs</text><text x="694.0" y="858" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">API key in config</text><line x1="450.0" y1="764" x2="450.0" y2="790" stroke="#582c39" stroke-width="2.5"/><line x1="206.0" y1="872" x2="206.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="206.0" y1="888" x2="450.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="450.0" y1="872" x2="450.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="450.0" y1="888" x2="450.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="694.0" y1="872" x2="694.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="694.0" y1="888" x2="450.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="450.0" y1="888" x2="450.0" y2="898" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,898 456.0,898 450.0,906" fill="#582c39"/><rect x="170.0" y="906" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="938" r="18" fill="#582c39"/><text x="204.0" y="944" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">5</text><text x="234.0" y="944" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Deduplicate by proximity</text><text x="234.0" y="968" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Restaurants within 50m of each other across sources</text><text x="234.0" y="988" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">and sample points are merged into one</text><text x="234.0" y="1010" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">removeDuplicatesByProximity()</text><line x1="450.0" y1="1024" x2="450.0" y2="1050" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1050 456.0,1050 450.0,1058" fill="#582c39"/><rect x="170.0" y="1058" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1090" r="18" fill="#582c39"/><text x="204.0" y="1096" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">6</text><text x="234.0" y="1096" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Filter to NYC shape</text><text x="234.0" y="1120" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Same real-geometry check as step 2, applied to</text><text x="234.0" y="1140" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">every restaurant result</text><text x="234.0" y="1162" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">isPointInNYC()</text><line x1="450.0" y1="1176" x2="450.0" y2="1202" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1202 456.0,1202 450.0,1210" fill="#582c39"/><rect x="170.0" y="1210" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1242" r="18" fill="#582c39"/><text x="204.0" y="1248" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">7</text><text x="234.0" y="1248" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Snap each result onto the route line</text><text x="234.0" y="1272" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Turf.js computes distance off the road and</text><text x="234.0" y="1292" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">% progress from start → destination</text><text x="234.0" y="1314" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">turf.nearestPointOnLine()</text><line x1="450.0" y1="1328" x2="450.0" y2="1354" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1354 456.0,1354 450.0,1362" fill="#582c39"/><rect x="170.0" y="1362" width="560" height="98" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1394" r="18" fill="#582c39"/><text x="204.0" y="1400" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">8</text><text x="234.0" y="1400" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Keep only what's actually on the way</text><text x="234.0" y="1424" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Drop anything more than 0.5km off the route</text><text x="234.0" y="1446" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">MAX_DISTANCE_FROM_ROUTE_KM</text><line x1="450.0" y1="1460" x2="450.0" y2="1486" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1486 456.0,1486 450.0,1494" fill="#582c39"/><rect x="170.0" y="1494" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1526" r="18" fill="#582c39"/><text x="204.0" y="1532" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">9</text><text x="234.0" y="1532" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Calculate real detour cost</text><text x="234.0" y="1556" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Directions API again, this time routing through</text><text x="234.0" y="1576" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">each candidate as a waypoint, to get added minutes</text><text x="234.0" y="1598" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">getRouteWithStop()  ·  detourMinutes</text><line x1="450.0" y1="1612" x2="450.0" y2="1638" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1638 456.0,1638 450.0,1646" fill="#582c39"/><rect x="170.0" y="1646" width="560" height="98" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1678" r="18" fill="#582c39"/><text x="204.0" y="1684" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">10</text><text x="234.0" y="1684" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Drop high-detour options</text><text x="234.0" y="1708" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Anything adding 10+ minutes is cut</text><text x="234.0" y="1730" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">reasonableOptions filter</text><line x1="450.0" y1="1744" x2="450.0" y2="1770" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1770 456.0,1770 450.0,1778" fill="#582c39"/><rect x="170.0" y="1778" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1810" r="18" fill="#582c39"/><text x="204.0" y="1816" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">11</text><text x="234.0" y="1816" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Spread results across the trip</text><text x="234.0" y="1840" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Bucketed into near-start / middle / near-destination</text><text x="234.0" y="1860" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">thirds, so results aren't clustered at one end</text><text x="234.0" y="1882" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">pickSpreadAcrossRoute()</text><line x1="450.0" y1="1896" x2="450.0" y2="1922" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1922 456.0,1922 450.0,1930" fill="#582c39"/><rect x="170.0" y="1930" width="560" height="118" rx="16" fill="#582c39" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1962" r="18" fill="#99a631"/><text x="204.0" y="1968" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">12</text><text x="234.0" y="1968" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#f9f5e7">Show results</text><text x="234.0" y="1992" font-family="Nunito, sans-serif" font-size="13.5" fill="#f9f5e7" opacity="0.9">Numbered markers on the map + ranked list in the</text><text x="234.0" y="2012" font-family="Nunito, sans-serif" font-size="13.5" fill="#f9f5e7" opacity="0.9">sidebar, ordered start → destination</text><text x="234.0" y="2034" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#d9c9a8">displayFoodOptions()</text>
 </svg> -->
-  <!-- </div> -->
+  </div>
 
   <!-- Product / design imagery -->
   <section class="section closing-space">
@@ -637,51 +602,8 @@
   </footer>
   <script src="../grain.js"></script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const dropdownTriggers = document.querySelectorAll('.nav-item-with-dropdown');
-      dropdownTriggers.forEach(trigger => {
-        const navLink = trigger.querySelector('.nav-link');
-        navLink.addEventListener('click', function(e) {
-          if (window.matchMedia('(hover: none)').matches) {
-            e.preventDefault();
-            dropdownTriggers.forEach(other => { if (other !== trigger) other.classList.remove('active'); });
-            trigger.classList.toggle('active');
-          }
-        });
-      });
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.nav-item-with-dropdown')) {
-          dropdownTriggers.forEach(trigger => trigger.classList.remove('active'));
-        }
-      });
-    });
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const hamburgerBtn = document.getElementById('hamburgerBtn');
-      const mobileSidebar = document.getElementById('mobileSidebar');
-      const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-      function openSidebar() {
-        hamburgerBtn.classList.add('active');
-        mobileSidebar.classList.add('active');
-        sidebarOverlay.classList.add('active');
-      }
-      function closeSidebar() {
-        hamburgerBtn.classList.remove('active');
-        mobileSidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-      }
-      hamburgerBtn.addEventListener('click', function() {
-        mobileSidebar.classList.contains('active') ? closeSidebar() : openSidebar();
-      });
-      sidebarOverlay.addEventListener('click', closeSidebar);
-      mobileSidebar.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', closeSidebar);
-      });
-    });
-  </script>
+  
+  
 
 </body>
 </html>

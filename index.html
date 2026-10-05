@@ -7,17 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; paddi      <!-- Left Navigation Zone -->
-      <div class="nav-left">
-        <a href="pages/projects.html" class="nav-link">Projects</a>
-        <div class="nav-item-with-dropdown">
-          <span class="nav-link" style="cursor: pointer;">Labs</span>
-          <div class="dropdown-menu">
-            <a href="pages/labs-code.html" class="dropdown-item">Code</a>
-            <a href="pages/labs-visual.html" class="dropdown-item">Visual Design</a>
-          </div>
-        </div>
-      </div>; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       /* --bg: #eeece6; */
@@ -35,129 +25,128 @@
       font-family: 'IBM Plex Mono', monospace;
       font-weight: 300;
       overflow-x: hidden;
-      padding-top: 80px; /* Offset for fixed navbar */
     }
 
     /* ─────────────────────────────────────────
-       GLASSMORPHIC NAVIGATION BAR
+       NAVIGATION BAR
     ───────────────────────────────────────── */
-   /* ─────────────────────────────────────────
-   NAVIGATION BAR
-───────────────────────────────────────── */
-.main-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-}
+    .main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
 
-.main-nav {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 40px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-}
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
 
-.nav-left,
-.nav-right {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
+    .nav-left,
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
 
-.nav-left {
-  justify-self: start;
-}
+    .nav-left { justify-self: start; }
+    .nav-center { justify-self: center; }
+    .nav-right { justify-self: end; }
 
-.nav-center {
-  justify-self: center;
-}
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
 
-.nav-right {
-  justify-self: end;
-}
+    .nav-link:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
 
-.nav-link {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.85rem;
-  font-weight: 300;
-  letter-spacing: 0.05em;
-  color: #ffffff;
-  text-decoration: none;
-  transition: color 0.3s ease;
-  white-space: nowrap;
-  position: relative;
-}
+    /* Dropdowns (Projects / Labs) */
+    .nav-item-with-dropdown {
+      position: relative;
+    }
 
-.nav-link:hover {
-  color: rgba(255, 255, 255, 0.7);
-}
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
 
-/* Labs Dropdown */
-.nav-item-with-dropdown {
-  position: relative;
-}
+    @media (hover: hover) and (pointer: fine) {
+      .nav-item-with-dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        margin-top: 8px;
+      }
+    }
+    .nav-item-with-dropdown.active .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 8px;
+    }
+    @media (max-width: 768px) {
+      .dropdown-menu { left: 0; transform: none; min-width: 140px; }
+    }
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 12px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
-  padding: 12px 0;
-  min-width: 160px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
 
-.nav-item-with-dropdown:hover .dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  margin-top: 8px;
-}
+    .dropdown-item:hover {
+      background: rgba(161, 177, 97, 0.2);
+    }
 
-.dropdown-item {
-  display: block;
-  padding: 10px 20px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  color: var(--text);
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
+    .logo-link {
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
 
-.dropdown-item:hover {
-  background: rgba(161, 177, 97, 0.2);
-}
+    .logo-link img {
+      display: block;
+      height: 60px;
+      width: auto;
+    }
 
-.logo-link {
-  display: block;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+    .logo-link:hover {
+      transform: scale(1.15);
+    }
 
-.logo-link img {
-  display: block;
-  height: 60px;
-  width: auto;
-}
+    /* Push page content below fixed nav */
+    .page-header {
+      padding: 140px 24px 40px;
+      text-align: center;
+    }
 
-.logo-link:hover {
-  transform: scale(1.15);
-}
-
-/* Push page content below fixed nav */
-.page-header {
-  padding: 140px 24px 40px;
-  text-align: center;
-}
     /* ─────────────────────────────────────────
        HERO — full viewport, centered layout
     ───────────────────────────────────────── */
@@ -390,25 +379,13 @@
     }
 
     @keyframes fadeOut {
-      0% {
-        opacity: 1;
-        visibility: visible;
-      }
-      100% {
-        opacity: 0;
-        visibility: hidden;
-      }
+      0% { opacity: 1; visibility: visible; }
+      100% { opacity: 0; visibility: hidden; }
     }
 
     @keyframes scaleIn {
-      0% {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     /* Hide navbar and main content initially only on first load */
@@ -432,16 +409,13 @@
     }
 
     @keyframes fadeIn {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
+      0% { opacity: 0; }
+      100% { opacity: 1; }
     }
   </style>
 </head>
 <body>
+  <script src="nav.js" data-loc="root"></script>
 
   <script>
     // Check if user has already seen the intro
@@ -452,37 +426,8 @@
     }
   </script>
 
-  <!-- ── GLASSMORPHIC NAVIGATION BAR ── -->
-  <header class="main-header">
-    <nav class="main-nav">
-      
-      <!-- Left Navigation Zone -->
-      <div class="nav-left">
-        <a href="pages/projects.html" class="nav-link">Projects</a>
-        <div class="nav-item-with-dropdown">
-          <span class="nav-link" style="cursor: pointer;">Labs</span>
-          <div class="dropdown-menu">
-            <a href="pages/labs-code.html" class="dropdown-item">Code</a>
-            <a href="pages/labs-visual.html" class="dropdown-item">Visual Design</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Center Logo Zone (About Me Gateway) -->
-      <div class="nav-center">
-        <a href="index.html" class="logo-link" aria-label="Home">
-          <img src="photo1.png" alt="AK Logo" />
-        </a>
-      </div>
-
-      <!-- Right Navigation Zone -->
-      <div class="nav-right">
-        <a href="pages/aboutme.html" class="nav-link">About Me</a>
-        <a href="pages/contact.html" class="nav-link">Contact</a>
-      </div>
-
-    </nav>
-  </header>
+  <!-- ── NAVIGATION BAR ── -->
+  
 
   <!-- ── INTRO SCREEN ── -->
   <div class="intro-screen">
@@ -517,5 +462,7 @@
   <!-- End Main Content -->
 
   <script src="grain.js"></script>
+
+  
 </body>
 </html>
