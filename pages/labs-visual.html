@@ -18,7 +18,7 @@
       --header: #1a1814;
       --muted: #888580;
       --border: #c8c5bd;
-      --nav:#ffffff;
+      --nav: #1a1814;
     }
 
     html { scroll-behavior: smooth; }
@@ -32,6 +32,18 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ─────────────────────────────────────────
@@ -85,6 +97,8 @@
     .nav-link:hover {
       color: rgba(255, 255, 255, 0.7);
     }
+
+    .main-nav .hamburger-btn span { background: var(--nav); }
 
     /* Labs Dropdown */
     .nav-item-with-dropdown {

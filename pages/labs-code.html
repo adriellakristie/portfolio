@@ -18,7 +18,7 @@
       --header: #1a1814;
       --muted: #888580;
       --border: #c8c5bd;
-      --nav:#ffffff;
+      --nav: #1a1814;
     }
 
     html { scroll-behavior: smooth; }
@@ -80,7 +80,7 @@
   font-size: 0.8rem;
   font-weight: 300;
   letter-spacing: 0.05em;
-  color: #ffffff;
+  color: var(--nav);
   text-decoration: none;
   transition: opacity 0.3s ease;
   white-space: nowrap;
@@ -89,15 +89,17 @@
 
 .nav-link:visited,
 .nav-link:focus {
-  color: #ffffff;
+  color: var(--nav);
   text-decoration: none;
 }
 
 .nav-link:hover {
-  color: #ffffff;
+  color: var(--nav);
   text-decoration: none;
   opacity: 0.7;
 }
+
+.main-nav .hamburger-btn span { background: var(--nav); }
 
 @media (max-width: 768px) {
   .main-nav {
@@ -119,7 +121,7 @@
     font-size: 0.8rem;
     letter-spacing: 0.02em;
     padding: 4px 6px;
-    color: #ffffff;
+    color: var(--nav);
     text-decoration: none;
   }
 
@@ -415,7 +417,7 @@
   display: block;
   width: 22px;
   height: 2px;
-  background: #ffffff;
+  background: var(--nav);
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 

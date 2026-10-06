@@ -60,6 +60,8 @@
     + '.sidebar-group-label { font-family: "IBM Plex Mono", monospace; font-size: 1.1rem; font-weight: 400; letter-spacing: 0.05em; color: var(--text, #1a1814); margin-bottom: 14px; }'
     + '.sidebar-sublinks { display: flex; flex-direction: column; gap: 14px; padding-left: 16px; }'
     + '.sidebar-sublinks a { font-family: "IBM Plex Mono", monospace; font-size: 0.85rem; letter-spacing: 0.05em; color: var(--muted, rgba(26, 24, 20, 0.65)); text-decoration: none; }'
+    // Shared footer: same look on every page, line + text match the nav link color
+    + '.site-footer { border-top: 0.5px solid var(--footer-color, var(--nav, var(--text, #1a1814))) !important; background: transparent !important; padding: 28px 24px !important; text-align: center; font-family: "IBM Plex Mono", monospace; font-size: 0.58rem !important; font-weight: 300; letter-spacing: 0.14em !important; text-transform: uppercase; color: var(--footer-color, var(--nav, var(--text, #1a1814))) !important; }'
     + '@media (max-width: 768px) {'
     + '  .main-nav { position: relative; padding: 12px 16px; }'
     + '  .nav-left, .nav-right { display: none; }'
@@ -126,6 +128,12 @@
   document.write(style + navHTML);
 
   document.addEventListener('DOMContentLoaded', function () {
+    // Footer uses the nav link's actual rendered color, even when a page styles the nav directly
+    var firstNavLink = document.querySelector('.main-nav .nav-link');
+    if (firstNavLink) {
+      document.documentElement.style.setProperty('--footer-color', getComputedStyle(firstNavLink).color);
+    }
+
     // Dropdown toggle for touch devices (desktop uses CSS :hover)
     var dropdownTriggers = document.querySelectorAll('.nav-item-with-dropdown');
     dropdownTriggers.forEach(function (trigger) {
