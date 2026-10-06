@@ -60,6 +60,11 @@
     + '.sidebar-group-label { font-family: "IBM Plex Mono", monospace; font-size: 1.1rem; font-weight: 400; letter-spacing: 0.05em; color: var(--text, #1a1814); margin-bottom: 14px; }'
     + '.sidebar-sublinks { display: flex; flex-direction: column; gap: 14px; padding-left: 16px; }'
     + '.sidebar-sublinks a { font-family: "IBM Plex Mono", monospace; font-size: 0.85rem; letter-spacing: 0.05em; color: var(--muted, rgba(26, 24, 20, 0.65)); text-decoration: none; }'
+    // Mobile menu text is always dark so it reads on every page background
+    // (ID selectors beat the per-page sidebar overrides)
+    + '#mobileSidebar .sidebar-link, #mobileSidebar .sidebar-group-label { color: #1a1814; }'
+    + '#mobileSidebar .sidebar-sublinks a { color: #1a1814; opacity: 0.8; }'
+    + '#mobileSidebar .sidebar-sublinks a:hover, #mobileSidebar .sidebar-link:hover { opacity: 0.6; }'
     // Shared footer: same look on every page, line + text match the nav link color
     + '.site-footer { border-top: 0.5px solid var(--footer-color, var(--nav, var(--text, #1a1814))) !important; background: transparent !important; padding: 28px 24px !important; text-align: center; font-family: "IBM Plex Mono", monospace; font-size: 0.58rem !important; font-weight: 300; letter-spacing: 0.14em !important; text-transform: uppercase; color: var(--footer-color, var(--nav, var(--text, #1a1814))) !important; }'
     + '@media (max-width: 768px) {'

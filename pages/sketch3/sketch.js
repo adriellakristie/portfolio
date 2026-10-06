@@ -90,10 +90,10 @@ function draw() {
   }
 
   // q/w controls hair width (wider/narrower)
-  if (keyIsPressed && key === 'q') {
+  if (keyIsPressed && key.toLowerCase() === 'q') {
     hairW += 2;
   }
-  if (keyIsPressed && key === 'w') {
+  if (keyIsPressed && key.toLowerCase() === 'w') {
     hairW -= 2;
   }
   if (hairW > 505){
@@ -101,10 +101,10 @@ function draw() {
   }
 
   // e/r controls hair length (longer/shorter)
-  if (keyIsPressed && key === 'e') {
+  if (keyIsPressed && key.toLowerCase() === 'e') {
     hairL += 2;
   }
-  if (keyIsPressed && key === 'r') {
+  if (keyIsPressed && key.toLowerCase() === 'r') {
     hairL -= 2;
   }
 
