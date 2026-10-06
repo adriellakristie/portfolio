@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merangkai - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F7F4EC;
+      --text: #1a1814;
+      --muted: #4a453d;
+      --border: #c8c5bd;
+      --green: #7c8944;
+      --maroon: #6f1f2e;
+      --maroon-dark: #52141f;
+      --pink: #a83865;
+      --pill-bg: #e7e3d8;
+      --pill-text: #2a2a2a;
+      --card-gray: #c9c9c9;
+      --quote-bg: #f3ecd6;
+      --nav: #7c8944;
+      --nav-hover: #22472a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─────────────────────────────────────────
+       NAVIGATION BAR
+    ───────────────────────────────────────── */
+    .main-header { position: relative; width: 100%; }
+
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    .nav-left, .nav-right { display: flex; gap: 20px; align-items: center; }
+    .nav-left { justify-self: start; }
+    .nav-center { justify-self: center; }
+    .nav-right { justify-self: end; }
+
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--nav);
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .nav-link:visited, .nav-link:focus { color: var(--nav); text-decoration: none; }
+    .nav-link:hover { color: var(--nav-hover); text-decoration: none; opacity: 0.7; }
+
+    .nav-item-with-dropdown { position: relative; }
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .nav-item-with-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; margin-top: 8px; }
+    }
+    .nav-item-with-dropdown.active .dropdown-menu { opacity: 1; visibility: visible; margin-top: 8px; }
+    @media (max-width: 768px) {
+      .dropdown-menu { left: 0; transform: none; min-width: 140px; }
+    }
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+    .dropdown-item:hover { background: rgba(111, 31, 46, 0.12); }
+
+    .logo-link { display: block; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .logo-link img { display: block; height: 60px; width: auto; }
+    .logo-link:hover { transform: scale(1.15); }
+
+    /* ─────────────────────────────────────────
+       HERO SECTION (image left / title right)
+    ───────────────────────────────────────── */
+    .hero {
+      max-width: 1100px;
+      margin: 20px auto 0;
+      padding: 20px 24px 0;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-image {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      background: var(--card-gray);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-content { display: flex; flex-direction: column; }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5.2rem;
+      line-height: 0.95;
+      letter-spacing: 0.06em;
+      color: var(--maroon);
+      margin-bottom: 26px;
+    }
+
+    .tag-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tag-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--pill-text);
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      padding: 10px 22px;
+      border-radius: 999px;
+    }
+
+    .btn-live {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--pill-text);
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      padding: 10px 22px;
+      border-radius: 999px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      width: fit-content;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .btn-live:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,0.1); }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 30px; padding: 20px 24px 0; }
+      .page-title { font-size: 3.6rem; }
+    }
+
+    /* ─────────────────────────────────────────
+       STATS ROW
+    ───────────────────────────────────────── */
+    .stats-row {
+      max-width: 1100px;
+      margin: 50px auto 0;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .stat-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.65;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+      color: var(--maroon);
+      font-weight: 500;
+      line-height: 1.6;
+    }
+    @media (max-width: 768px) {
+      .stats-row { grid-template-columns: 1fr 1fr; row-gap: 30px; }
+    }
+
+    /* ─────────────────────────────────────────
+       QUOTE BOX
+    ───────────────────────────────────────── */
+    .quote-wrap {
+      max-width: 1100px;
+      margin: 50px auto 0;
+      padding: 0 24px;
+      width: 100%;
+    }
+    .quote-box {
+      width: 100%;
+      padding: 46px 24px;
+      background: var(--quote-bg);
+      border-radius: 4px;
+      text-align: center;
+    }
+    .quote-box p {
+      font-family: 'Inter', sans-serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .quote-box .accent-maroon { color: var(--maroon); font-weight: 600; font-style: normal; }
+
+    /* ─────────────────────────────────────────
+       CONTENT SECTIONS
+    ───────────────────────────────────────── */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px 0;
+      width: 100%;
+    }
+    .section-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+      color: var(--maroon);
+    }
+    .section-heading.solution { color: var(--pink); }
+
+    .section p.body-text,
+    .col p.body-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.85;
+      letter-spacing: 0.01em;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .body-text .bold { font-weight: 600; color: var(--text); }
+
+    .body-list {
+      list-style: none;
+      margin-bottom: 18px;
+    }
+    .body-list li {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.85;
+      letter-spacing: 0.01em;
+      color: var(--muted);
+      padding-left: 18px;
+      position: relative;
+    }
+    .body-list li::before {
+      content: "\2022";
+      position: absolute;
+      left: 0;
+      color: var(--green);
+    }
+
+    /* Question / prompt callout with left rule */
+    .problem-question {
+      border-left: 3px solid var(--maroon);
+      padding-left: 16px;
+      font-family: 'Inter', sans-serif;
+      font-style: italic;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    /* Two column Problem / Research split */
+    .split-section {
+      max-width: 1100px;
+      margin: 60px auto 0;
+      padding: 0 24px 46px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      border-bottom: 1px solid var(--border);
+    }
+    .col.left { border-right: 1px solid var(--border); padding-right: 70px; margin-right: -35px; }
+
+    .accent-label {
+      display: inline-block;
+      border-left: 3px solid var(--maroon-dark);
+      padding-left: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 768px) {
+      .split-section { grid-template-columns: 1fr; gap: 40px; }
+      .col.left { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; margin-right: 0; padding-bottom: 30px; }
+    }
+
+    /* Solution accent line */
+    .solution-tag {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-left: 3px solid var(--pink);
+      padding-left: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 22px;
+    }
+
+    /* ─────────────────────────────────────────
+       PROCESS STEPS (5-up row of cards)
+    ───────────────────────────────────────── */
+    .process-row {
+      max-width: 1100px;
+      margin: 60px auto 0;
+      padding: 0 24px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+    .process-card {
+      background: var(--card-gray);
+      border-radius: 4px;
+      aspect-ratio: 3 / 4;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .process-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.6rem;
+      color: var(--maroon);
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .process-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      line-height: 1.5;
+      color: var(--text);
+      opacity: 0.85;
+    }
+    @media (max-width: 768px) {
+      .process-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ─────────────────────────────────────────
+       BATIK QUOTE BANNER
+    ───────────────────────────────────────── */
+    .batik-banner {
+      max-width: 1100px;
+      margin: 70px auto 0;
+      padding: 0 24px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+    }
+    .batik-side {
+      background-image: url('merangkai-batik-pattern.png');
+      background-size: cover;
+      background-position: center;
+      background-color: var(--maroon-dark);
+    }
+    .batik-center {
+      background: var(--maroon-dark);
+      color: var(--quote-bg);
+      text-align: center;
+      padding: 50px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .batik-center img.logo-mark {
+      width: 54px;
+      height: auto;
+      opacity: 0.9;
+    }
+    .batik-center p {
+      font-family: 'Inter', sans-serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    @media (max-width: 768px) {
+      .batik-banner { grid-template-columns: 1fr; }
+      .batik-side { display: none; }
+    }
+
+
+    /* Make images in closing-space match placeholder block size */
+    .closing-space > img {
+      margin-top: 26px;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 14.7/8;
+      object-fit: cover;
+      display: block;
+      border-radius: 4px;
+    }
+
+    .design-grid-large {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .design-grid-large > img {
+      margin-top: 0;
+      width: 100%;
+      aspect-ratio: 4/4;
+    }
+    .banner-block >img {
+      margin-top: 20px;
+      width: 100%;
+      aspect-ratio: 21/6;
+      /* background: var(--card-gray); */
+      border-radius: 4px;
+    }
+    @media (max-width: 768px) {
+      .design-grid-large { grid-template-columns: 1fr; }
+    }
+
+    .closing-space { padding: 80px 24px 60px; }
+
+    
+
+    /* ─────────────────────────────────────────
+       PROJECT TEASER CARDS
+    ───────────────────────────────────────── */
+    .teaser-grid {
+      max-width: 1100px;
+      margin: 40px auto 0;
+      padding: 0 24px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .teaser-card {
+      aspect-ratio: 16 / 11;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+      overflow: hidden;
+    }
+    .teaser-card:hover { transform: translateY(-4px); }
+    .teaser-card.merangkai { background: #f4f1e6; }
+    .teaser-card.merangkai .teaser-title {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.3em;
+      font-size: 1.6rem;
+      color: var(--maroon);
+    }
+    .teaser-card.merangkai .teaser-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    .teaser-card.ontheway { background: #e8c76b; }
+    .teaser-card.ontheway .teaser-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      line-height: 1;
+      text-align: center;
+      color: #2f4a2f;
+    }
+    @media (max-width: 768px) {
+      .teaser-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─────────────────────────────────────────
+       RUNNERS BANNER
+    ───────────────────────────────────────── */
+    .runners-banner {
+      max-width: 1100px;
+      margin: 30px auto 0;
+      padding: 0 24px;
+      width: 100%;
+    }
+    .runners-banner img {
+      width: 100%;
+      display: block;
+      border-radius: 4px;
+      aspect-ratio: 21 / 6;
+      object-fit: cover;
+      background: var(--maroon-dark);
+    }
+
+    /* footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-top: 40px;
+    }
+
+    /* ─────────────────────────────────────────
+       MOBILE SIDEBAR NAV
+    ───────────────────────────────────────── */
+    .hamburger-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1100;
+      padding: 0;
+    }
+    .hamburger-btn span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger-btn.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger-btn.active span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 1150;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .sidebar-overlay.active { display: block; opacity: 1; }
+
+    .mobile-sidebar {
+      position: fixed;
+      top: 0; left: -85%;
+      width: 85%; max-width: 300px;
+      height: 100vh;
+      background: var(--bg);
+      z-index: 1200;
+      transition: left 0.35s ease;
+      box-shadow: 2px 0 16px rgba(0, 0, 0, 0.25);
+      padding: 90px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      overflow-y: auto;
+    }
+    .mobile-sidebar.active { left: 0; }
+
+    .sidebar-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .sidebar-group-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .sidebar-sublinks { display: flex; flex-direction: column; gap: 14px; padding-left: 16px; }
+    .sidebar-sublinks a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .main-nav { position: relative; padding: 12px 16px; }
+      .nav-left, .nav-right { display: none; }
+      .hamburger-btn { display: flex; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
+      .nav-center { justify-self: end; grid-column: 3; }
+      .logo-link img { height: 35px; }
+      .stats-row { row-gap: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../nav.js" data-loc="pages"></script>
+
+  <!-- Navigation Bar -->
+  
+
+  <!-- Mobile Sidebar Nav -->
+  
+  
+
+  <!-- Hero: image left, title/tags/link right -->
+  <section class="hero">
+    <div class="hero-image">
+      <img src="merangkai-hero.png" alt="Merangkai preview on laptop">
+    </div>
+    <div class="hero-content">
+      <p class="eyebrow">A gallery; a fragment of home</p>
+      <h1 class="page-title">MERANGKAI</h1>
+      <div class="tag-row">
+        <span class="tag-pill">React</span>
+        <span class="tag-pill">FastAPI</span>
+      </div>
+      <a href="https://merangkai-by-adriellakristie.vercel.app/" target="_blank" rel="noopener" class="btn-live">Visit Live Site</a>
+    </div>
+  </section>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div>
+      <div class="stat-label">Product</div>
+      <div class="stat-value">Merangkai</div>
+    </div>
+    <div>
+      <div class="stat-label">My Role</div>
+      <div class="stat-value">Full-Stack Developer</div>
+    </div>
+    <div>
+      <div class="stat-label">Timeline</div>
+      <div class="stat-value">April 2026</div>
+    </div>
+    <div>
+      <div class="stat-label">Skills</div>
+      <div class="stat-value">Frontend, Backend, Product Design, Creative Codist</div>
+    </div>
+  </div>
+
+  <!-- Quote -->
+  <div class="quote-wrap">
+    <div class="quote-box">
+      <p>a look into <span class="accent-maroon">Indonesia</span></p>
+    </div>
+  </div>
+
+  <!-- The Problem / The Research (two-column split) -->
+  <section class="split-section">
+    <div class="col left">
+      <h2 class="section-heading">The Problem</h2>
+      <p class="accent-label">How might we preserve Indonesian cultural heritage while making it feel engaging, accessible, and relevant in a digital world?</p>
+      <p class="body-text">Indonesian cultural heritage is rich with stories, symbols, and artistic traditions, yet much of it is experienced through static documentation rather than interactive experiences.</p>
+      <p class="body-text">As digital media becomes an increasingly important way for people to discover and learn, traditional forms such as Ondel-ondel, Barong, and batik risk feeling distant from younger, digitally native audiences.</p>
+    </div>
+    <div class="col right">
+      <h2 class="section-heading">The Research</h2>
+      <div class="accent-label">How to gain<br>recognition</div>
+      <p class="body-text">I explored Indonesian cultural traditions that carry strong visual languages and cultural narratives, focusing on how they could be translated into interactive digital experiences.</p>
+      <p class="body-text">Rather than simply digitizing these traditions, I looked at how their visual patterns, movement, symbolism, and narratives could become interactive systems.</p>
+      <p class="body-text">This led to a key insight:</p>
+      <p class="body-text">Digital preservation does not have to mean simply archiving culture. It can also mean creating new ways to experience it.</p>
+    </div>
+  </section>
+
+  <!-- The Opportunity -->
+  <section class="section">
+    <h2 class="section-heading">The Opportunity</h2>
+    <p class="body-text">Generative art and computational design offered a natural bridge between traditional craftsmanship and modern technology.</p>
+    <p class="body-text">This created an opportunity to:</p>
+    <ul class="body-list">
+      <li>Make Indonesian heritage more approachable to digital audiences.</li>
+      <li>Preserve cultural stories through new forms of digital media.</li>
+      <li>Turn traditional visual systems into interactive experiences.</li>
+      <li>Demonstrate how technology can reinterpret culture without losing its identity.</li>
+    </ul>
+    <p class="body-text">The project became an exploration of how tradition and technology can coexist rather than compete.</p>
+  </section>
+
+  <!-- The Solution -->
+  <section class="section">
+    <h2 class="section-heading solution">The Solution</h2>
+    <div class="solution-tag">Merangkai: Reimagining Indonesian heritage through interaction</div>
+    <p class="body-text">Merangkai transforms Indonesian cultural heritage into interactive digital experiences through generative art and computational design. Users can explore Ondel-ondel, Barong, and batik through animated narratives, interactive visuals, and generative patterns, making traditional stories more engaging and accessible to digital audiences.</p>
+  </section>
+
+  <!-- Process steps
+  <div class="process-row">
+    <div class="process-card">
+      <div class="process-number">1</div>
+      <div class="process-text">Users enter their starting point and destination.</div>
+    </div>
+    <div class="process-card">
+      <div class="process-number">2</div>
+    </div>
+    <div class="process-card">
+      <div class="process-number">3</div>
+    </div>
+    <div class="process-card">
+      <div class="process-number">4</div>
+    </div>
+    <div class="process-card">
+      <div class="process-number">5</div>
+    </div>
+  </div> -->
+
+  
+
+  <!-- Product / design imagery -->
+  <section class="section closing-space">
+    <img src="merangkai1.png" alt="OnTheWay preview">
+    <div class="design-grid-large">
+          <img src="merangkai2.png" alt="OnTheWay preview">
+          <img src="merangkai3.png" alt="OnTheWay preview">
+    </div>
+    <div class="banner-block"></div>
+    <img src="merangkai4.png" alt="OnTheWay preview">
+  </section>
+
+  <!-- Batik quote banner -->
+  <!-- <div class="batik-banner">
+    <div class="batik-side"></div>
+    <div class="batik-center">
+      <img src="merangkai1.png" alt="Merangkai preview on laptop" style="width: 100%; max-width: 400px; border-radius: 4px;">
+    </div>
+    <div class="batik-side"></div>
+  </div> -->
+
+  
+
+  <!-- Project teaser cards -->
+  <!-- <div class="teaser-grid">
+    <a href="merangkai.html" class="teaser-card merangkai">
+      <div class="teaser-title">MERANGKAI</div>
+      <div class="teaser-sub">A fragment of home, Indonesia</div>
+    </a>
+    <a href="ontheway.html" class="teaser-card ontheway">
+      <div class="teaser-title">On<br>The<br>Way</div>
+    </a>
+  </div> -->
+
+  <!-- Runners banner -->
+  <!-- <div class="runners-banner">
+    <img src="merangkai-runners-banner.png" alt="Illustrated runners banner">
+  </div> -->
+
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+  <script src="../grain.js"></script>
+
+  
+  
+
+</body>
+</html>

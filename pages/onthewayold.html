@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OnTheWay - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F6F3EC;
+      --text: #1a1814;
+      --muted: #4a453d;
+      --border: #c8c5bd;
+      --green: #7c8944;
+      --maroon: #6d1f2e;
+      --pill-bg: #e7e3d8;
+      --pill-text: #2a2a2a;
+      --card-gray: #cbcbcb;
+      --quote-bg: #f6f2df;
+      --nav: #7c8944;
+      --nav-hover: #22472a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 300;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─────────────────────────────────────────
+       NAVIGATION BAR
+    ───────────────────────────────────────── */
+    .main-header { position: relative; width: 100%; }
+
+    .main-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    .nav-left, .nav-right { display: flex; gap: 20px; align-items: center; }
+    .nav-left { justify-self: start; }
+    .nav-center { justify-self: center; }
+    .nav-right { justify-self: end; }
+
+    .nav-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--nav);
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .nav-link:visited, .nav-link:focus { color: var(--nav); text-decoration: none; }
+    .nav-link:hover { color: var(--nav-hover); text-decoration: none; opacity: 0.7; }
+
+    .nav-item-with-dropdown { position: relative; }
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 12px 0;
+      min-width: 160px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .nav-item-with-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; margin-top: 8px; }
+    }
+    .nav-item-with-dropdown.active .dropdown-menu { opacity: 1; visibility: visible; margin-top: 8px; }
+    @media (max-width: 768px) {
+      .dropdown-menu { left: 0; transform: none; min-width: 140px; }
+    }
+    .dropdown-item {
+      display: block;
+      padding: 10px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+    .dropdown-item:hover { background: rgba(38, 124, 215, 0.15); }
+
+    .logo-link { display: block; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .logo-link img { display: block; height: 60px; width: auto; }
+    .logo-link:hover { transform: scale(1.15); }
+
+    /* ─────────────────────────────────────────
+       HERO SECTION (image left / title right)
+    ───────────────────────────────────────── */
+    .hero {
+      max-width: 1100px;
+      margin: 20px auto 0;
+      padding: 20px 24px 0;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-image {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      background: var(--card-gray);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-content { display: flex; flex-direction: column; }
+
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5.2rem;
+      line-height: 0.95;
+      letter-spacing: 0.06em;
+      color: var(--maroon);
+      margin-bottom: 26px;
+    }
+
+    .tag-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tag-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--pill-text);
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      padding: 10px 22px;
+      border-radius: 999px;
+    }
+
+    .btn-live {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      color: var(--pill-text);
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      padding: 10px 22px;
+      border-radius: 999px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      width: fit-content;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .btn-live:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,0.1); }
+
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 30px; padding: 20px 24px 0; }
+      .page-title { font-size: 3.6rem; }
+    }
+
+    /* ─────────────────────────────────────────
+       STATS ROW
+    ───────────────────────────────────────── */
+    .stats-row {
+      max-width: 1100px;
+      margin: 50px auto 0;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .stat-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.65;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+      color: var(--green);
+      font-weight: 500;
+      line-height: 1.6;
+    }
+    @media (max-width: 768px) {
+      .stats-row { grid-template-columns: 1fr 1fr; row-gap: 30px; }
+    }
+
+    /* ─────────────────────────────────────────
+       QUOTE BOX
+    ───────────────────────────────────────── */
+    .quote-wrap {
+      max-width: 1100px;
+      margin: 50px auto 0;
+      padding: 0 24px;
+      width: 100%;
+    }
+    .quote-box {
+      width: 100%;
+      padding: 46px 24px;
+      background: var(--quote-bg);
+      border-radius: 4px;
+      text-align: center;
+    }
+    .quote-box p {
+      font-family: 'Inter', sans-serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .quote-box .accent-maroon { color: var(--maroon); font-weight: 600; font-style: normal; }
+    .quote-box .accent-green { color: var(--green); font-weight: 600; font-style: normal; }
+
+    /* ─────────────────────────────────────────
+       CONTENT SECTIONS
+    ───────────────────────────────────────── */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px 0;
+      width: 100%;
+    }
+    .section-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+      color: var(--maroon);
+    }
+    .section-heading.solution { color: var(--green); }
+
+    .section p.body-text,
+    .col p.body-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.85;
+      letter-spacing: 0.01em;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .body-text .bold { font-weight: 600; color: var(--text); }
+    .body-text.lead { font-weight: 600; color: var(--text); }
+
+    /* Two column Problem / Research split */
+    .split-section {
+      max-width: 1100px;
+      margin: 60px auto 0;
+      padding: 0 24px 46px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      border-bottom: 1px solid var(--border);
+    }
+    .col.left { border-right: 1px solid var(--border); padding-right: 70px; margin-right: -35px; }
+    .col-heading-group { margin-bottom: 30px; }
+    .col-heading-group:last-child { margin-bottom: 0; }
+
+    .accent-label {
+      display: inline-block;
+      border-left: 3px solid var(--green);
+      padding-left: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 18px;
+    }
+
+    .flow-highlight {
+      background: var(--quote-bg);
+      border-radius: 6px;
+      padding: 16px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.8;
+      color: var(--text);
+      margin: 8px 0 20px;
+    }
+
+    @media (max-width: 768px) {
+      .split-section { grid-template-columns: 1fr; gap: 40px; }
+      .col.left { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; margin-right: 0; padding-bottom: 30px; }
+    }
+
+    /* Solution accent line */
+    .solution-tag {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-left: 3px solid var(--green);
+      padding-left: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 22px;
+    }
+
+    /* Flow chart */
+    .flowchart-wrap {
+      max-width: 700px;
+      margin: 60px auto 0;
+      padding: 0 24px;
+      width: 100%;
+    }
+    .flowchart-wrap svg { width: 100%; height: auto; display: block; }
+
+    .placeholder-block {
+      margin-top: 26px;
+      width: 100%;
+      aspect-ratio: 16/8;
+      background: var(--card-gray);
+      border-radius: 4px;
+    }
+
+    /* Make images in closing-space match placeholder block size */
+    .closing-space > img {
+      margin-top: 26px;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 14.7/8;
+      object-fit: cover;
+      display: block;
+      border-radius: 4px;
+    }
+
+    .design-grid-large {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .design-grid-large > img {
+      margin-top: 0;
+      width: 100%;
+      aspect-ratio: 4/4;
+    }
+    .banner-block >img {
+      margin-top: 20px;
+      width: 100%;
+      aspect-ratio: 21/6;
+      /* background: var(--card-gray); */
+      border-radius: 4px;
+    }
+    @media (max-width: 768px) {
+      .design-grid-large { grid-template-columns: 1fr; }
+    }
+
+    .closing-space { padding: 80px 24px 60px; }
+
+    /* footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-top: 40px;
+    }
+
+    /* ─────────────────────────────────────────
+       MOBILE SIDEBAR NAV
+    ───────────────────────────────────────── */
+    .hamburger-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1100;
+      padding: 0;
+    }
+    .hamburger-btn span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .hamburger-btn.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger-btn.active span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 1150;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .sidebar-overlay.active { display: block; opacity: 1; }
+
+    .mobile-sidebar {
+      position: fixed;
+      top: 0; left: -85%;
+      width: 85%; max-width: 300px;
+      height: 100vh;
+      background: var(--bg);
+      z-index: 1200;
+      transition: left 0.35s ease;
+      box-shadow: 2px 0 16px rgba(0, 0, 0, 0.25);
+      padding: 90px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      overflow-y: auto;
+    }
+    .mobile-sidebar.active { left: 0; }
+
+    .sidebar-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .sidebar-group-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .sidebar-sublinks { display: flex; flex-direction: column; gap: 14px; padding-left: 16px; }
+    .sidebar-sublinks a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .main-nav { position: relative; padding: 12px 16px; }
+      .nav-left, .nav-right { display: none; }
+      .hamburger-btn { display: flex; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
+      .nav-center { justify-self: end; grid-column: 3; }
+      .logo-link img { height: 35px; }
+      .stats-row { row-gap: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <script src="../nav.js" data-loc="pages"></script>
+
+  <!-- Navigation Bar -->
+  
+
+  <!-- Mobile Sidebar Nav -->
+  
+  
+
+  <!-- Hero: image left, title/tags/link right -->
+  <section class="hero">
+    <div class="hero-image">
+      <img src="otw-img1.png" alt="OnTheWay preview">
+    </div>
+    <div class="hero-content">
+      <h1 class="page-title">ON<br>THE<br>WAY</h1>
+      <div class="tag-row">
+        <span class="tag-pill">React</span>
+        <span class="tag-pill">FastAPI</span>
+      </div>
+      <a href="https://on-the-way-sable.vercel.app/" target="_blank" rel="noopener" class="btn-live">Visit Live Site</a>
+    </div>
+  </section>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div>
+      <div class="stat-label">Product</div>
+      <div class="stat-value">OnTheWay</div>
+    </div>
+    <div>
+      <div class="stat-label">My Role</div>
+      <div class="stat-value">Full-Stack Developer</div>
+    </div>
+    <div>
+      <div class="stat-label">Timeline</div>
+      <div class="stat-value">May 2026 - June 2026</div>
+    </div>
+    <div>
+      <div class="stat-label">Skills</div>
+      <div class="stat-value">Frontend, Backend, Product Design, User Testing</div>
+    </div>
+  </div>
+
+  <!-- Quote -->
+  <div class="quote-wrap">
+    <div class="quote-box">
+      <p>&ldquo;What's <span class="accent-maroon">near</span> me,<br>What's <span class="accent-green">on the way?</span>&rdquo;</p>
+    </div>
+  </div>
+
+  <!-- The Problem / The Research (two-column split) -->
+  <section class="split-section">
+    <div class="col left">
+      <div class="col-heading-group">
+        <h2 class="section-heading">The Problem</h2>
+        <p class="accent-label">Finding food shouldn't mean going off your way.</p>
+        <p class="body-text">When people are traveling and want to stop for food, existing map and food discovery tools primarily show restaurants based on proximity to a location. But being nearby doesn't necessarily mean being convenient. A restaurant might appear close on a map while requiring a significant detour from the user's actual route. This forces people to switch between searching for restaurants, checking directions and manually estimating how much time a stop will add to their journey.</p>
+      </div>
+      <div class="col-heading-group">
+        <h2 class="section-heading">The Opportunity</h2>
+        <p class="body-text">This revealed an opportunity to combine route planning and food discovery into one experience. Instead of making users compare restaurants and routes separately, OnTheWay could surface food options directly within the context of their journey.</p>
+      </div>
+    </div>
+    <div class="col right">
+      <h2 class="section-heading">The Research</h2>
+      <div class="accent-label">How to achieve<br><span label="strong"> convenience?</span></div>
+      <p class="body-text">The problem isn't finding restaurants. It's understanding the trade-off.</p>
+      <p class="body-text">I looked at how existing map and food discovery experiences help users find places to eat during a journey and found that most experiences follow a similar pattern:</p>
+      <div class="flow-highlight">Plan a route &rarr; Search for restaurants &rarr; Compare locations &rarr; Check directions &rarr; Estimate the detour</div>
+      <p class="body-text">This creates unnecessary decision-making for the user. Distance alone doesn't communicate whether a restaurant is actually convenient. A key insight I gathered is that proximity &ne; convenience. The most useful information isn't simply how far away a restaurant is. It's how much stopping there will affect the journey. A restaurant that is slightly farther away may be directly along the route, while one that appears closer could require a significant detour.</p>
+    </div>
+  </section>
+
+  <!-- The Solution -->
+  <section class="section">
+    <h2 class="section-heading solution">The Solution</h2>
+    <div class="accent-label">OnTheWay: Food discovery on your way</div>
+    <p class="body-text">OnTheWay allows users to enter their starting point and destination, visualize their route, and discover restaurants along the way. Rather than simply showing restaurant locations, the experience highlights the detour cost of each option.</p>
+  </section>
+
+  <!-- Flow Chart -->
+  <!-- <div class="flowchart-wrap">
+    <svg viewBox="0 0 900 2098" xmlns="http://www.w3.org/2000/svg" font-family="Nunito, sans-serif">
+<rect x="0" y="0" width="900" height="2098" fill="#f9f5e7"/>
+
+    <text x="450.0" y="60" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="30" fill="#582c39">How OnTheWay Finds Food Along Your Route</text> -->
+    <!-- <text x="450.0" y="86" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="12.5" letter-spacing="1.5" fill="#7c8828">MAPBOX · TURF.JS · OPENSTREETMAP · FOURSQUARE</text> -->
+    <!-- <rect x="170.0" y="130" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="162" r="18" fill="#582c39"/><text x="204.0" y="168" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">1</text><text x="234.0" y="168" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Enter start &amp; destination</text><text x="234.0" y="192" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Search Box API /suggest + /retrieve,</text><text x="234.0" y="212" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">session-token billing, autocomplete restricted to NYC</text><text x="234.0" y="234" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">js/autocomplete.js  ·  js/mapbox-api.js</text><line x1="450.0" y1="248" x2="450.0" y2="274" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,274 456.0,274 450.0,282" fill="#582c39"/><rect x="170.0" y="282" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="314" r="18" fill="#582c39"/><text x="204.0" y="320" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">2</text><text x="234.0" y="320" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Validate location</text><text x="234.0" y="344" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Point-in-polygon check against real 5-borough shape</text><text x="234.0" y="364" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">(not a bounding box) — rejects anything outside NYC</text><text x="234.0" y="386" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">isPointInNYC()  ·  js/borough-utils.js</text><line x1="450.0" y1="400" x2="450.0" y2="426" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,426 456.0,426 450.0,434" fill="#582c39"/><line x1="170" y1="434" x2="730" y2="434" stroke="#99a631" stroke-width="1.5" stroke-dasharray="5,5"/><rect x="300.0" y="421" width="300" height="26" rx="13" fill="#f9f5e7" stroke="#99a631" stroke-width="1.5"/><text x="450.0" y="438.5" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#582c39">outside NYC → error shown, stop</text><line x1="450.0" y1="454" x2="450.0" y2="470" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,470 456.0,470 450.0,478" fill="#582c39"/><rect x="170.0" y="478" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="510" r="18" fill="#582c39"/><text x="204.0" y="516" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">3</text><text x="234.0" y="516" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Get the route</text><text x="234.0" y="540" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Directions API, retries driving → cycling → walking</text><text x="234.0" y="560" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">profiles until one returns a path</text><text x="234.0" y="582" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">getRoute()  ·  Directions API v5</text><line x1="450.0" y1="596" x2="450.0" y2="622" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,622 456.0,622 450.0,630" fill="#582c39"/><rect x="170.0" y="630" width="560" height="98" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="662" r="18" fill="#582c39"/><text x="204.0" y="668" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">4</text><text x="234.0" y="668" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Sample 5 points along the route</text><text x="234.0" y="692" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Evenly spaced: start, 25%, 50%, 75%, destination</text><text x="234.0" y="714" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">js/main.js — findFoodAlongRoute()</text><line x1="450.0" y1="728" x2="450.0" y2="750" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,750 456.0,750 450.0,758" fill="#582c39"/><text x="450.0" y="762" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="12.5" fill="#7c8828">for each of the 5 points, fetch in parallel →
+      
+    </text><rect x="96.0" y="780" width="220" height="92" rx="14" fill="#ece3cc" stroke="#99a631" stroke-width="2"/><text x="206.0" y="806" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="14.5" fill="#582c39">OpenStreetMap</text><text x="206.0" y="823" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10.5" fill="#7c8828">Overpass API</text><text x="206.0" y="843" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">restaurant, cafe, bar,</text><text x="206.0" y="858" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">fast_food, pub tags</text><rect x="340.0" y="780" width="220" height="92" rx="14" fill="#ece3cc" stroke="#99a631" stroke-width="2"/><text x="450.0" y="806" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="14.5" fill="#582c39">Mapbox Places</text><text x="450.0" y="823" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10.5" fill="#7c8828">Geocoding API</text><text x="450.0" y="843" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">POIs tagged</text><text x="450.0" y="858" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">"restaurant"</text><rect x="584.0" y="780" width="220" height="92" rx="14" fill="#ece3cc" stroke="#99a631" stroke-width="2"/><text x="694.0" y="806" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="14.5" fill="#582c39">Foursquare</text><text x="694.0" y="823" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10.5" fill="#7c8828">Places API</text><text x="694.0" y="843" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">optional — needs</text><text x="694.0" y="858" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11.5" fill="#40202a" opacity="0.75">API key in config</text><line x1="450.0" y1="764" x2="450.0" y2="790" stroke="#582c39" stroke-width="2.5"/><line x1="206.0" y1="872" x2="206.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="206.0" y1="888" x2="450.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="450.0" y1="872" x2="450.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="450.0" y1="888" x2="450.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="694.0" y1="872" x2="694.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="694.0" y1="888" x2="450.0" y2="888" stroke="#99a631" stroke-width="2"/><line x1="450.0" y1="888" x2="450.0" y2="898" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,898 456.0,898 450.0,906" fill="#582c39"/><rect x="170.0" y="906" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="938" r="18" fill="#582c39"/><text x="204.0" y="944" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">5</text><text x="234.0" y="944" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Deduplicate by proximity</text><text x="234.0" y="968" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Restaurants within 50m of each other across sources</text><text x="234.0" y="988" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">and sample points are merged into one</text><text x="234.0" y="1010" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">removeDuplicatesByProximity()</text><line x1="450.0" y1="1024" x2="450.0" y2="1050" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1050 456.0,1050 450.0,1058" fill="#582c39"/><rect x="170.0" y="1058" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1090" r="18" fill="#582c39"/><text x="204.0" y="1096" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">6</text><text x="234.0" y="1096" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Filter to NYC shape</text><text x="234.0" y="1120" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Same real-geometry check as step 2, applied to</text><text x="234.0" y="1140" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">every restaurant result</text><text x="234.0" y="1162" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">isPointInNYC()</text><line x1="450.0" y1="1176" x2="450.0" y2="1202" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1202 456.0,1202 450.0,1210" fill="#582c39"/><rect x="170.0" y="1210" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1242" r="18" fill="#582c39"/><text x="204.0" y="1248" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">7</text><text x="234.0" y="1248" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Snap each result onto the route line</text><text x="234.0" y="1272" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Turf.js computes distance off the road and</text><text x="234.0" y="1292" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">% progress from start → destination</text><text x="234.0" y="1314" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">turf.nearestPointOnLine()</text><line x1="450.0" y1="1328" x2="450.0" y2="1354" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1354 456.0,1354 450.0,1362" fill="#582c39"/><rect x="170.0" y="1362" width="560" height="98" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1394" r="18" fill="#582c39"/><text x="204.0" y="1400" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">8</text><text x="234.0" y="1400" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Keep only what's actually on the way</text><text x="234.0" y="1424" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Drop anything more than 0.5km off the route</text><text x="234.0" y="1446" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">MAX_DISTANCE_FROM_ROUTE_KM</text><line x1="450.0" y1="1460" x2="450.0" y2="1486" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1486 456.0,1486 450.0,1494" fill="#582c39"/><rect x="170.0" y="1494" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1526" r="18" fill="#582c39"/><text x="204.0" y="1532" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">9</text><text x="234.0" y="1532" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Calculate real detour cost</text><text x="234.0" y="1556" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Directions API again, this time routing through</text><text x="234.0" y="1576" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">each candidate as a waypoint, to get added minutes</text><text x="234.0" y="1598" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">getRouteWithStop()  ·  detourMinutes</text><line x1="450.0" y1="1612" x2="450.0" y2="1638" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1638 456.0,1638 450.0,1646" fill="#582c39"/><rect x="170.0" y="1646" width="560" height="98" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1678" r="18" fill="#582c39"/><text x="204.0" y="1684" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">10</text><text x="234.0" y="1684" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Drop high-detour options</text><text x="234.0" y="1708" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Anything adding 10+ minutes is cut</text><text x="234.0" y="1730" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">reasonableOptions filter</text><line x1="450.0" y1="1744" x2="450.0" y2="1770" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1770 456.0,1770 450.0,1778" fill="#582c39"/><rect x="170.0" y="1778" width="560" height="118" rx="16" fill="#ffffff" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1810" r="18" fill="#582c39"/><text x="204.0" y="1816" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">11</text><text x="234.0" y="1816" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#582c39">Spread results across the trip</text><text x="234.0" y="1840" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">Bucketed into near-start / middle / near-destination</text><text x="234.0" y="1860" font-family="Nunito, sans-serif" font-size="13.5" fill="#40202a" opacity="0.9">thirds, so results aren't clustered at one end</text><text x="234.0" y="1882" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#7c8828">pickSpreadAcrossRoute()</text><line x1="450.0" y1="1896" x2="450.0" y2="1922" stroke="#582c39" stroke-width="2.5"/><polygon points="444.0,1922 456.0,1922 450.0,1930" fill="#582c39"/><rect x="170.0" y="1930" width="560" height="118" rx="16" fill="#582c39" stroke="#582c39" stroke-width="2"/><circle cx="204.0" cy="1962" r="18" fill="#99a631"/><text x="204.0" y="1968" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="16" fill="#f9f5e7">12</text><text x="234.0" y="1968" font-family="Nunito, sans-serif" font-weight="800" font-size="17.5" fill="#f9f5e7">Show results</text><text x="234.0" y="1992" font-family="Nunito, sans-serif" font-size="13.5" fill="#f9f5e7" opacity="0.9">Numbered markers on the map + ranked list in the</text><text x="234.0" y="2012" font-family="Nunito, sans-serif" font-size="13.5" fill="#f9f5e7" opacity="0.9">sidebar, ordered start → destination</text><text x="234.0" y="2034" font-family="'IBM Plex Mono', monospace" font-size="11.5" fill="#d9c9a8">displayFoodOptions()</text>
+</svg> -->
+  </div>
+
+  <!-- Product / design imagery -->
+  <section class="section closing-space">
+    <img src="otw-img3.png  " alt="OnTheWay preview">
+    <div class="design-grid-large">
+          <img src="otw-img4.png" alt="OnTheWay preview">
+          <img src="otw-img5.png" alt="OnTheWay preview">
+    </div>
+    <div class="banner-block"></div>
+    <img src="otw-img6.png" alt="OnTheWay preview">
+  </section>
+
+  <footer class="site-footer">
+    © Adriella Kristie — All rights reserved
+  </footer>
+  <script src="../grain.js"></script>
+
+  
+  
+
+</body>
+</html>
