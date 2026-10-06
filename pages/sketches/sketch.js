@@ -73,6 +73,17 @@ function setup() {
   char2.shakeY = 0;
 
   sceneStartTime = millis();
+
+  //hold on the first frame until the viewer accepts the flashing lights warning
+  let warning = document.getElementById('flash-warning');
+  if (warning) {
+    noLoop();
+    document.getElementById('flash-warning-start').addEventListener('click', function () {
+      warning.remove();
+      sceneStartTime = millis();
+      loop();
+    });
+  }
 }
 
 function draw() {

@@ -4,9 +4,31 @@
   <meta charset="UTF-8">
   <style>
     html, body { margin: 0; padding: 0; overflow: hidden; background: #20639B; }
+
+    /* Photosensitivity warning, shown before the performance starts */
+    #flash-warning {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 20px; padding: 24px; text-align: center;
+      background: rgba(10, 30, 50, 0.92); color: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    #flash-warning p { margin: 0; max-width: 520px; font-size: 0.9rem; line-height: 1.7; letter-spacing: 0.03em; }
+    #flash-warning strong { display: block; font-size: 1rem; letter-spacing: 0.12em; margin-bottom: 6px; }
+    #flash-warning button {
+      font-family: inherit; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 10px 28px; border: none; border-radius: 999px;
+      background: #FCD556; color: #1a1814; cursor: pointer;
+    }
+    #flash-warning button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
   </style>
 </head>
 <body>
+  <div id="flash-warning" role="dialog" aria-labelledby="flash-warning-title">
+    <p><strong id="flash-warning-title">⚠ FLASHING LIGHTS WARNING</strong>
+      This piece contains rapidly flickering and flashing full-screen colors that may affect people with photosensitive epilepsy.</p>
+    <button type="button" id="flash-warning-start">Start</button>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <script src="ondelondel.js"></script>
   <script src="sketch.js"></script>

@@ -502,10 +502,10 @@
 // 5 changes the color of the eyelashes
 // 6 changes the color of the highlights
 // letters: 'q' 'w' 'e' 'r'
-// 'q' & 'w' to control the width of the hair
+// 'q' &amp; 'w' to control the width of the hair
 // 'q' increases the width
 // 'w' decreases width as if hair is tied 
-// 'e' & 'r' to control the length of the hair
+// 'e' &amp; 'r' to control the length of the hair
 // 'e' increases the length
 // 'r' decreases the length
 // press the avatar to switch to silly mood!
@@ -555,51 +555,51 @@ function draw() {
   background(bgColor);
 
   // 1 changes the skin color
-  if (keyIsPressed && key === '1') {
+  if (keyIsPressed &amp;&amp; key === '1') {
     skinColor = color(random(120,230), random(80,180), random(50,130));
   }
 
   // 2 changes the eyelid color
-  if (keyIsPressed && key === '2') {
+  if (keyIsPressed &amp;&amp; key === '2') {
     pinkMakeup = color(random(180,255), random(20,150), random(80,200));
   }
 
   // 3 changes the color of the back hair 
-  if (keyIsPressed && key === '3') {
+  if (keyIsPressed &amp;&amp; key === '3') {
     hairColor1 = color(random(100,255), random(100,230), random(50,180));
   }
 
   // 4 changes the background color
-  if (keyIsPressed && key === '4') {
+  if (keyIsPressed &amp;&amp; key === '4') {
     bgColor = color(random(255), random(255), random(255));
   }
 
   // 5 changes the color of the eyelashes
-  if (keyIsPressed && key === '5') {
+  if (keyIsPressed &amp;&amp; key === '5') {
     mascara = color(random(255), random(255), random(255));
   }
 
   // 6 changes the color of the highlights
-  if (keyIsPressed && key === '6') {
+  if (keyIsPressed &amp;&amp; key === '6') {
     highlightColor = color(random(255), random(255), random(255));
   }
 
   // q/w controls hair width (wider/narrower)
-  if (keyIsPressed && key === 'q') {
+  if (keyIsPressed &amp;&amp; key === 'q') {
     hairW += 2;
   }
-  if (keyIsPressed && key === 'w') {
+  if (keyIsPressed &amp;&amp; key === 'w') {
     hairW -= 2;
   }
-  if (hairW > 505){
+  if (hairW &gt; 505){
     hairW = 505; // to make sure hair isnt wider than the top of hair
   }
 
   // e/r controls hair length (longer/shorter)
-  if (keyIsPressed && key === 'e') {
+  if (keyIsPressed &amp;&amp; key === 'e') {
     hairL += 2;
   }
-  if (keyIsPressed && key === 'r') {
+  if (keyIsPressed &amp;&amp; key === 'r') {
     hairL -= 2;
   }
 
@@ -712,7 +712,7 @@ function bangs() {
   strokeWeight(3);
   stroke(highlightColor);
   noFill();
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i &lt; 8; i++) {
     let offsetUp = i * 6;
     let offsetLeft = i * 3;
     beginShape();
@@ -749,7 +749,7 @@ function leftLashes() {
   fill(mascara);
   noStroke();
   push();
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i &lt; 10; i++) {
     if (i == 0 || i == 9) {
       lashLength = 40;
       lashWidth = 10;
@@ -785,7 +785,7 @@ function rightLashes() {
   noStroke();
   push();
   translate(460, 370);
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i &lt; 10; i++) {
     if (i == 0 || i == 9) {
       lashLength = 40;
       lashWidth = 10;
@@ -848,7 +848,7 @@ function drawNose() {
 
 function lips() {
   let bigLips = false;
-  if (mouseX > 370 && mouseX < 430 && mouseY > 575 && mouseY < 635) {
+  if (mouseX &gt; 370 &amp;&amp; mouseX &lt; 430 &amp;&amp; mouseY &gt; 575 &amp;&amp; mouseY &lt; 635) {
     bigLips = true;
   }
 

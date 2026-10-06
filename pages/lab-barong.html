@@ -700,7 +700,7 @@ let song; //variable for background music
 function preload() {
 
   //load images 1-20 (they are uppercase, they are .PNG files)
-  for (let i = 1; i <= 20; i++) { //loops through 1 to 20
+  for (let i = 1; i &lt;= 20; i++) { //loops through 1 to 20
     images[i] = loadImage(i + '.PNG');
   }
 
@@ -726,13 +726,13 @@ function preload() {
   song = loadSound('song.mp3');
 
   //start all images hidden
-  for (let i = 1; i <= 21; i++) {
+  for (let i = 1; i &lt;= 21; i++) {
     showImg[i] = false; //goes to image in array but it's false so it's hidden
   }
 
   //give each image a random starting rotation, speed, and position offset
   //this runs once so each image always has the same random values
-  for (let i = 1; i <= 21; i++) {
+  for (let i = 1; i &lt;= 21; i++) {
     imageAnimations[i] = {
       rotation: random(-15, 15), //random tilt between -15 and 15 degrees
       rotationSpeed: random(-0.5, 0.5), //how fast it spins (saved for potential use)
@@ -767,19 +767,19 @@ function startAnimation() {
 
   //show images 2-20 one by one with small delays between each
   //setTimeout to wait a certain number of milliseconds before doing something
-  for (let i = 2; i <= 20; i++) {
+  for (let i = 2; i &lt;= 20; i++) {
     let baseDelay = (i - 1) * 400; //each image waits 400ms longer than the last
     let randomVariation = random(-80, 80); //add a tiny bit of randomness so they dont all feel too uniform in a way
     let delay = baseDelay + randomVariation;
 
-    //the (index) => {} part is an arrow function to pass i into the setTimeout
+    //the (index) =&gt; {} part is an arrow function to pass i into the setTimeout
     //without this, 'i' would always be 20 by the time setTimeout runs 
-    setTimeout((index) => {
+    setTimeout((index) =&gt; {
       showImg[index] = true;
 
       //when image 20 shows up, wait 1 second then show barong (image 21)
       if (index === 20) {
-        setTimeout(() => {
+        setTimeout(() =&gt; {
           showImg[21] = true;
           img21JustAppeared = true;
           img21IntroStartTime = millis(); //save the time to track how long the intro has been running
@@ -790,7 +790,7 @@ function startAnimation() {
 
   //show drawing instructions after the barong intro finishes
   //image 20 appears around 7600ms, then 1s pause,then 4s intro so about 12600ms total
-  setTimeout(() => {
+  setTimeout(() =&gt; {
     showInstructions = true;
     instructionsStartTime = millis();
   }, 12600);
@@ -807,17 +807,17 @@ function mousePressed() {
 
   //check if user clicked the sticker button
   //this only runs if the button is visible AND the options screen isnt already open
-  if (showStickerButton && !showStickerOptions) {
+  if (showStickerButton &amp;&amp; !showStickerOptions) {
     let buttonY = height - 80;
     let buttonWidth = 300;
     let buttonHeight = 60;
 
     //check if the mouse is inside the button rectangle by testing all 4 edges
     //width/2 - buttonWidth/2 gives the left edge of a centered button (checking by borders)
-    if (mouseX > width / 2 - buttonWidth / 2 &&
-        mouseX < width / 2 + buttonWidth / 2 &&
-        mouseY > buttonY - buttonHeight / 2 &&
-        mouseY < buttonY + buttonHeight / 2) {
+    if (mouseX &gt; width / 2 - buttonWidth / 2 &amp;&amp;
+        mouseX &lt; width / 2 + buttonWidth / 2 &amp;&amp;
+        mouseY &gt; buttonY - buttonHeight / 2 &amp;&amp;
+        mouseY &lt; buttonY + buttonHeight / 2) {
       showStickerButton = false; //hide the sticker button
       showStickerOptions = true; //show the stamp vs id card choice
     }
@@ -825,7 +825,7 @@ function mousePressed() {
 
   //check if user clicked the stamp or id button
   //showStickers === '' means no sticker is being shown yet, so the choice buttons are visible
-  if (showStickerOptions && showStickers === '') {
+  if (showStickerOptions &amp;&amp; showStickers === '') {
     let buttonY = height / 2; //both buttons to be in the vertical middle of the screen
     let buttonWidth = 180;
     let buttonHeight = 50;
@@ -834,34 +834,34 @@ function mousePressed() {
 
     //stamp button (left side)
     //same rectangle border test as above, just with leftButtonX as the center
-    if (mouseX > leftButtonX - buttonWidth / 2 &&
-        mouseX < leftButtonX + buttonWidth / 2 &&
-        mouseY > buttonY - buttonHeight / 2 &&
-        mouseY < buttonY + buttonHeight / 2) {
+    if (mouseX &gt; leftButtonX - buttonWidth / 2 &amp;&amp;
+        mouseX &lt; leftButtonX + buttonWidth / 2 &amp;&amp;
+        mouseY &gt; buttonY - buttonHeight / 2 &amp;&amp;
+        mouseY &lt; buttonY + buttonHeight / 2) {
       showStickers = 'stamp'; //setting this string tells draw() which image to show
     }
 
     //id button (right side)
-    if (mouseX > rightButtonX - buttonWidth / 2 &&
-        mouseX < rightButtonX + buttonWidth / 2 &&
-        mouseY > buttonY - buttonHeight / 2 &&
-        mouseY < buttonY + buttonHeight / 2) {
+    if (mouseX &gt; rightButtonX - buttonWidth / 2 &amp;&amp;
+        mouseX &lt; rightButtonX + buttonWidth / 2 &amp;&amp;
+        mouseY &gt; buttonY - buttonHeight / 2 &amp;&amp;
+        mouseY &lt; buttonY + buttonHeight / 2) {
       showStickers = 'id';
     }
   }
 
   //check if user clicked the back button
   //showStickers !== '' means a sticker is currently showing, so the back button is visible
-  if (showStickerOptions && showStickers !== '') {
+  if (showStickerOptions &amp;&amp; showStickers !== '') {
     let backButtonX = 80; //top left corner of the screen
     let backButtonY = 60;
     let backButtonWidth = 100;
     let backButtonHeight = 40;
 
-    if (mouseX > backButtonX - backButtonWidth / 2 &&
-        mouseX < backButtonX + backButtonWidth / 2 &&
-        mouseY > backButtonY - backButtonHeight / 2 &&
-        mouseY < backButtonY + backButtonHeight / 2) {
+    if (mouseX &gt; backButtonX - backButtonWidth / 2 &amp;&amp;
+        mouseX &lt; backButtonX + backButtonWidth / 2 &amp;&amp;
+        mouseY &gt; backButtonY - backButtonHeight / 2 &amp;&amp;
+        mouseY &lt; backButtonY + backButtonHeight / 2) {
       showStickers = ''; //go back to showing the two choice buttons
     }
   }
@@ -928,7 +928,7 @@ function draw() {
     pop();
 
     //draw each image with a shaky wobbly motion
-    for (let i = 1; i <= 20; i++) {
+    for (let i = 1; i &lt;= 20; i++) {
       if (showImg[i]) { //only draw it if it's been revealed yet
         //sin() and cos() go back and forth between -1 and 1 as frameCount increases
         //multiplying by 5 makes the shake go 5 pixels in each direction
@@ -968,7 +968,7 @@ function draw() {
   let introEase = introProgress * introProgress * (3 - 2 * introProgress);
 
   //starts the drawing sequence after intro finishes (so introProgress hits 1)
-  if (introProgress >= 1 && !kaleidoscopeEnabled) {
+  if (introProgress &gt;= 1 &amp;&amp; !kaleidoscopeEnabled) {
     kaleidoscopeEnabled = true;
     kaleidoscopeStartTime = millis(); //start the 10 second drawing timer 
   }
@@ -998,19 +998,19 @@ function draw() {
   //filter() keeps only the lines where the condition is true
   //currentTime - line.timestamp gives us how old the line is in ms
   let currentTime = millis();
-  kaleidoscopeLines = kaleidoscopeLines.filter(line => currentTime - line.timestamp < 5000);
-  kaleidoscopeFlowers = kaleidoscopeFlowers.filter(flower => currentTime - flower.timestamp < 5000);
+  kaleidoscopeLines = kaleidoscopeLines.filter(line =&gt; currentTime - line.timestamp &lt; 5000);
+  kaleidoscopeFlowers = kaleidoscopeFlowers.filter(flower =&gt; currentTime - flower.timestamp &lt; 5000);
 
   //check if the 10 second drawing window is over
   let kaleidoscopeElapsed = currentTime - kaleidoscopeStartTime;
-  let kaleidoscopeTimedOut = kaleidoscopeEnabled && kaleidoscopeElapsed > kaleidoscopeTimeLimit;
+  let kaleidoscopeTimedOut = kaleidoscopeEnabled &amp;&amp; kaleidoscopeElapsed &gt; kaleidoscopeTimeLimit;
 
   //if time is up AND all drawings have faded away, stop spinning and show the sticker button
   //we wait for drawings to disappear so the transition feels clean
-  if (kaleidoscopeTimedOut && kaleidoscopeLines.length === 0 && kaleidoscopeFlowers.length === 0 && !rotationStopped) {
+  if (kaleidoscopeTimedOut &amp;&amp; kaleidoscopeLines.length === 0 &amp;&amp; kaleidoscopeFlowers.length === 0 &amp;&amp; !rotationStopped) {
     rotationStopped = true;
 
-    if (!showStickerButton && !showStickerOptions && showStickers === '') {
+    if (!showStickerButton &amp;&amp; !showStickerOptions &amp;&amp; showStickers === '') {
       showStickerButton = true;
     }
   }
@@ -1036,7 +1036,7 @@ function draw() {
     //this is what creates the kaleidoscope mirror effect
     //for example with symmetry=6 we draw 6 copies each rotated 60 degrees apart
     //this rotate and repeat loop comes from the p5.js example I linked above
-    for (let i = 0; i < storedLine.symmetry; i++) {
+    for (let i = 0; i &lt; storedLine.symmetry; i++) {
       rotate(storedLine.angle); //rotate the canvas by one section
 
       //find the midpoint between the two line endpoints
@@ -1093,7 +1093,7 @@ function draw() {
     tint(flower.hue, 80, 100, flowerOpacity);
 
     //draw a copy of the flower at each symmetry angle, same as the lines
-    for (let i = 0; i < flower.symmetry; i++) {
+    for (let i = 0; i &lt; flower.symmetry; i++) {
       rotate(flower.angle);
 
       push();
@@ -1118,7 +1118,7 @@ function draw() {
   //record new lines while the user is dragging the mouse
   //the mouse position conversion and mouseIsPressed check are also from the p5.js example
   //i added the array storage, timestamp, and flower logic on top
-  if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height && kaleidoscopeEnabled && !kaleidoscopeTimedOut) {
+  if (mouseX &gt; 0 &amp;&amp; mouseX &lt; width &amp;&amp; mouseY &gt; 0 &amp;&amp; mouseY &lt; height &amp;&amp; kaleidoscopeEnabled &amp;&amp; !kaleidoscopeTimedOut) {
     //subtract width/2 and height/2 to convert mouse position to be relative to center
     //this matters because we translated to center when drawing
     let lineStartX = mouseX - width / 2;
@@ -1143,11 +1143,11 @@ function draw() {
       });
 
       //random(1) gives a number between 0 and 1
-      //<0.015 means theres about a 1.5% chance each frame of adding a flower
+      //&lt;0.015 means theres about a 1.5% chance each frame of adding a flower
       //so flowers appear occasionally but not constantly
       //also small number because i tried a larger number and it lagged more so this is a good balance between
       //the program performing well and still keeping it fun and visually appealing
-      if (random(1) < 0.015) {
+      if (random(1) &lt; 0.015) {
         kaleidoscopeFlowers.push({
           x: lineStartX,
           y: lineStartY,
@@ -1163,7 +1163,7 @@ function draw() {
   }
 
   //draw the spinning ring, but hide it when sticker screens are showing
-  if (ringOpacity > 0 && showStickers === '' && !showStickerOptions) {
+  if (ringOpacity &gt; 0 &amp;&amp; showStickers === '' &amp;&amp; !showStickerOptions) {
     push();
     resetMatrix(); //reset transformations so the ring draws at the real center of the canvas
     translate(width / 2, height / 2);
@@ -1174,7 +1174,7 @@ function draw() {
     //references i used for this: 
     //https://p5js.org/reference/p5/drawingContext/
     //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
-    if (introProgress < 1) {
+    if (introProgress &lt; 1) {
       //clipAngle goes from -180 to 180 as intro plays, revealing the ring piece by piece
       let clipAngle = map(introProgress, 0, 1, -180, 180);
       drawingContext.save(); //save canvas state before clipping
@@ -1190,7 +1190,7 @@ function draw() {
     imageMode(CENTER);
     image(ringImg, 0, 0);
 
-    if (introProgress < 1) {
+    if (introProgress &lt; 1) {
       drawingContext.restore(); //restore canvas state so clipping only affects the ring
     }
 
@@ -1200,7 +1200,7 @@ function draw() {
 
   //draw barong (image 21) on top of everything
   //resetMatrix() so that the ring's transformations wouldn't carry over
-  if (showStickers === '' && !showStickerOptions) {
+  if (showStickers === '' &amp;&amp; !showStickerOptions) {
     push();
     resetMatrix();
     translate(width / 2, height / 2);
@@ -1263,7 +1263,7 @@ function draw() {
   //show drawing instructions for 5 seconds when barong appears
   if (showInstructions) {
     let instructionsElapsed = millis() - instructionsStartTime;
-    if (instructionsElapsed > 5000) {
+    if (instructionsElapsed &gt; 5000) {
       showInstructions = false; //hide after 5 seconds
     } else {
       push();
@@ -1295,7 +1295,7 @@ function draw() {
   }
 
   //show color vs id card choice buttons
-  if (showStickerOptions && showStickers === '') {
+  if (showStickerOptions &amp;&amp; showStickers === '') {
     push();
 
     //left button: Wayan Stamp

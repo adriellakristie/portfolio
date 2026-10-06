@@ -619,7 +619,9 @@
       <span class="tag-pill">JavaScript</span>
     </div>
     <p class="page-subtitle">
-An interactive performance piece inspired by the Ondel-Ondel from Indonesian culture. As the scenes progress, the visuals slowly shift from ordinary to eerie, with a small interactive moment that invites viewers into the experience.    </p>
+An interactive performance piece inspired by the Ondel-Ondel from Indonesian culture. As the scenes progress, the visuals slowly shift from ordinary to eerie, with a small interactive moment that invites viewers into the experience.
+    </p>
+    <p class="page-subtitle" style="margin-top: 12px; font-weight: 400;">⚠ Contains flashing lights and rapid flicker.</p>
   </header>
 
 <div style="max-width: 1400px; margin: 0 auto; padding: 0 24px 40px; width: 100%;">
@@ -723,7 +725,7 @@ function draw() {
   let elapsed = now - sceneStartTime;
 
   //There are 8 scenes 
-  if (scene < 9 && elapsed > sceneDurations[scene]) {
+  if (scene &lt; 9 &amp;&amp; elapsed &gt; sceneDurations[scene]) {
     //to make sure the scene continues to advance
     scene++;
 
@@ -747,7 +749,7 @@ function draw() {
     flickerInterval = lerp(300, 60, t); 
     
 
-    if (now - lastFlicker > flickerInterval) {
+    if (now - lastFlicker &gt; flickerInterval) {
       flickerOn = !flickerOn;
       lastFlicker = now;
     }
@@ -860,11 +862,11 @@ function draw() {
     pop();
 
   //WHEN ITS IN SCENE 2 AND FLICKER IS NOT ON
-  } else if (scene == 2 && !flickerOn) {
+  } else if (scene == 2 &amp;&amp; !flickerOn) {
     background(5, 5, 10);
 
   //WHEN ITS IN SCENE 8 AND FLICKER IS NOT ON
-  } else if (scene == 8 && !flickerOn) {
+  } else if (scene == 8 &amp;&amp; !flickerOn) {
     background(0);
     push();
     char1.draw();
@@ -889,7 +891,7 @@ function draw() {
   }
 
   //to draw characters in scenes 0,1,2 on top of effects
-  if (scene < 3) {
+  if (scene &lt; 3) {
     push(); 
     char1.draw(); 
     pop();
@@ -900,7 +902,7 @@ function draw() {
   }
 
   //to make the lights flickering effect in scenes 2 and 8 
-  if ((scene == 2 || scene == 8) && !flickerOn) {
+  if ((scene == 2 || scene == 8) &amp;&amp; !flickerOn) {
     noStroke();
     fill(0, 190);
     rect(0, 0, width, height);
@@ -965,7 +967,7 @@ function drawRedEyes(c, useShift) {
 //to draw eyes in the background 
 //INTERACTIVE EYES
 function drawBackgroundEyes(t, mx, my) {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i &lt; 10; i++) {
     let ex = random(width);
     let ey = random(height);
     
