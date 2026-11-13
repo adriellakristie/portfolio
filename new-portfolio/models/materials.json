@@ -1,0 +1,737 @@
+{
+  "openPBRSurface5": {
+    "objects": [
+      "polySurface1",
+      "polySurface6"
+    ],
+    "color": [
+      0.38350000977516174,
+      0.16329999268054962,
+      0.0
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface7": {
+    "objects": [
+      "pSphere1",
+      "pSphere10",
+      "pSphere11",
+      "pSphere12",
+      "pSphere13",
+      "pSphere14",
+      "pSphere15",
+      "pSphere16",
+      "pSphere17",
+      "pSphere18",
+      "pSphere19",
+      "pSphere2",
+      "pSphere20",
+      "pSphere21",
+      "pSphere22",
+      "pSphere23",
+      "pSphere24",
+      "pSphere25",
+      "pSphere26",
+      "pSphere28",
+      "pSphere3",
+      "pSphere5",
+      "pSphere7",
+      "pSphere8",
+      "pSphere9"
+    ],
+    "color": [
+      0.11156719923019409,
+      0.06735269725322723,
+      0.024867506697773933
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface8": {
+    "objects": [
+      "small_vase"
+    ],
+    "color": [
+      0.10270000249147415,
+      0.14970000088214874,
+      0.18060000240802765
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface9": {
+    "objects": [
+      "pCylinder1"
+    ],
+    "color": [
+      0.8533999919891357,
+      0.871999979019165,
+      0.7694000005722046
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface11": {
+    "objects": [
+      "polySurface7"
+    ],
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": "/Users/adriellakristie/Downloads/Gemini_Generated_Image_j6e0omj6e0omj6e0.jpeg"
+  },
+  "openPBRSurface12": {
+    "objects": [
+      "wall1",
+      "wall5"
+    ],
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": "/Users/adriellakristie/Downloads/Gemini_Generated_Image_j6e0omj6e0omj6e0.jpeg"
+  },
+  "openPBRSurface13": {
+    "objects": [
+      "ceiling"
+    ],
+    "color": [
+      0.8730000257492065,
+      0.7807877063751221,
+      0.6800670027732849
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface14": {
+    "objects": [
+      "polySurface3",
+      "polySurface5"
+    ],
+    "color": [
+      0.38350000977516174,
+      0.2020999938249588,
+      0.06759999692440033
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface15": {
+    "objects": [
+      "pSphere1",
+      "pSphere10",
+      "pSphere13",
+      "pSphere14",
+      "pSphere15",
+      "pSphere16",
+      "pSphere17",
+      "pSphere18",
+      "pSphere2",
+      "pSphere3",
+      "pSphere5",
+      "pSphere9"
+    ],
+    "color": [
+      0.12929999828338623,
+      0.07720000296831131,
+      0.03290000185370445
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface16": {
+    "objects": [
+      "big_vase",
+      "nurbsToPoly1"
+    ],
+    "color": [
+      0.16019999980926514,
+      0.22779999673366547,
+      0.27230000495910645
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface17": {
+    "objects": [
+      "lamp_shade"
+    ],
+    "color": [
+      0.800000011920929,
+      0.800000011920929,
+      0.800000011920929
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 1.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface18": {
+    "objects": [
+      "table"
+    ],
+    "color": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "roughness": 0.25,
+    "metalness": 1.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface19": {
+    "objects": [
+      "rug"
+    ],
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": "/Users/adriellakristie/Downloads/VTP469K-5_d3ae7f72-8c48-4a25-b77c-6aafe49d71e8_1600x 2.jpg"
+  },
+  "openPBRSurface20": {
+    "objects": [
+      "cylindrical_metal_vase"
+    ],
+    "color": [
+      0.800000011920929,
+      0.800000011920929,
+      0.800000011920929
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.9927536249160767,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface21": {
+    "objects": [
+      "wood_stick_1",
+      "wood_stick_2"
+    ],
+    "color": [
+      0.2409999966621399,
+      0.13735556602478027,
+      0.01662900112569332
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface22": {
+    "objects": [
+      "polySurface7"
+    ],
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": "/Users/adriellakristie/Downloads/wall-texture-2.png"
+  },
+  "openPBRSurface23": {
+    "objects": [
+      "book"
+    ],
+    "color": [
+      0.16019999980926514,
+      0.22779999673366547,
+      0.27230000495910645
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface26": {
+    "objects": [
+      "book"
+    ],
+    "color": [
+      0.07199999690055847,
+      0.1451999992132187,
+      0.19339999556541443
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface27": {
+    "objects": [
+      "book"
+    ],
+    "color": [
+      0.6193000078201294,
+      0.5856000185012817,
+      0.5464000105857849
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface28": {
+    "objects": [
+      "pCylinder4"
+    ],
+    "color": [
+      0.800000011920929,
+      0.800000011920929,
+      0.800000011920929
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.41304346919059753,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface29": {
+    "objects": [
+      "pCube9"
+    ],
+    "color": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "roughness": 0.4000000059604645,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface30": {
+    "objects": [
+      "pCube6"
+    ],
+    "color": [
+      0.18060000240802765,
+      0.093299999833107,
+      0.06019999831914902
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface31": {
+    "objects": [
+      "pCube10"
+    ],
+    "color": [
+      0.041999999433755875,
+      0.034860000014305115,
+      0.034860000014305115
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface32": {
+    "objects": [
+      "polySurface8"
+    ],
+    "color": [
+      0.11538462340831757,
+      0.11538462340831757,
+      0.11538462340831757
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.5144927501678467,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface33": {
+    "objects": [
+      "pCylinder26"
+    ],
+    "color": [
+      0.4729999899864197,
+      0.2016839236021042,
+      0.030744997784495354
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface34": {
+    "objects": [
+      "pCylinder27"
+    ],
+    "color": [
+      0.10256409645080566,
+      0.10256409645080566,
+      0.10256409645080566
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface35": {
+    "objects": [
+      "pCube7"
+    ],
+    "color": [
+      0.05128205195069313,
+      0.05128205195069313,
+      0.05128205195069313
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface36": {
+    "objects": [
+      "vinyl_table"
+    ],
+    "color": [
+      0.800000011920929,
+      0.800000011920929,
+      0.800000011920929
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.8260869383811951,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface37": {
+    "objects": [
+      "pCylinder28"
+    ],
+    "color": [
+      0.16699999570846558,
+      0.16699999570846558,
+      0.16699999570846558
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.43478259444236755,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface38": {
+    "objects": [
+      "pCylinder29"
+    ],
+    "color": [
+      0.800000011920929,
+      0.800000011920929,
+      0.800000011920929
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.5289855003356934,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface39": {
+    "objects": [
+      "pCube8"
+    ],
+    "color": [
+      0.060100000351667404,
+      0.060100000351667404,
+      0.060100000351667404
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.6086956262588501,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface40": {
+    "objects": [
+      "tv_frame"
+    ],
+    "color": [
+      0.0729999989271164,
+      0.0729999989271164,
+      0.0729999989271164
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface41": {
+    "objects": [
+      "tv_screen"
+    ],
+    "color": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface42": {
+    "objects": [
+      "typeMesh1"
+    ],
+    "color": [
+      0.800000011920929,
+      0.800000011920929,
+      0.800000011920929
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.9420289993286133,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface45": {
+    "objects": [
+      "pCylinder30",
+      "pCylinder32",
+      "pSphere27"
+    ],
+    "color": [
+      0.578000009059906,
+      0.4703752100467682,
+      0.21501599252223969
+    ],
+    "roughness": 0.1980000138282776,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface46": {
+    "objects": [
+      "pCube11"
+    ],
+    "color": [
+      0.21400000154972076,
+      0.07813504338264465,
+      0.055639997124671936
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface47": {
+    "objects": [
+      "pCylinder33"
+    ],
+    "color": [
+      0.14006498456001282,
+      0.2110075056552887,
+      0.25699999928474426
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface48": {
+    "objects": [
+      "pCube12"
+    ],
+    "color": [
+      0.21400000154972076,
+      0.07813504338264465,
+      0.055639997124671936
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface49": {
+    "objects": [
+      "typeMesh2"
+    ],
+    "color": [
+      0.710099995136261,
+      0.5974000096321106,
+      0.41769999265670776
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.8913043737411499,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  },
+  "openPBRSurface51": {
+    "objects": [
+      "polySurface7"
+    ],
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": "/Users/adriellakristie/Downloads/wall-texture-3.png"
+  },
+  "openPBR_shader1": {
+    "objects": [
+      "lace_table_cloth",
+      "sweep2"
+    ],
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "roughness": 0.5,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": "/Users/adriellakristie/Downloads/Intricate Ivory Lace Doily Frame.png"
+  },
+  "pasted__openPBRSurface4": {
+    "objects": [
+      "pasted__floor"
+    ],
+    "color": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": "/Users/adriellakristie/Downloads/wood-floor.png"
+  },
+  "pasted__openPBRSurface37": {
+    "objects": [
+      "pasted__pCylinder30",
+      "pasted__pCylinder31",
+      "pasted__pCylinder32",
+      "pasted__pCylinder33",
+      "pasted__pCylinder34"
+    ],
+    "color": [
+      0.0729999989271164,
+      0.05485402047634125,
+      0.03511299937963486
+    ],
+    "roughness": 0.30000001192092896,
+    "metalness": 0.0,
+    "specular": 1.0,
+    "clearcoat": 0.0,
+    "clearcoatRoughness": 0.0,
+    "texture": null
+  }
+}

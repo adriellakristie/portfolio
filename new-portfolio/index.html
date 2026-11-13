@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adriella Kristie — Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&family=Jost:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #a1b161;
+      --text: #1a1814;
+      --cream: #f3efe4;
+      --room: #1a0a06;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--room);
+      color: var(--cream);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    #scene {
+      position: fixed;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+      touch-action: none;
+    }
+    #scene.dragging { cursor: grabbing; }
+    #scene.pointing { cursor: pointer; }
+    body.tuned #scene { cursor: default; }
+
+    /* ─────────────────────────────────────────
+       INTRO — name and intro text on black while the room loads,
+       then a fade straight into the room
+    ───────────────────────────────────────── */
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #000;
+      color: var(--cream);
+      transition: opacity 1.4s ease, visibility 1.4s ease;
+    }
+    .loader.done { opacity: 0; visibility: hidden; }
+    .intro-text {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      text-align: center;
+      color: #f3f1ee;
+      opacity: 0;
+      transform: translateY(6px);
+      animation: introText 0.8s 0.4s ease forwards;
+    }
+    @keyframes introText { to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .intro-text { animation-duration: 0.01s; animation-delay: 0s; } }
+    .intro-name { font-size: clamp(20px, 3vw, 26px); font-weight: 500; letter-spacing: 0.01em; margin: 0; }
+    .intro-role { font-size: clamp(13px, 1.6vw, 15px); font-weight: 300; margin: 6px 0 0; opacity: 0.8; }
+    .intro-line { font-size: clamp(12px, 1.4vw, 13px); font-weight: 300; margin: 22px 0 0; opacity: 0.55; letter-spacing: 0.02em; }
+    .loader-bar {
+      margin-top: 18px;
+      width: min(160px, 40vw);
+      height: 1px;
+      background: rgba(243, 239, 228, 0.15);
+      overflow: hidden;
+      transition: opacity 0.4s ease;
+    }
+    .loader-bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: var(--cream);
+      transition: width 0.2s ease;
+    }
+    .loader.ready .loader-bar { opacity: 0; }
+
+    /* ─────────────────────────────────────────
+       HUD — just a small name and the way back
+    ───────────────────────────────────────── */
+    .hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      pointer-events: none;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.8s ease 1.2s;
+    }
+    body.entered .hud { opacity: 1; }
+    body.tuned .hud { opacity: 0; transition-delay: 0s; }
+    /* Once the Work screen is on, the navigation sits above it again */
+    body.tv-open .hud { opacity: 1; z-index: 40; transition-delay: 0.2s; }
+    body.tv-open .hud .nav a,
+    body.tv-open .hud .nav button { pointer-events: auto; }
+    body.tv-open .reset { display: none; }
+    #navWork[aria-current="page"] { border-bottom-color: var(--cream); }
+    body.tuned .hud a,
+    body.tuned .hud button { pointer-events: none; }
+    .hud-right { display: flex; align-items: center; gap: 18px; }
+    .reset {
+      pointer-events: none;
+      font: inherit;
+      letter-spacing: inherit;
+      text-transform: inherit;
+      color: var(--cream);
+      background: rgba(20, 11, 7, 0.55);
+      border: 1px solid rgba(243, 239, 228, 0.35);
+      border-radius: 999px;
+      padding: 6px 12px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s ease, background 0.2s ease, color 0.2s ease;
+    }
+    body.moved .reset { opacity: 1; pointer-events: auto; }
+    .reset:hover,
+    .reset:focus-visible { background: var(--cream); color: var(--text); outline: none; }
+
+    /* Top navigation */
+    .nav {
+      display: flex;
+      gap: clamp(28px, 6vw, 80px);
+      margin-left: auto;
+      font-family: 'Jost', 'Futura', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      text-transform: none;
+    }
+    .nav a,
+    .nav button {
+      pointer-events: auto;
+      font: inherit;
+      color: var(--cream);
+      background: none;
+      border: 0;
+      padding: 4px 0;
+      cursor: pointer;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease, opacity 0.2s ease;
+      white-space: nowrap;
+    }
+    .nav a:hover, .nav button:hover,
+    .nav a:focus-visible, .nav button:focus-visible { border-bottom-color: var(--cream); outline: none; }
+
+    /* ─────────────────────────────────────────
+       WORK — the screen inside the TV
+    ───────────────────────────────────────── */
+    .work-tv {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      background: #000;
+      font-family: 'Jost', 'Futura', sans-serif;
+      color: #eef6f7;
+      display: grid;
+      place-items: center;
+      padding: clamp(0px, 1.2vw, 14px);
+      padding-top: 72px;   /* room for the site navigation above the screen */
+    }
+    .work-tv[hidden] { display: none; }
+    .tv-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: clamp(14px, 2.4vw, 34px);
+      background: #45878f;
+      transform-origin: 50% 50%;
+    }
+    /* The tube's glass: dark rounded edges, a soft fall-off toward the bottom */
+    .tv-screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      box-shadow: inset 0 0 40px 14px rgba(0, 0, 0, 0.6), inset 0 0 120px 30px rgba(0, 0, 0, 0.35);
+      background:
+        linear-gradient(to bottom, rgba(0, 0, 0, 0) 58%, rgba(4, 10, 11, 0.55) 70%, rgba(4, 10, 11, 0.92) 100%),
+        repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px);
+      z-index: 3;
+    }
+    .tv-inner {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(24px, 4.5vw, 56px) clamp(20px, 3.6vw, 64px) 0;
+    }
+    .tv-head {
+      display: flex;
+      align-items: center;
+      gap: clamp(14px, 2vw, 28px);
+      flex-wrap: wrap;
+    }
+    .tv-logo { width: clamp(80px, 9.5vw, 150px); height: auto; display: block; }
+    .tv-tagline { font-size: clamp(15px, 1.5vw, 22px); font-weight: 300; }
+    .tv-tagline b { font-weight: 600; }
+    .tv-player {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: min(100%, 540px);
+      padding: 10px 14px 10px 30px;
+      border: 1px solid rgba(238, 246, 247, 0.55);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .tv-song { flex: 1; font-size: clamp(15px, 1.4vw, 20px); font-weight: 300; }
+    .tv-player button {
+      font: 600 18px/1 'Jost', sans-serif;
+      color: #eef6f7;
+      background: none;
+      border: 0;
+      border-radius: 999px;
+      width: 44px;
+      height: 40px;
+      cursor: pointer;
+    }
+    .tv-player button:hover, .tv-player button:focus-visible { background: rgba(255, 255, 255, 0.15); outline: none; }
+    .tv-player [data-play]::before { content: '▶'; font-size: 15px; }
+    .tv-player [data-play][aria-pressed="true"]::before { content: '❚❚'; font-size: 14px; letter-spacing: -2px; }
+    .tv-tabs {
+      display: flex;
+      gap: clamp(20px, 5vw, 72px);
+      margin: clamp(24px, 4vw, 56px) 0 clamp(20px, 3.5vw, 60px);
+      flex-wrap: wrap;
+    }
+    .tv-tab {
+      font: 300 clamp(14px, 1.15vw, 17px) 'Jost', sans-serif;
+      color: #eef6f7;
+      background: none;
+      border: 0;
+      padding: 4px 0;
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+    }
+    .tv-tab[aria-selected="true"] { font-weight: 600; }
+    .tv-tab:hover, .tv-tab:focus-visible { border-bottom-color: currentColor; outline: none; }
+    .tv-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      scrollbar-width: none;
+      padding-bottom: 96px;
+    }
+    .tv-scroll::-webkit-scrollbar { display: none; }
+    .tv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(16px, 4.2vw, 66px);
+    }
+    .tv-card {
+      position: relative;
+      aspect-ratio: 440 / 308;
+      border-radius: 6px;
+      overflow: hidden;
+      background: linear-gradient(90deg, #d39f68 0%, #ffc487 45%, #c9945e 100%);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.35);
+      color: #fff;
+      text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    a.tv-card:hover, a.tv-card:focus-visible { transform: translateY(-4px); box-shadow: 0 10px 18px rgba(0, 0, 0, 0.4); outline: none; }
+    a.tv-card:focus-visible { box-shadow: 0 0 0 3px #eef6f7, 0 10px 18px rgba(0, 0, 0, 0.4); }
+    .tv-card-img { position: absolute; inset: 0; background: center / cover no-repeat; }
+    .tv-card-title {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 28px 16px 12px;
+      font-size: clamp(13px, 1.2vw, 17px);
+      font-weight: 600;
+      background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.6));
+    }
+    .tv-back {
+      position: absolute;
+      z-index: 4;
+      left: 50%;
+      bottom: clamp(16px, 3vw, 32px);
+      transform: translateX(-50%);
+      font: 400 13px 'Jost', sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #eef6f7;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(238, 246, 247, 0.5);
+      border-radius: 999px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    .tv-back:hover, .tv-back:focus-visible { background: #eef6f7; color: #17393d; outline: none; }
+    @media (max-width: 768px) {
+      .tv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tv-player { min-width: 0; width: 100%; margin-left: 0; padding-left: 20px; }
+    }
+
+    /* CRT switch-on: black, a bright line opens out across, then down */
+    .work-tv.on .tv-screen { animation: crtOn 0.65s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    .work-tv.off .tv-screen { animation: crtOff 0.38s ease-in both; }
+    @keyframes crtOn {
+      0%   { transform: scale(0, 0.004); filter: brightness(6); opacity: 1; }
+      35%  { transform: scale(1, 0.004); filter: brightness(6); }
+      70%  { transform: scale(1, 1); filter: brightness(1.8); }
+      100% { transform: scale(1, 1); filter: brightness(1); }
+    }
+    @keyframes crtOff {
+      0%   { transform: scale(1, 1); filter: brightness(1); }
+      55%  { transform: scale(1, 0.004); filter: brightness(5); }
+      100% { transform: scale(0, 0.004); filter: brightness(5); }
+    }
+    .work-tv.on { animation: tvFade 0.25s ease both; }
+    .work-tv.off { animation: tvFade 0.38s ease reverse both; }
+    @keyframes tvFade { from { background: rgba(0, 0, 0, 0); } to { background: #000; } }
+    @media (prefers-reduced-motion: reduce) {
+      .work-tv.on .tv-screen, .work-tv.off .tv-screen, .work-tv.on, .work-tv.off { animation-duration: 0.01s; }
+    }
+
+    .error {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.7;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .error.show { display: flex; }
+    .error a { color: inherit; }
+
+    @media (max-width: 768px) {
+      .hud { padding: 18px 16px; }
+      .nav { gap: 22px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="scene" aria-label="3D room. Tap the TV to open the featured project; the lamp, record player and curtains can be played with."></canvas>
+
+  <!-- ── LOADER ── -->
+  <div class="loader" id="loader" role="status" aria-label="Loading the room">
+    <div class="intro-text">
+      <h1 class="intro-name">Adriella Kristie</h1>
+      <p class="intro-role">Computer Engineer + Creative, Product Enthusiast</p>
+      <p class="intro-line">My work lives in this room</p>
+    </div>
+    <div class="loader-bar"><span id="loaderBar"></span></div>
+  </div>
+
+  <!-- ── HUD ── -->
+  <div class="hud">
+    <button type="button" class="reset" id="btnReset">Reset view</button>
+    <nav class="nav" aria-label="Main">
+      <button type="button" id="navWork">Work</button>
+      <a href="../pages/labs-code.html">Playground</a>
+      <a href="../pages/aboutme.html">About Me</a>
+    </nav>
+  </div>
+
+  <!-- ── WORK (inside the TV) ── -->
+  <div class="work-tv" id="workTV" role="dialog" aria-label="Work" hidden>
+    <div class="tv-screen">
+      <div class="tv-inner">
+        <header class="tv-head">
+          <img class="tv-logo" src="images/ak-logo.png" alt="AK">
+          <p class="tv-tagline">Watch through a collection of my <b>work</b></p>
+          <div class="tv-player" role="group" aria-label="Music player">
+            <span class="tv-song">Song Name</span>
+            <button type="button" aria-label="Previous song">&lt;&lt;</button>
+            <button type="button" data-play aria-pressed="false" aria-label="Play"></button>
+            <button type="button" aria-label="Next song">&gt;&gt;</button>
+          </div>
+        </header>
+        <div class="tv-tabs" role="tablist" aria-label="Kinds of work"></div>
+        <div class="tv-scroll"><div class="tv-grid"></div></div>
+      </div>
+      <button type="button" class="tv-back">Back to the room</button>
+    </div>
+  </div>
+
+  <div class="error" id="error"></div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="room.js?v=40"></script>
+</body>
+</html>

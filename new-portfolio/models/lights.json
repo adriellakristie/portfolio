@@ -1,0 +1,711 @@
+{
+  "unit": "cm",
+  "reference": {
+    "ceiling": [
+      -13.613208430948047,
+      11.931911194640906,
+      -18.140186814314983,
+      14.190430011632644,
+      12.563886683097378,
+      11.168792934587536
+    ]
+  },
+  "lights": [
+    {
+      "name": "aiAreaLight1",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        6.889623005979736,
+        6.4500788008267875,
+        8.784811674684065
+      ],
+      "direction": [
+        -0.5968682021056136,
+        -0.795109651559852,
+        -0.10746623335533458
+      ],
+      "size": [
+        1.524199686091208,
+        1.524199686091208
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 7.724550724029541,
+      "exposure": 2.682119131088257,
+      "effective_intensity": 49.576006463261116,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "aiAreaLight2",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        7.653733882951458,
+        2.5920512303063683,
+        -7.901019021438256
+      ],
+      "direction": [
+        -0.0,
+        -0.9989061677451129,
+        0.04675968392506924
+      ],
+      "size": [
+        2.655519200266693,
+        3.351706783651865
+      ],
+      "color": [
+        1.0,
+        0.8345437049865723,
+        0.44199997186660767
+      ],
+      "intensity": 4.071856498718262,
+      "exposure": 3.529411792755127,
+      "effective_intensity": 47.016606581654386,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "aiAreaLight3",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        9.884158275074466,
+        0.21888831901745398,
+        -12.693243840193482
+      ],
+      "direction": [
+        -0.32387624159080286,
+        0.7185961517793604,
+        0.6154053548523204
+      ],
+      "size": [
+        2.076089642742813,
+        2.076089642742813
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 4.071856498718262,
+      "exposure": 3.9221556186676025,
+      "effective_intensity": 61.72753764160286,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "aiAreaLight4",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        9.884158275074466,
+        0.21888831901745398,
+        -8.089840388963133
+      ],
+      "direction": [
+        -0.9986835732357607,
+        -0.006105744576979729,
+        0.05092975978947601
+      ],
+      "size": [
+        2.076089642742813,
+        2.0760896427428124
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 2.3913042545318604,
+      "exposure": 1.8382352590560913,
+      "effective_intensity": 8.550643277987223,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "aiAreaLight5",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        7.435542107500286,
+        0.21888831901745398,
+        2.463043469087083
+      ],
+      "direction": [
+        -0.47292507600494343,
+        0.8709592659150398,
+        0.1333110258097707
+      ],
+      "size": [
+        1.7788326687034068,
+        3.472226875933389
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 3.4131736755371094,
+      "exposure": 0.38922154903411865,
+      "effective_intensity": 4.470187591084476,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "aiAreaLight6",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        9.884158275074466,
+        0.21888831901745398,
+        -13.223418266906581
+      ],
+      "direction": [
+        -0.32387624159080286,
+        0.7185961517793604,
+        0.6154053548523204
+      ],
+      "size": [
+        2.088318688802264,
+        2.088318688802264
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 4.071856498718262,
+      "exposure": 3.9221556186676025,
+      "effective_intensity": 61.72753764160286,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "aiAreaLight7",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        9.063382683159812,
+        2.9284291330011776,
+        5.4252808244753945
+      ],
+      "direction": [
+        -0.22503618132656442,
+        -0.34247617027733623,
+        -0.9121780472507144
+      ],
+      "size": [
+        1.6113532712974574,
+        2.29416849950945
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 4.782608509063721,
+      "exposure": 2.3529412746429443,
+      "effective_intensity": 24.432659011145027,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "aiAreaLight8",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        2.6209891154971015,
+        0.21888831901745398,
+        -2.5601178192458534
+      ],
+      "direction": [
+        -0.5993883605799838,
+        0.8002282939657696,
+        -0.019190381389466268
+      ],
+      "size": [
+        6.948667098173013,
+        3.472226875933389
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 3.4131736755371094,
+      "exposure": 0.38922154903411865,
+      "effective_intensity": 4.470187591084476,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "lamp_light_bright",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        0.0,
+        7.1241928136980235,
+        2.583028753302713
+      ],
+      "direction": [
+        0.2313522549925792,
+        -0.9006881339143327,
+        -0.3677458627038049
+      ],
+      "size": [
+        2.0,
+        1.9999999999999998
+      ],
+      "color": [
+        1.0,
+        0.8277000188827515,
+        0.6273999810218811
+      ],
+      "intensity": 10.0,
+      "exposure": 5.0,
+      "effective_intensity": 320.0,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "lamp_light_brighten",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        -15.308688598269223,
+        9.817536942528683,
+        -3.2952198771878622
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        2.220446049250313e-16
+      ],
+      "size": [
+        2.0,
+        2.0
+      ],
+      "color": [
+        0.710099995136261,
+        0.45260000228881836,
+        0.15309999883174896
+      ],
+      "intensity": 7.3913044929504395,
+      "exposure": 2.5,
+      "effective_intensity": 41.81153223023882,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "light_bottom_left",
+      "type": "aiAreaLight",
+      "visible": false,
+      "position": [
+        7.097015785212993,
+        11.805436604263685,
+        6.7143125249317155
+      ],
+      "direction": [
+        -0.1447311150346264,
+        -0.9672711949091422,
+        0.20842106381043646
+      ],
+      "size": [
+        2.0,
+        2.0
+      ],
+      "color": [
+        1.0,
+        0.9455999732017517,
+        0.8823000192642212
+      ],
+      "intensity": 6.811594009399414,
+      "exposure": -0.29411765933036804,
+      "effective_intensity": 5.555338378077626,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "light_bottom_right",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        8.17526630504288,
+        12.089266265532286,
+        -10.387695450513059
+      ],
+      "direction": [
+        -0.0,
+        -0.9737579701812866,
+        0.2275860617621841
+      ],
+      "size": [
+        2.0,
+        2.0
+      ],
+      "color": [
+        1.0,
+        0.9455999732017517,
+        0.8823000192642212
+      ],
+      "intensity": 6.811594009399414,
+      "exposure": 5.0,
+      "effective_intensity": 217.97100830078125,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "light_upper_left",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        -9.147312192829146,
+        11.199059871155267,
+        6.8047980883466215
+      ],
+      "direction": [
+        -0.0,
+        -0.9960343315847073,
+        -0.08896971565991074
+      ],
+      "size": [
+        2.0,
+        2.0
+      ],
+      "color": [
+        0.9337999820709229,
+        0.7052000164985657,
+        0.43939998745918274
+      ],
+      "intensity": 7.254901885986328,
+      "exposure": 4.411764621734619,
+      "effective_intensity": 154.42052635270062,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "light_upper_right",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        -7.897264088042815,
+        11.238618593010028,
+        -13.482939919650043
+      ],
+      "direction": [
+        -0.0,
+        -0.9976612455725307,
+        0.06835231585445169
+      ],
+      "size": [
+        2.0,
+        1.9999999999999998
+      ],
+      "color": [
+        1.0,
+        0.9455999732017517,
+        0.8823000192642212
+      ],
+      "intensity": 7.647058963775635,
+      "exposure": 4.803921699523926,
+      "effective_intensity": 213.6087149101753,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "pasted__aiAreaLight1",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        -3.809174981863713,
+        3.724154054832028,
+        0.053552887226846035
+      ],
+      "direction": [
+        0.7336259738360943,
+        -0.46072542503714453,
+        -0.49952478741037953
+      ],
+      "size": [
+        1.9999999999999998,
+        2.0
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 4.01197624206543,
+      "exposure": 3.7349398136138916,
+      "effective_intensity": 53.41795629937365,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "pasted__aiAreaLight2",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        -2.8915387787199514,
+        -2.77241177187399,
+        0.0
+      ],
+      "direction": [
+        0.5638110509851213,
+        0.7067781518641394,
+        -0.4272958493065018
+      ],
+      "size": [
+        2.0,
+        2.0
+      ],
+      "color": [
+        0.48399999737739563,
+        0.39550039172172546,
+        0.32670000195503235
+      ],
+      "intensity": 4.1566267013549805,
+      "exposure": 3.8970587253570557,
+      "effective_intensity": 61.925938097150045,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "pasted__aiAreaLight3",
+      "type": "aiAreaLight",
+      "visible": false,
+      "position": [
+        3.172294778644715,
+        0.743043674562343,
+        0.0
+      ],
+      "direction": [
+        -0.8430377210062914,
+        -0.5351538724958576,
+        -0.05383060201415201
+      ],
+      "size": [
+        2.8181021834934685,
+        2.818102183493468
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 2.2463767528533936,
+      "exposure": 3.8970587253570557,
+      "effective_intensity": 33.466798376368345,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "pasted__aiAreaLight4",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        1.0839660831873623,
+        -0.6059949468615349,
+        0.17475269367457247
+      ],
+      "direction": [
+        -0.579703451228355,
+        -0.8047450870167127,
+        -0.1277859677601494
+      ],
+      "size": [
+        0.3296779416382192,
+        0.12661521313832783
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 2.6490066051483154,
+      "exposure": 1.3970588445663452,
+      "effective_intensity": 6.9765331005984725,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "pasted__aiAreaLight5",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        0.6034336679727939,
+        4.882639129395349,
+        0.27202147463212545
+      ],
+      "direction": [
+        -0.6499311889153931,
+        -0.7309005298456687,
+        0.20826393145800437
+      ],
+      "size": [
+        1.9999999999999998,
+        1.9999999999999998
+      ],
+      "color": [
+        0.48399999737739563,
+        0.3341469168663025,
+        0.17569199204444885
+      ],
+      "intensity": 5.8433732986450195,
+      "exposure": 5.0,
+      "effective_intensity": 186.98794555664062,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "pasted__aiAreaLight6",
+      "type": "aiAreaLight",
+      "visible": true,
+      "position": [
+        -2.256133952875692,
+        1.6889380809996037,
+        0.0
+      ],
+      "direction": [
+        0.6905538720907506,
+        0.6332293159115077,
+        -0.3495082019219511
+      ],
+      "size": [
+        2.0,
+        2.0
+      ],
+      "color": [
+        0.21190398931503296,
+        0.26541346311569214,
+        0.30799999833106995
+      ],
+      "intensity": 2.4096386432647705,
+      "exposure": 3.433734893798828,
+      "effective_intensity": 26.038089744237574,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "additional_light",
+      "type": "pointLight",
+      "visible": true,
+      "position": [
+        14.280483027615556,
+        7.9390925266619785,
+        4.018082301180785
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "size": [
+        2.094524921288569,
+        7.525018692654193
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 10.0,
+      "exposure": 0.0,
+      "effective_intensity": 10.0,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "additional_light_2",
+      "type": "pointLight",
+      "visible": true,
+      "position": [
+        -14.67402383864712,
+        10.001839368977175,
+        -3.248790457086446
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "size": [
+        2.0,
+        2.0
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 10.0,
+      "exposure": 0.0,
+      "effective_intensity": 10.0,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "sunlight1",
+      "type": "directionalLight",
+      "visible": true,
+      "position": [
+        -6.6277922953835215,
+        8.385406633786026,
+        -27.285214531635464
+      ],
+      "direction": [
+        0.541023664553939,
+        -0.10420781833406717,
+        0.8345262877768926
+      ],
+      "size": [
+        7.379329244884739,
+        5.725955445489254
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 4.039735317230225,
+      "exposure": 2.615894079208374,
+      "effective_intensity": 24.76369773938225,
+      "cone_angle": null,
+      "penumbra_angle": null
+    },
+    {
+      "name": "sunlight",
+      "type": "directionalLight",
+      "visible": true,
+      "position": [
+        -6.6277922953835215,
+        8.385406633786026,
+        -19.141252469745403
+      ],
+      "direction": [
+        0.541023664553939,
+        -0.10420781833406717,
+        0.8345262877768926
+      ],
+      "size": [
+        7.379329244884739,
+        5.725955445489254
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "intensity": 4.039735317230225,
+      "exposure": 2.615894079208374,
+      "effective_intensity": 24.76369773938225,
+      "cone_angle": null,
+      "penumbra_angle": null
+    }
+  ]
+}
