@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thunk - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../site-nav.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FFFDF7;
+      --text: #1a1814;
+      --body: #3d3a33;
+      --muted: #6b6656;
+      --faint: #8a8576;
+      --line: #e2dcc6;
+      --maroon: #582c39;
+      --cream: #f2efe6;
+      --teal-dark: #1c3538;
+      --pad: clamp(20px, 5vw, 72px);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'League Spartan', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+    a { color: inherit; }
+    a:hover { opacity: 0.8; }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+
+    .tv {
+      background-color: #24484c;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 4px),
+        linear-gradient(180deg, #4f7f83 0%, #2f5a5e 55%, #1c3538 100%);
+      color: var(--cream);
+    }
+
+    .hero { padding: 72px var(--pad) 0; }   /* room for the site navigation above it */
+    .site-header { position: absolute; }   /* scrolls away with the teal hero (site-nav.css) */
+    .hero-text { padding: 56px 0 40px; display: flex; flex-direction: column; gap: 16px; max-width: 720px; }
+    .hero-kicker { font-size: 16px; color: #c9d6d4; }
+    .title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; }
+    .title-row h1 { font-size: clamp(56px, 9vw, 112px); font-weight: 700; line-height: 0.9; letter-spacing: -2px; }
+    .live-link {
+      flex-shrink: 0; width: 72px; height: 72px; border-radius: 50%;
+      background: var(--cream); color: var(--teal-dark);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s ease;
+    }
+    .live-link:hover { opacity: 1; transform: scale(1.06); }
+    .live-link svg { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .live-link:hover svg { transform: translate(3px, -3px); }
+    .hero-summary { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.4; color: #e3e8e6; }
+    .hero-image {
+      aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+      margin-bottom: -140px; position: relative;
+      animation: open 0.6s ease-out both;
+    }
+    @keyframes open { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
+
+    .facts { padding: 180px var(--pad) 0; }
+    .facts .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; font-size: 16px; line-height: 1.5; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+    .facts span { color: var(--muted); }
+
+    .chapters { position: sticky; top: 0; z-index: 5; background: rgba(255,253,247,0.96); backdrop-filter: blur(6px); }
+    .chapter-links { display: flex; overflow-x: auto; padding: 0 clamp(8px, 2vw, 24px); }
+    .chapter-links a {
+      flex: 1 0 120px; display: flex; align-items: baseline; justify-content: center; gap: 8px;
+      padding: 18px 8px 14px; font-size: 16px; text-decoration: none; color: var(--faint);
+      transition: color 0.2s;
+    }
+    .chapter-links a small { font-size: 12px; color: #b5ae9c; }
+    .chapter-links a.done { color: var(--text); }
+    .chapter-links a.on { color: var(--maroon); font-weight: 600; }
+    .chapter-links a.on small { color: var(--maroon); }
+    .progress { position: relative; height: 4px; background: #e9e4d4; }
+    .progress-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--maroon); transition: width 0.12s linear; }
+    .progress-tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--bg); }
+
+    main { padding: 0 var(--pad); }
+    .statement { padding: 140px 0; font-size: clamp(32px, 4.6vw, 56px); font-weight: 500; line-height: 1.15; letter-spacing: -1px; max-width: 20ch; }
+    .statement em { font-style: normal; color: var(--maroon); }
+
+    .section { padding: 0 0 140px; display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 70px; }
+    .label { font-size: 16px; color: var(--muted); }
+    .section h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 600; line-height: 1.1; max-width: 22ch; }
+    .section p.body { font-size: 19px; line-height: 1.65; color: var(--body); max-width: 640px; }
+    .caption { font-size: 15px; color: var(--muted); }
+    .shot { aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #d9d6cc; margin-top: 12px; }
+
+    .maps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 48px 40px; margin-top: 20px; }
+    .maps figure { display: flex; flex-direction: column; gap: 14px; }
+    .maps svg { width: 100%; height: auto; display: block; }
+    .maps .name { font-size: 20px; font-weight: 600; }
+    .maps .name.us { color: var(--maroon); }
+    .maps .desc { font-size: 16px; line-height: 1.45; color: #4a4740; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 15px; color: var(--muted); }
+    .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin-right: 8px; }
+
+    .race-scroll { overflow-x: auto; margin-top: 64px; }
+    .race { min-width: 760px; padding: 0 80px; display: flex; flex-direction: column; gap: 8px; }
+    .race-head { display: flex; align-items: baseline; gap: 12px; }
+    .race-head b { font-size: 22px; font-weight: 600; }
+    .race-head span { font-size: 16px; }
+    .race-head.old { color: var(--muted); }
+    .race-head.new { color: var(--maroon); margin-top: 36px; }
+    .track { position: relative; height: 120px; }
+    .track .line { position: absolute; left: 0; top: 50%; }
+    .track.old .line { width: 88%; height: 3px; margin-top: -1.5px; background: #b5ae9c; }
+    .track.new .line { width: 44%; height: 6px; margin-top: -3px; border-radius: 3px; background: var(--maroon); }
+    .dot { position: absolute; top: 50%; border-radius: 50%; box-shadow: 0 0 0 5px var(--bg); }
+    .track.old .dot { width: 16px; height: 16px; margin: -8px 0 0 -8px; background: var(--faint); }
+    .track.new .dot { width: 20px; height: 20px; margin: -10px 0 0 -10px; background: var(--maroon); }
+    .step { position: absolute; top: calc(50% + 22px); width: 150px; margin-left: -75px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+    .step b { font-size: 16px; font-weight: 400; line-height: 1.25; }
+    .step span { font-size: 13px; }
+    .track.old .step b { color: var(--body); }
+    .track.old .step span { color: var(--muted); }
+    .track.new .step span { color: var(--maroon); }
+    .finish { position: absolute; top: 50%; font-size: 16px; font-weight: 600; white-space: nowrap; }
+    .track.old .finish { left: 88%; margin: -12px 0 0 22px; color: var(--muted); }
+    .track.new .finish { left: 44%; margin: -12px 0 0 24px; color: var(--maroon); }
+    .saved-line { position: absolute; left: calc(44% + 76px); width: calc(44% - 76px); top: 50%; border-top: 2px dashed #d8cfc0; }
+    .saved-text { position: absolute; left: calc(44% + 76px); width: calc(44% - 76px); top: calc(50% - 40px); text-align: center; font-size: 17px; color: var(--maroon); }
+
+    .tradeoffs { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px 72px; margin-top: 12px; }
+    .tradeoffs > div { border-top: 1px solid var(--text); padding-top: 18px; }
+    .three { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 48px 64px; }
+    .section h3 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+    .section .small-body { font-size: 18px; line-height: 1.6; color: var(--body); }
+
+    .quote { font-size: clamp(28px, 3.6vw, 42px); font-weight: 500; line-height: 1.2; max-width: 24ch; }
+    .numbers { display: flex; flex-wrap: wrap; gap: 40px 96px; margin-top: 24px; }
+    .numbers b { display: block; font-size: 56px; font-weight: 600; line-height: 1; }
+    .numbers span { font-size: 17px; color: #4a4740; }
+    .todo { outline: 2px dashed #d99a8f; outline-offset: 8px; }
+
+    .brand-banner { aspect-ratio: 21 / 7; border-radius: 18px; overflow: hidden; }
+    .brand-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .brand-grid div { aspect-ratio: 1; border-radius: 18px; overflow: hidden; }
+
+    .end { padding: 72px var(--pad); }
+    .end .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 32px; }
+    .next { display: flex; flex-direction: column; gap: 6px; text-decoration: none; }
+    .next span { font-size: 16px; color: #c9d6d4; }
+    .next b { font-size: clamp(36px, 5vw, 56px); font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .hero-image { margin-bottom: -80px; }
+      .facts { padding-top: 120px; }
+      .statement, .section { padding-bottom: 96px; }
+      .statement { padding-top: 96px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero-image { animation: none; }
+      .progress-fill, .live-link, .live-link svg { transition: none; }
+    }
+
+    /* ── Thunk page layout ── */
+    .facts .wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px 32px; }
+    .section h2 { max-width: 26ch; }
+    .hero-image.thunk { background: linear-gradient(160deg, #eceb8c 0%, #9fd8c8 45%, #45c8e0 100%); display: flex; align-items: center; justify-content: center; }
+    .hero-image.thunk img { width: auto; height: 92%; object-fit: contain; filter: drop-shadow(0 24px 40px rgba(0,0,0,0.25)); }
+
+    /* Phone frames: one look everywhere, soft shadow */
+    .phone {
+      width: 100%; max-width: 240px; aspect-ratio: 9 / 19.5; border-radius: 36px; overflow: hidden;
+      border: 8px solid #15171a; background: #15171a; box-shadow: 0 16px 32px rgba(0,0,0,0.14);
+    }
+    .phone video, .phone img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .phone.scroll { overflow-y: auto; scrollbar-width: none; }
+    .phone.scroll::-webkit-scrollbar { display: none; }
+    .phone.scroll img { height: auto; }
+    .phone.was { filter: saturate(0.7); }
+
+    /* Rows of screens: an even grid, phones centred in their columns, captions under them */
+    .screens { display: grid; gap: 48px 32px; margin-top: 16px; }
+    .screens.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    /* The five core screens: one even row; on smaller screens they wrap, the last row centred */
+    .screens.five { display: flex; flex-wrap: wrap; justify-content: center; gap: 48px 24px; }
+    .screens.five figure { flex: 0 0 calc((100% - 4 * 24px) / 5); }
+    /* Same frame on every screen: the pictures are cropped to end at their tab bar, and sit on the frame's bottom edge */
+    .phone.app img { object-position: center bottom; }
+    .screens figure { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .screens figcaption { width: 100%; max-width: 240px; font-size: 15px; line-height: 1.45; color: var(--muted); text-align: center; }
+    .screens.four figcaption { text-align: left; }
+    .screens figcaption b { display: block; color: var(--text); font-weight: 600; margin-bottom: 2px; }
+
+    /* Onboarding: words on the left, the recording on the right */
+    .split { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 64px; align-items: center; }
+    .split-text { display: flex; flex-direction: column; gap: 28px; }
+    .split .phone { max-width: 280px; justify-self: end; }
+
+    /* Before → after pairs */
+    .pairs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 64px; margin-top: 32px; padding-top: 48px; border-top: 1px solid var(--line); }
+    .pair { display: flex; flex-direction: column; gap: 24px; }
+    .pair-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; }
+    .pair figure { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .pair figcaption { font-size: 14px; color: var(--muted); }
+    .pair .phone { max-width: 190px; border-width: 7px; border-radius: 30px; }
+    .arrow { font-size: 22px; color: var(--muted); }
+
+    .store { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+    .store img { height: auto; border-radius: 14px; box-shadow: 0 10px 24px rgba(0,0,0,0.10); }
+
+    /* Square tiles (logo, branding): always an even row of three */
+    .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .tiles figure { display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 20px; color: var(--muted); }   /* fixed line height: the θ would make one caption taller */
+    .screens + .three { margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--line); }
+    .tile { aspect-ratio: 1; border-radius: 18px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, #fcfadf, #d8efe9); }
+    .tile img { width: 46%; height: auto; object-fit: contain; }
+    .tile.full img { width: 100%; height: 100%; object-fit: cover; }
+    .tiles.two { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 640px; }
+    .palette { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+    .palette div { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--muted); }
+    .palette i { display: block; aspect-ratio: 1; border-radius: 14px; background: var(--c); box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
+
+    @media (max-width: 900px) {
+      .split { grid-template-columns: 1fr; gap: 32px; }
+      .split .phone { justify-self: center; }
+      .pairs { grid-template-columns: 1fr; }
+      .screens.five figure { flex-basis: calc((100% - 2 * 24px) / 3); }
+      .store { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 700px) {
+      .screens.four { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 16px; }
+      .screens.five { gap: 36px 16px; }
+      .screens.five figure { flex-basis: calc((100% - 16px) / 2); }
+      .screens .phone { border-width: 6px; border-radius: 26px; }
+      .pair .phone { border-width: 6px; border-radius: 24px; }
+      .store { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .palette { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .tiles { gap: 10px; }
+      .tiles figure { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="site-brand" href="../index.html">Room lived by AK</a>
+    <nav class="site-links" aria-label="Site">
+      <a href="../index.html">Room</a>
+      <a href="../index.html#work" aria-current="true">Work</a>
+      <a href="../about/">About Me</a>
+    </nav>
+  </header>
+  <script src="../site-music.js?v=3"></script>
+  <section class="tv hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <span class="hero-kicker">Projects · CH 02</span>
+        <div class="title-row">
+          <h1>Thunk</h1>
+        </div>
+        <p class="hero-summary">A journaling app for logging your thoughts, tags and mood. As a mobile engineering intern, I redesigned and built its onboarding, core app screens and visuals.</p>
+      </div>
+      <div class="hero-image thunk"><img src="../media/homescreen.png" alt="Thunk home screen on a phone"></div>
+    </div>
+  </section>
+
+  <div class="facts">
+    <div class="wrap">
+      <div><span>Role</span><br>Frontend engineer (mobile engineering intern)</div>
+      <div><span>Timeline</span><br>Internship, 2026</div>
+      <div><span>Skills</span><br>Mobile frontend, product design, visual design</div>
+      <div><span>Built with</span><br>React Native, TypeScript</div>
+      <div><span>Status</span><br>Shipping soon</div>
+    </div>
+  </div>
+
+  <nav class="chapters" aria-label="Sections">
+    <div class="chapter-links">
+      <a href="#s0"><small>01</small>Before</a>
+      <a href="#s1"><small>02</small>Onboarding</a>
+      <a href="#s2"><small>03</small>App screens</a>
+      <a href="#s3"><small>04</small>App Store</a>
+      <a href="#s4"><small>05</small>Logo</a>
+      <a href="#s5"><small>06</small>Branding</a>
+    </div>
+    <div class="progress" aria-hidden="true">
+      <span class="progress-fill"></span>
+      <span class="progress-tick" style="left: calc(100% / 6 - 1px)"></span>
+      <span class="progress-tick" style="left: calc(200% / 6 - 1px)"></span>
+      <span class="progress-tick" style="left: calc(50% - 1px)"></span>
+      <span class="progress-tick" style="left: calc(400% / 6 - 1px)"></span>
+      <span class="progress-tick" style="left: calc(500% / 6 - 1px)"></span>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+
+      <p class="statement">Welcome to <em>Thunk.</em></p>
+
+      <section class="section" id="s0">
+        <span class="label">Where it started</span>
+        <h2>A redesign of an app that already worked.</h2>
+        <p class="body">Thunk already let people sign in, track their thought labels and read a weekly summary. These are the screens I started from.</p>
+        <div class="screens four">
+          <figure><div class="phone was"><img src="../images/thunk-before-signin.png" alt="Old Thunk sign-in screen: a plain form in default blue" loading="lazy"></div><figcaption><b>Sign in</b>No logo or brand color, and most of the screen is empty.</figcaption></figure>
+          <figure><div class="phone was"><img src="../images/sign%20up%20old.png" alt="Old Thunk sign-up screen: four plain fields" loading="lazy"></div><figcaption><b>Sign up</b>The placeholder text is almost invisible.</figcaption></figure>
+          <figure><div class="phone was"><img src="../images/IMG_0816.PNG" alt="Old Thunk tracker screen: a line chart with repeated axis numbers" loading="lazy"></div><figcaption><b>Tracker</b>The axis repeats its numbers (2, 2, 1, 1) and the dates are hard to read.</figcaption></figure>
+          <figure><div class="phone was"><img src="../images/IMG_0817.PNG" alt="Old Thunk summary screen: one long block of text" loading="lazy"></div><figcaption><b>Summary</b>One block of text: the stats look the same as the paragraphs.</figcaption></figure>
+        </div>
+        <div class="three">
+          <div><h3>Give it an identity</h3><p class="small-body">A logo, a palette and a look of its own, instead of default blue on grey.</p></div>
+          <div><h3>Make data readable at a glance</h3><p class="small-body">Clear axes, dates and labels, so a week of moods reads in a second.</p></div>
+          <div><h3>Give text a hierarchy</h3><p class="small-body">Pull the numbers and themes out of the paragraphs so they can be scanned.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s1">
+        <div class="split">
+          <div class="split-text">
+            <span class="label">Onboarding</span>
+            <h2>Five screens to get started.</h2>
+            <p class="body">Designed and developed 5 onboarding screens with animations and visual assets.</p>
+          </div>
+          <div class="phone"><video src="../media/onboarding.mp4" muted loop playsinline autoplay preload="metadata" aria-label="Thunk onboarding flow recording"></video></div>
+        </div>
+      </section>
+
+      <section class="section" id="s2">
+        <span class="label">App screens</span>
+        <h2>The five core screens.</h2>
+        <p class="body">Designed and developed 5 core app screens (home, trends, history, weekly summary and profile), with tappable journal entries.</p>
+        <div class="screens five">
+          <figure><div class="phone app"><img src="../images/thunk-app-home.jpg" alt="Thunk home screen" loading="lazy"></div><figcaption>Home</figcaption></figure>
+          <figure><div class="phone app"><img src="../images/thunk-app-trends.jpg" alt="Thunk trends screen" loading="lazy"></div><figcaption>Trends</figcaption></figure>
+          <figure><div class="phone app"><img src="../images/thunk-app-history.jpg" alt="Thunk history screen" loading="lazy"></div><figcaption>History</figcaption></figure>
+          <figure><div class="phone app"><img src="../images/thunk-app-summary.jpg" alt="Thunk weekly summary screen" loading="lazy"></div><figcaption>Weekly summary</figcaption></figure>
+          <figure><div class="phone app"><img src="../images/thunk-app-profile.jpg" alt="Thunk profile screen" loading="lazy"></div><figcaption>Profile</figcaption></figure>
+        </div>
+        <div class="pairs">
+          <div class="pair">
+            <div class="pair-row">
+              <figure><div class="phone was"><img src="../images/IMG_0816.PNG" alt="Old tracker screen" loading="lazy"></div><figcaption>Before: Tracker</figcaption></figure>
+              <span class="arrow" aria-hidden="true">→</span>
+              <figure><div class="phone"><img src="../media/app-2-trends.jpg" alt="New Trends screen" loading="lazy"></div><figcaption>After: Trends</figcaption></figure>
+            </div>
+            <div><h3>Tracker → Trends</h3><p class="small-body">The crowded date axis became a row of weekday chips with a This Week switcher, the month and year became chips you can change, and the axis stopped repeating numbers.</p></div>
+          </div>
+          <div class="pair">
+            <div class="pair-row">
+              <figure><div class="phone was"><img src="../images/IMG_0817.PNG" alt="Old summary screen" loading="lazy"></div><figcaption>Before: Summary</figcaption></figure>
+              <span class="arrow" aria-hidden="true">→</span>
+              <figure><div class="phone"><img src="../media/app-4-summary.jpg" alt="New Weekly summary screen" loading="lazy"></div><figcaption>After: Weekly summary</figcaption></figure>
+            </div>
+            <div><h3>Summary → Weekly summary</h3><p class="small-body">Entries and mood became labeled fields, themes became chips, and the long reflection moved into its own card with "Tap to read more".</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="s3">
+        <span class="label">App Store</span>
+        <h2>How it shows up in the App Store.</h2>
+        <div class="store">
+          <img src="../media/appstore_preview_1.png" alt="Thunk App Store preview 1" loading="lazy">
+          <img src="../media/appstore_preview_2.png" alt="Thunk App Store preview 2" loading="lazy">
+          <img src="../media/appstore_preview_3.png" alt="Thunk App Store preview 3" loading="lazy">
+          <img src="../media/appstore_preview_4.png" alt="Thunk App Store preview 4" loading="lazy">
+          <img src="../media/appstore_preview_5.png" alt="Thunk App Store preview 5" loading="lazy">
+        </div>
+      </section>
+
+      <section class="section" id="s4">
+        <span class="label">Logo</span>
+        <h2>A glassmorphic logo.</h2>
+        <p class="body">The original icon was a flat θ on a gradient. I kept the θ, rebuilt it in glass and made it the new app icon.</p>
+        <div class="tiles two">
+          <figure><div class="tile full"><img src="../images/THUNK_LOGO-OLD.jpg" alt="Old Thunk icon: a flat white theta on a gradient" loading="lazy"></div>Before: old icon</figure>
+          <figure><div class="tile full"><img src="../media/brand-appcover.png" alt="New Thunk app icon: a glass theta" loading="lazy"></div>After: new icon</figure>
+        </div>
+      </section>
+
+      <section class="section" id="s5">
+        <span class="label">Branding</span>
+        <h2>Color palette, themes and UI.</h2>
+        <div class="palette">
+          <div><i style="--c:#275385"></i>#275385</div>
+          <div><i style="--c:#45c8e0"></i>#45c8e0</div>
+          <div><i style="--c:#36bdb1"></i>#36bdb1</div>
+          <div><i style="--c:#428659"></i>#428659</div>
+          <div><i style="--c:#eceb8c"></i>#eceb8c</div>
+          <div><i style="--c:#fcfadf"></i>#fcfadf</div>
+        </div>
+        <div class="tiles">
+          <figure><div class="tile"><img src="../media/brand-bubble.png" alt="Glass bubble gradient" loading="lazy"></div>Glass bubble</figure>
+          <figure><div class="tile"><img src="../media/brand-gradient-1.png" alt="Background gradient, yellow to blue" loading="lazy"></div>Background, light</figure>
+          <figure><div class="tile"><img src="../media/brand-gradient-2.png" alt="Background gradient, blue to yellow" loading="lazy"></div>Background, deep</figure>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="tv end">
+    <div class="wrap">
+      <a class="next" href="merangkai.html"><span>Next channel</span><b>Merangkai →</b></a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const sections = [...document.querySelectorAll('main .section[id^="s"]')];
+      const links = [...document.querySelectorAll('.chapter-links a')];
+      const fill = document.querySelector('.progress-fill');
+      const n = sections.length;
+      let frame = null;
+      const bar = document.querySelector('.chapter-links');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let shown = -1;
+
+      function update() {
+        frame = null;
+        const line = window.innerHeight * 0.35;
+        let p = 0;
+        for (let i = 0; i < n; i++) {
+          const top = sections[i].getBoundingClientRect().top;
+          const bottom = i < n - 1 ? sections[i + 1].getBoundingClientRect().top : sections[i].getBoundingClientRect().bottom;
+          if (line >= bottom) { p = i + 1; continue; }
+          if (line > top) p = i + (line - top) / (bottom - top);
+          break;
+        }
+        p = Math.max(0, Math.min(n, p));
+        fill.style.width = (p / n * 100) + '%';
+        const current = Math.min(n - 1, Math.floor(p));
+        links.forEach((a, i) => {
+          const done = p >= i + 1;
+          a.classList.toggle('done', done);
+          a.classList.toggle('on', p > 0 && i === current && !done);
+        });
+        // On a narrow screen the chapter bar scrolls sideways: keep the current chapter in view.
+        if (current !== shown && bar.scrollWidth > bar.clientWidth + 2) {
+          const a = links[current];
+          bar.scrollTo({ left: a.offsetLeft - (bar.clientWidth - a.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+        }
+        shown = current;
+      }
+
+      function onScroll() { if (!frame) frame = requestAnimationFrame(update); }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      update();
+    })();
+  </script>
+  <script src="../grain.js"></script>
+</body>
+</html>

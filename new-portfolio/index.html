@@ -1,17 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-music-host="room">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    // The loading screen (logo + name) is for the first visit only. Coming back
+    // to the room later in the same session (from Work, About, a case study)
+    // goes straight to the room.
+    (function () {
+      let seen = false;
+      try { seen = !!sessionStorage.getItem('ak-room-entered'); } catch (e) {}
+      // ...or arriving from another page of this portfolio (About, a case study).
+      try {
+        const from = document.referrer && new URL(document.referrer);
+        const home = location.pathname.replace(/index\.html$/, '');
+        if (from && from.origin === location.origin && from.pathname.startsWith(home) && from.pathname !== location.pathname) seen = true;
+      } catch (e) {}
+      if (seen) document.documentElement.classList.add('returning');
+    })();
+  </script>
   <title>Adriella Kristie — Room</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&family=Jost:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site-nav.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400&family=League+Spartan:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #a1b161;
       --text: #1a1814;
       --cream: #f3efe4;
-      --room: #1a0a06;
+      --room: #000000;   /* the page behind the room (the 3D background is see-through) */
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,7 +39,7 @@
       overflow: hidden;
       background: var(--room);
       color: var(--cream);
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: 'League Spartan', sans-serif;
     }
 
     #scene {
@@ -52,14 +69,19 @@
       justify-content: center;
       gap: 8px;
       background: #000;
-      color: var(--cream);
+      color: #fff;
       transition: opacity 1.4s ease, visibility 1.4s ease;
     }
     .loader.done { opacity: 0; visibility: hidden; }
+    @keyframes loaderFill { from { width: 0%; } to { width: 100%; } }
+    html.returning .loader { display: none; }
+    /* Coming back: the room fades straight in at its usual view (no fly-in) */
+    html.returning #scene { opacity: 0; transition: opacity 0.6s ease; }
+    html.returning body.entered #scene { opacity: 1; }
     .intro-text {
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       text-align: center;
-      color: #f3f1ee;
+      color: #fff;
       opacity: 0;
       transform: translateY(6px);
       animation: introText 0.8s 0.4s ease forwards;
@@ -73,7 +95,7 @@
       margin-top: 18px;
       width: min(160px, 40vw);
       height: 1px;
-      background: rgba(243, 239, 228, 0.15);
+      background: rgba(255, 255, 255, 0.15);
       overflow: hidden;
       transition: opacity 0.4s ease;
     }
@@ -81,88 +103,67 @@
       display: block;
       width: 0%;
       height: 100%;
-      background: var(--cream);
-      transition: width 0.2s ease;
+      background: #fff;
+      animation: loaderFill 4s linear forwards;   /* steady over 4 seconds */
     }
-    .loader.ready .loader-bar { opacity: 0; }
+
+    /* The couch logo above the name. A still of the couch shows straight
+       away; the 3D logo (loader-logo.js) fades in over it, framed identically,
+       and the AK jumps in. Re-render the still if the logo's look changes. */
+    .loader-logo-wrap {
+      position: relative;
+      width: min(380px, 80vw);
+      aspect-ratio: 4 / 3;
+      margin-bottom: 4px;
+    }
+    .loader-logo-poster, .loader-logo {
+      position: absolute; inset: 0;
+      display: block; width: 100%; height: 100%;
+    }
+    /* The canvas is see-through until its first frame, then opaque black,
+       so it takes over from the still on its own (no waiting on this page's
+       busy main thread, which would start the jump out of sight). */
 
     /* ─────────────────────────────────────────
        HUD — just a small name and the way back
     ───────────────────────────────────────── */
+    /* The site navigation (look: site-nav.css). Here it fades in with the room,
+       hides while the camera moves, and sits above the Work TV and "Reach me". */
     .hud {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 10;
       pointer-events: none;
-      padding: 24px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
       opacity: 0;
       transition: opacity 0.8s ease 1.2s;
     }
+    .hud .site-brand, .hud .site-links > * { pointer-events: auto; }
     body.entered .hud { opacity: 1; }
     body.tuned .hud { opacity: 0; transition-delay: 0s; }
-    /* Once the Work screen is on, the navigation sits above it again */
-    body.tv-open .hud { opacity: 1; z-index: 40; transition-delay: 0.2s; }
-    body.tv-open .hud .nav a,
-    body.tv-open .hud .nav button { pointer-events: auto; }
-    body.tv-open .reset { display: none; }
-    #navWork[aria-current="page"] { border-bottom-color: var(--cream); }
-    body.tuned .hud a,
-    body.tuned .hud button { pointer-events: none; }
-    .hud-right { display: flex; align-items: center; gap: 18px; }
+    body.tuned .hud a, body.tuned .hud button { pointer-events: none; }
+    body.tv-open .hud, body.reaching .hud { opacity: 1; z-index: 40; transition-delay: 0.2s; }
+    body.tv-open .hud .site-brand, body.tv-open .hud .site-links > *,
+    body.reaching .hud .site-brand, body.reaching .hud .site-links > * { pointer-events: auto; }
+    body.tv-open .reset, body.reaching .reset { display: none; }
     .reset {
       pointer-events: none;
-      font: inherit;
-      letter-spacing: inherit;
-      text-transform: inherit;
+      font: 400 11px 'League Spartan', sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       color: var(--cream);
       background: rgba(20, 11, 7, 0.55);
       border: 1px solid rgba(243, 239, 228, 0.35);
       border-radius: 999px;
-      padding: 6px 12px;
+      line-height: 1;
+      padding: 7.5px 12px 5.5px 13px;   /* optically centred: the caps sit high in the font, and the letter-spacing trails on the right */
       cursor: pointer;
       opacity: 0;
       transition: opacity 0.3s ease, background 0.2s ease, color 0.2s ease;
     }
     body.moved .reset { opacity: 1; pointer-events: auto; }
+    /* line its middle up with the middle of "Room lived by AK" (that text sits above its underline space) */
+    @media (min-width: 769px) { .hud .reset { transform: translateY(-2.5px); } }
     .reset:hover,
     .reset:focus-visible { background: var(--cream); color: var(--text); outline: none; }
 
     /* Top navigation */
-    .nav {
-      display: flex;
-      gap: clamp(28px, 6vw, 80px);
-      margin-left: auto;
-      font-family: 'Jost', 'Futura', sans-serif;
-      font-size: 15px;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      text-transform: none;
-    }
-    .nav a,
-    .nav button {
-      pointer-events: auto;
-      font: inherit;
-      color: var(--cream);
-      background: none;
-      border: 0;
-      padding: 4px 0;
-      cursor: pointer;
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.2s ease, opacity 0.2s ease;
-      white-space: nowrap;
-    }
-    .nav a:hover, .nav button:hover,
-    .nav a:focus-visible, .nav button:focus-visible { border-bottom-color: var(--cream); outline: none; }
 
     /* ─────────────────────────────────────────
        WORK — the screen inside the TV
@@ -172,7 +173,7 @@
       inset: 0;
       z-index: 30;
       background: #000;
-      font-family: 'Jost', 'Futura', sans-serif;
+      font-family: 'League Spartan', sans-serif;
       color: #eef6f7;
       display: grid;
       place-items: center;
@@ -198,25 +199,35 @@
       border-radius: inherit;
       box-shadow: inset 0 0 40px 14px rgba(0, 0, 0, 0.6), inset 0 0 120px 30px rgba(0, 0, 0, 0.35);
       background:
-        linear-gradient(to bottom, rgba(0, 0, 0, 0) 58%, rgba(4, 10, 11, 0.55) 70%, rgba(4, 10, 11, 0.92) 100%),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0) 75%, rgba(4, 10, 11, 0.18) 88%, rgba(4, 10, 11, 0.4) 100%),
         repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px);
       z-index: 3;
     }
+    /* The whole screen scrolls: header and tabs too, not just the work below. */
     .tv-inner {
-      position: relative;
-      z-index: 1;
+      position: relative;   /* no z-index: lets the Playground panel sit above the glass */
       height: 100%;
-      display: flex;
-      flex-direction: column;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: none;
       padding: clamp(24px, 4.5vw, 56px) clamp(20px, 3.6vw, 64px) 0;
     }
+    .tv-inner::-webkit-scrollbar { display: none; }
+
     .tv-head {
       display: flex;
       align-items: center;
       gap: clamp(14px, 2vw, 28px);
       flex-wrap: wrap;
     }
-    .tv-logo { width: clamp(80px, 9.5vw, 150px); height: auto; display: block; }
+    /* The AK mark, as in the Work prototype: heavy, tight and slanted */
+    .tv-logo {
+      display: block; flex: none;
+      font: 800 clamp(56px, 6.4vw, 96px) / 0.8 'League Spartan', sans-serif;
+      letter-spacing: -0.06em; color: #d6e2e4;
+      transform: skewX(-8deg); text-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+      padding: 0.08em 0.08em 0 0.07em;   /* the slant stays inside the box, lined up with the text below */
+    }
     .tv-tagline { font-size: clamp(15px, 1.5vw, 22px); font-weight: 300; }
     .tv-tagline b { font-weight: 600; }
     .tv-player {
@@ -232,7 +243,7 @@
     }
     .tv-song { flex: 1; font-size: clamp(15px, 1.4vw, 20px); font-weight: 300; }
     .tv-player button {
-      font: 600 18px/1 'Jost', sans-serif;
+      font: 600 18px/1 'League Spartan', sans-serif;
       color: #eef6f7;
       background: none;
       border: 0;
@@ -242,8 +253,11 @@
       cursor: pointer;
     }
     .tv-player button:hover, .tv-player button:focus-visible { background: rgba(255, 255, 255, 0.15); outline: none; }
-    .tv-player [data-play]::before { content: '▶'; font-size: 15px; }
-    .tv-player [data-play][aria-pressed="true"]::before { content: '❚❚'; font-size: 14px; letter-spacing: -2px; }
+    /* Drawn shapes, not the ▶ / ❚❚ characters: phones turn those into colour emoji */
+    .tv-player [data-play]::before { content: ''; display: inline-block; vertical-align: middle; width: 0; height: 0;
+      border-style: solid; border-width: 8px 0 8px 13px; border-color: transparent transparent transparent currentColor; margin-left: 3px; }
+    .tv-player [data-play][aria-pressed="true"]::before { width: 12px; height: 15px; border: 0; margin-left: 0;
+      background: linear-gradient(to right, currentColor 0 4px, transparent 4px 8px, currentColor 8px 12px); }
     .tv-tabs {
       display: flex;
       gap: clamp(20px, 5vw, 72px);
@@ -251,7 +265,7 @@
       flex-wrap: wrap;
     }
     .tv-tab {
-      font: 300 clamp(14px, 1.15vw, 17px) 'Jost', sans-serif;
+      font: 300 clamp(14px, 1.15vw, 17px) 'League Spartan', sans-serif;
       color: #eef6f7;
       background: none;
       border: 0;
@@ -260,20 +274,104 @@
       border-bottom: 1px solid transparent;
     }
     .tv-tab[aria-selected="true"] { font-weight: 600; }
+    .tv-tabs { margin-bottom: clamp(20px, 3.5vw, 60px); }
+    .tv-grid[hidden] { display: none; }
+
+    /* ── Playground: a black rounded panel where the cards are, with the list
+       (light bulb on the selected piece) and a preview of it ── */
+    .pg-panel {
+      --ink: #f3ecd6; --muted: rgba(243,236,214,.5); --line: rgba(243,236,214,.14); --row: rgba(243,236,214,.06);
+      position: relative; z-index: 4; color: var(--ink);   /* above the TV glass (z-index 3) */
+      background: #0b0b0b; border-radius: 10px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 30px 60px -20px rgba(0,0,0,.6), inset 0 0 60px rgba(0,0,0,.6);
+      /* The panel fills the TV's visible area (--fit-h, set by work.js); the
+         list and the preview scroll on their own. */
+      --pg-h: calc(var(--fit-h, 100vh) - 48px);
+      --col-h: calc(var(--pg-h) - 80px);   /* inside the panel's padding */
+      height: var(--pg-h);
+      padding: 40px 40px 40px 42px;
+    }
+    .pg-panel[hidden] { display: none; }
+    .pg-grid { display: grid; grid-template-columns: minmax(280px, 380px) 1fr; gap: 56px; height: 100%; }
+    .pg-list, .pg-view {
+      height: 100%; overflow-y: auto; overscroll-behavior: contain;
+      scrollbar-width: thin; scrollbar-color: rgba(243,236,214,.18) transparent;
+    }
+    .pg-list::-webkit-scrollbar, .pg-view::-webkit-scrollbar { width: 6px; }
+    .pg-list::-webkit-scrollbar-thumb, .pg-view::-webkit-scrollbar-thumb { background: rgba(243,236,214,.18); border-radius: 3px; }
+    /* The name list: its own dark grey card, set apart from the black panel. */
+    .pg-list {
+      list-style: none; margin: 0; padding: 14px 8px 14px 38px; display: flex; flex-direction: column; gap: 4px;
+      background: #1c1c1e; border-radius: 8px; box-shadow: 0 0 0 1px rgba(255,255,255,.05);
+    }
+    .pg-item { position: relative; }
+    .pg-btn {
+      width: 100%; text-align: left; background: none; border: 0; color: inherit; font: inherit; cursor: pointer;
+      padding: 16px 18px; border-radius: 6px; transition: background .2s;
+    }
+    .pg-btn:hover, .pg-item.on .pg-btn { background: var(--row); }
+    .pg-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+    .pg-bulb { position: absolute; left: -30px; top: 16px; width: 22px; height: 22px; overflow: visible; transition: opacity .25s, filter .25s; }
+    .pg-bulb .glass { fill: transparent; stroke: rgba(243,236,214,.35); stroke-width: 1.4; transition: fill .25s, stroke .25s; }
+    .pg-bulb .base { stroke: rgba(243,236,214,.35); stroke-width: 1.4; stroke-linecap: round; fill: none; }
+    .pg-item .pg-bulb { opacity: 0; }
+    .pg-item:hover .pg-bulb { opacity: 1; }
+    .pg-item.on .pg-bulb { opacity: 1; filter: drop-shadow(0 0 6px rgba(255,214,102,.9)) drop-shadow(0 0 16px rgba(255,196,64,.55)); }
+    .pg-item.on .pg-bulb .glass { fill: #ffd666; stroke: #ffe9a8; }
+    .pg-item.on .pg-bulb .base { stroke: rgba(243,236,214,.8); }
+    .pg-title { display: flex; align-items: baseline; gap: 10px; font-size: 26px; font-weight: 500; letter-spacing: -.01em; color: var(--muted); transition: color .2s; }
+    .pg-item.on .pg-title, .pg-btn:hover .pg-title { color: var(--ink); }
+    .pg-meta { margin-top: 6px; font-size: 14px; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+    .pg-view { min-width: 0; padding-right: 8px; }
+    /* A sketch runs at the size it was made for (data-w x data-h, e.g. 16:9 or
+       a square) and is scaled down to fit, so none of it is cut off. */
+    .pg-media {
+      position: relative; aspect-ratio: var(--ar); width: min(100%, calc(var(--col-h) * var(--ar))); margin-inline: auto;
+      border-radius: 8px; overflow: hidden; background: #161616; box-shadow: 0 0 0 1px var(--line);
+    }
+    .pg-media iframe { position: absolute; left: 0; top: 0; border: 0; display: block; transform-origin: 0 0; }
+    .pg-inline .pg-media { width: 100%; }
+    .pg-inline .pg-more { margin-top: 24px; }
+    /* Images and videos at their own shape, never cropped: as wide as the
+       column, but no taller than it. */
+    .pg-shot {
+      display: block; width: auto; height: auto; max-width: 100%; margin-inline: auto;
+      max-height: var(--col-h);
+      border-radius: 8px; background: #161616; box-shadow: 0 0 0 1px var(--line);
+    }
+    .pg-more { display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 32px; }
+    .pg-info { display: flex; justify-content: space-between; gap: 32px; margin-top: 24px; }
+    .pg-info h3 { margin: 0; font-size: 34px; font-weight: 600; letter-spacing: -.02em; }
+    .pg-info p { margin: 10px 0 0; font-size: 18px; line-height: 1.5; font-weight: 300; color: rgba(243,236,214,.75); max-width: 560px; }
+    .pg-tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; align-content: flex-start; }
+    .pg-tags span { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; padding: 7px 12px 5px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+    .pg-fade { animation: pgfade .35s ease; }
+    @keyframes pgfade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .pg-fade { animation: none; } }
+    @media (max-width: 860px) {
+      /* Phone: one column that scrolls with the TV, the piece opening under its name. */
+      .pg-panel { padding: 20px 8px 24px; height: auto; --col-h: var(--pg-h); }
+      .pg-grid { grid-template-columns: 1fr; gap: 0; height: auto; }
+      .pg-list { height: auto; overflow: visible; padding: 8px; }
+      .pg-view { display: none; }
+      .pg-bulb { display: none; }
+      .pg-inline { padding: 22px 18px 26px; }   /* room under the piece's name */
+      .pg-inline .pg-info { flex-direction: column; gap: 14px; }
+      .pg-inline .pg-info h3 { display: none; }
+      .pg-inline .pg-tags { justify-content: flex-start; }
+    }
     .tv-tab:hover, .tv-tab:focus-visible { border-bottom-color: currentColor; outline: none; }
-    .tv-scroll {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      scrollbar-width: none;
-      padding-bottom: 96px;
-    }
-    .tv-scroll::-webkit-scrollbar { display: none; }
+    .tv-scroll { padding-bottom: clamp(24px, 4vw, 56px); }
+    /* Rows of equal cards; a part-filled last row sits centred. */
     .tv-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: clamp(16px, 4.2vw, 66px);
+      --cols: 3;
+      --gap: clamp(16px, 4.2vw, 66px);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--gap);
     }
+    .tv-grid > .tv-card { flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols)); }
     .tv-card {
       position: relative;
       aspect-ratio: 440 / 308;
@@ -287,6 +385,7 @@
     }
     a.tv-card:hover, a.tv-card:focus-visible { transform: translateY(-4px); box-shadow: 0 10px 18px rgba(0, 0, 0, 0.4); outline: none; }
     a.tv-card:focus-visible { box-shadow: 0 0 0 3px #eef6f7, 0 10px 18px rgba(0, 0, 0, 0.4); }
+    /* The picture fills the whole card; the title sits on a dark fade over it */
     .tv-card-img { position: absolute; inset: 0; background: center / cover no-repeat; }
     .tv-card-title {
       position: absolute;
@@ -296,25 +395,8 @@
       font-weight: 600;
       background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.6));
     }
-    .tv-back {
-      position: absolute;
-      z-index: 4;
-      left: 50%;
-      bottom: clamp(16px, 3vw, 32px);
-      transform: translateX(-50%);
-      font: 400 13px 'Jost', sans-serif;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #eef6f7;
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(238, 246, 247, 0.5);
-      border-radius: 999px;
-      padding: 10px 20px;
-      cursor: pointer;
-    }
-    .tv-back:hover, .tv-back:focus-visible { background: #eef6f7; color: #17393d; outline: none; }
     @media (max-width: 768px) {
-      .tv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .tv-grid { --cols: 1; }
       .tv-player { min-width: 0; width: 100%; margin-left: 0; padding-left: 20px; }
     }
 
@@ -339,6 +421,71 @@
       .work-tv.on .tv-screen, .work-tv.off .tv-screen, .work-tv.on, .work-tv.off { animation-duration: 0.01s; }
     }
 
+    /* Fade to black on the way to About Me (its intro starts on black) */
+    .blackout {
+      position: fixed; inset: 0; z-index: 100;
+      background: #000; pointer-events: none;
+      opacity: 0; transition: opacity 0.6s ease-in;
+    }
+    .blackout.on { opacity: 1; pointer-events: auto; }
+    .blackout.instant { transition: none; }
+    body.leaving .hud { opacity: 0; transition-delay: 0s; transition-duration: 0.4s; }
+    /* Who I am, in one line, on the room's first screen (fades with the nav) */
+    .room-intro {
+      position: fixed; left: 44px; bottom: 40px; z-index: 10; max-width: 440px; margin: 0;
+      font: 300 15px/1.45 'League Spartan', sans-serif; color: var(--cream);
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+      pointer-events: none; opacity: 0; transition: opacity 0.8s ease 1.4s;
+    }
+    .room-intro b { font-weight: 600; }
+    .room-intro span { display: block; margin-top: 4px; font-size: 13px; letter-spacing: 0.02em; opacity: 0.75; }
+    body.entered .room-intro { opacity: 1; }
+    .room-intro i { font-style: normal; }
+    .room-intro .say-click { display: none; }
+    @media (hover: hover) and (pointer: fine) { .room-intro .say-tap { display: none; } .room-intro .say-click { display: inline; } }
+    body.tuned .room-intro, body.leaving .room-intro { opacity: 0; transition-delay: 0s; transition-duration: 0.3s; }
+    @media (max-width: 768px) {
+      /* phones: under the nav (Reset view has the bottom) */
+      .room-intro { left: 20px; right: 20px; top: 58px; bottom: auto; font-size: 14px; }
+      .room-intro span { font-size: 12px; }
+    }
+    body.leaving .hud a, body.leaving .hud button { pointer-events: none; }
+    @media (prefers-reduced-motion: reduce) { .blackout { transition-duration: 0.01s; } }
+
+    /* ─────────────────────────────────────────
+       REACH ME — after the camera moves to the phone
+    ───────────────────────────────────────── */
+    .reach {
+      position: fixed; inset: 0; z-index: 35;
+      display: flex; align-items: center; justify-content: flex-end;
+      padding: 0 clamp(24px, 8vw, 140px);
+      background: linear-gradient(90deg, transparent 35%, rgba(10, 4, 2, 0.55) 70%);
+      opacity: 0; transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .reach[hidden] { display: none; }
+    .reach.on { opacity: 1; pointer-events: auto; }
+    .reach-panel { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; font-family: 'League Spartan', sans-serif; }
+    .reach h2 { font-size: clamp(44px, 6vw, 76px); font-weight: 700; letter-spacing: -1.5px; line-height: 1; color: var(--cream); text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5); }
+    /* Two 3D icons (reach-icons.js): an envelope and the LinkedIn tile */
+    .reach-icons { display: flex; flex-wrap: wrap; gap: clamp(16px, 3vw, 40px); margin-left: -18px; }
+    .icon-link {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      color: var(--cream); text-decoration: none;
+      font: 400 14px 'League Spartan', sans-serif; letter-spacing: 0.14em; text-transform: uppercase;
+      border-radius: 20px; outline: none;
+    }
+    .icon-link canvas { display: block; width: clamp(130px, 13vw, 180px); height: clamp(130px, 13vw, 180px); }
+    .icon-link span { opacity: 0.75; transition: opacity 0.2s; }
+    .icon-link:hover span, .icon-link:focus-visible span { opacity: 1; }
+    .icon-link:focus-visible { box-shadow: 0 0 0 2px var(--cream); }
+    @media (max-aspect-ratio: 1/1) {
+      .reach { align-items: flex-end; justify-content: center; padding: 0 20px 9vh; background: linear-gradient(180deg, transparent 40%, rgba(10, 4, 2, 0.6) 75%); }
+      .reach-panel { align-items: center; }
+      .reach-icons { justify-content: center; margin-left: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) { .reach { transition: none; } }
+
     .error {
       position: fixed;
       inset: 0;
@@ -357,8 +504,7 @@
     .error a { color: inherit; }
 
     @media (max-width: 768px) {
-      .hud { padding: 18px 16px; }
-      .nav { gap: 22px; font-size: 14px; }
+      .hud .reset { position: fixed; left: 50%; top: auto; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); padding: 10px 18px; }
     }
   </style>
 </head>
@@ -367,6 +513,10 @@
 
   <!-- ── LOADER ── -->
   <div class="loader" id="loader" role="status" aria-label="Loading the room">
+    <div class="loader-logo-wrap" aria-hidden="true">
+      <img class="loader-logo-poster" src="images/couch-logo-poster.png?v=6" alt="" fetchpriority="high">
+      <canvas class="loader-logo" id="loaderLogo"></canvas>
+    </div>
     <div class="intro-text">
       <h1 class="intro-name">Adriella Kristie</h1>
       <p class="intro-role">Computer Engineer + Creative, Product Enthusiast</p>
@@ -376,21 +526,24 @@
   </div>
 
   <!-- ── HUD ── -->
-  <div class="hud">
+  <header class="site-header hud">
+    <a class="site-brand" id="navName" href="./">Room lived by AK</a>
     <button type="button" class="reset" id="btnReset">Reset view</button>
-    <nav class="nav" aria-label="Main">
+    <nav class="site-links" aria-label="Site">
+      <button type="button" id="navRoom" aria-current="page">Room</button>
       <button type="button" id="navWork">Work</button>
-      <a href="../pages/labs-code.html">Playground</a>
-      <a href="../pages/aboutme.html">About Me</a>
+      <a id="navAbout" href="about/">About Me</a>
     </nav>
-  </div>
+  </header>
+  <p class="room-intro"><b>Adriella Kristie</b> · Computer engineer + Creative = Product enthusiast<span><i class="say-tap">Tap</i><i class="say-click">Click</i> the record player for music, the TV for a featured work, the phone to reach me and my name to know more about me.</span></p>
+  <script src="site-music.js?v=3"></script>
 
   <!-- ── WORK (inside the TV) ── -->
   <div class="work-tv" id="workTV" role="dialog" aria-label="Work" hidden>
     <div class="tv-screen">
       <div class="tv-inner">
         <header class="tv-head">
-          <img class="tv-logo" src="images/ak-logo.png" alt="AK">
+          <span class="tv-logo" aria-hidden="true">AK</span>
           <p class="tv-tagline">Watch through a collection of my <b>work</b></p>
           <div class="tv-player" role="group" aria-label="Music player">
             <span class="tv-song">Song Name</span>
@@ -400,22 +553,49 @@
           </div>
         </header>
         <div class="tv-tabs" role="tablist" aria-label="Kinds of work"></div>
-        <div class="tv-scroll"><div class="tv-grid"></div></div>
+        <div class="tv-scroll">
+          <div class="tv-grid"></div>
+          <!-- Playground (index.html#playground): list + preview, filled by work.js -->
+          <div class="pg-panel pg" hidden>
+            <div class="pg-grid">
+              <ul class="pg-list" aria-label="Playground pieces"></ul>
+              <div class="pg-view" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <button type="button" class="tv-back">Back to the room</button>
     </div>
   </div>
 
   <div class="error" id="error"></div>
+  <div class="blackout" id="blackout" aria-hidden="true"></div>
+
+  <!-- ── REACH ME (the phone) ── -->
+  <div class="reach" id="reach" role="dialog" aria-labelledby="reachTitle" hidden>
+    <div class="reach-panel">
+      <h2 id="reachTitle">Reach me</h2>
+      <div class="reach-icons">
+        <a class="icon-link" data-icon="email" href="mailto:adriellakristie@gmail.com" aria-label="Email">
+          <canvas aria-hidden="true"></canvas>
+          <span>Email</span>
+        </a>
+        <a class="icon-link" data-icon="linkedin" href="https://www.linkedin.com/in/adriella-kristie/" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)">
+          <canvas aria-hidden="true"></canvas>
+          <span>LinkedIn</span>
+        </a>
+      </div>
+    </div>
+  </div>
 
   <script type="importmap">
     {
       "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/+esm",
         "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
       }
     }
   </script>
-  <script type="module" src="room.js?v=40"></script>
+  <script type="module" src="loader-logo.js?v=14"></script>
+  <script type="module" src="room.js?v=102"></script>
 </body>
 </html>

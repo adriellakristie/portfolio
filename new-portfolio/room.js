@@ -13,17 +13,20 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { applyMaterials, applyOverrides, loadLights, FilmShader } from './look.js?v=18';
-import { createWorkTV } from './work.js?v=6';
+import { applyMaterials, applyOverrides, loadLights, FilmShader } from './look.js?v=19';
+import { createWorkTV } from './work.js?v=32';
+import { createReachIcons } from './reach-icons.js?v=2';
 
 // ─────────────────────────────────────────
 // Featured — the spotlight slideshow on the TV in the room. Tapping the TV
 // opens whichever project is on screen.
 // ─────────────────────────────────────────
 const FEATURED = [
-  { name: 'OnTheWay',  line: 'Proximity doesn’t necessarily mean convenience.', img: '../pages/otw-img1.png',       href: '../pages/ontheway.html' },
-  { name: 'EcoBite',   line: 'Sustainability shouldn’t be a research project.',  img: '../pages/ecobite-img1.png',   href: '../pages/ecobite.html' },
-  { name: 'Merangkai', line: 'Heritage you can explore, not just read about.',   img: '../pages/merangkai-hero.png', href: '../pages/merangkai.html' },
+  // Add titled: true for a picture that already has the name and description
+  // on it: the TV then fits it whole and doesn't add its own.
+  { name: 'OnTheWay',  line: 'Proximity doesn’t necessarily mean convenience.', img: 'images/otw-tv-cover.jpg',      href: 'projects/ontheway.html' },
+  { name: 'EcoBite',   line: 'Sustainability shouldn’t be a research project.',  img: 'media/ecobite-img1.png',   href: 'projects/ecobite.html' },
+  { name: 'Merangkai', line: 'Heritage you can explore, not just read about.',   img: 'media/merangkai-hero.png', href: 'projects/merangkai.html' },
 ];
 
 const MODEL_URL = 'models/room.glb';
@@ -41,13 +44,19 @@ const SWAY_PERIOD = 8;                             // seconds
 
 const params = new URLSearchParams(location.search);
 const debug = params.has('debug');
+// index.html#work opens straight onto the Work screen in the TV (used by the case study
+// pages); index.html#playground opens it on the Playground tab.
+const openWorkHash = () => location.hash === '#work' || location.hash === '#playground';
+const openWorkOnLoad = openWorkHash();
+// Seen the loading screen already this session (set in index.html's <head>).
+const returning = document.documentElement.classList.contains('returning');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const lowPower = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
 
 // ── Renderer / scene ──
 const canvas = document.getElementById('scene');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowPower, alpha: true, powerPreference: 'high-performance' });   // (phones: the post-processing passes below skip antialiasing anyway)   // see-through: the page's white shows behind the room
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowPower ? 1 : 1.25));   // phones draw fewer pixels: far smoother
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.NeutralToneMapping;   // keeps the orange sofa saturated (ACES greys it)
@@ -57,7 +66,11 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.shadowMap.autoUpdate = false;   // the room is still; shadows are redrawn on demand
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color('#1a0a06');
+// No background: it's left see-through so the page's white shows. The old dark
+// backdrop is still used when the room captures its own reflections.
+const ROOM_DARK = new THREE.Color('#1a0a06');
+scene.background = null;
+renderer.setClearColor(0x000000, 0);
 const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.001, 50);
 
 // Studio reflections for the glossy materials.
@@ -65,8 +78,16 @@ const pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 scene.environmentIntensity = 0.3;
 
-const composer = new EffectComposer(renderer);
-composer.addPass(new RenderPass(scene, camera));
+// The picture is drawn into an off-screen target (for the passes below), so the canvas's own
+// antialiasing never applies; give that target multisampling instead to smooth the edges.
+const composerTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, { type: THREE.HalfFloatType, samples: 4 });
+const composer = new EffectComposer(renderer, composerTarget);
+const renderPass = new RenderPass(scene, camera);
+// Clear see-through on every frame: building reflections (PMREM) resets the
+// renderer's clear colour to opaque, which would put black behind the room.
+renderPass.clearColor = new THREE.Color(0x000000);
+renderPass.clearAlpha = 0;
+composer.addPass(renderPass);
 // Contact shadows where objects meet.
 let ao = null;
 if (!lowPower) {
@@ -74,10 +95,19 @@ if (!lowPower) {
   composer.addPass(ao);
 }
 const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.18, 0.5, 0.95);
-composer.addPass(bloom);
+// Bloom adds its glow with additive blending, which would also add to the
+// alpha and turn the see-through background solid black: add light only.
+Object.assign(bloom.blendMaterial, {
+  blending: THREE.CustomBlending,
+  blendEquation: THREE.AddEquation,
+  blendSrc: THREE.SrcAlphaFactor, blendDst: THREE.OneFactor,
+  blendSrcAlpha: THREE.ZeroFactor, blendDstAlpha: THREE.OneFactor,
+});
+bloom.blendMaterial.needsUpdate = true;
+if (!lowPower) composer.addPass(bloom);   // no glow or film grain on phones: two full-screen passes saved
 composer.addPass(new OutputPass());
 const film = new ShaderPass(FilmShader);
-composer.addPass(film);
+if (!lowPower) composer.addPass(film);
 
 let stats = null;
 const debugUI = debug && !params.has('clean');   // ?debug&clean: debug camera, no overlays
@@ -92,14 +122,25 @@ if (debugUI) {
 // ── Loader UI ──
 const loaderEl = document.getElementById('loader');
 const loaderBar = document.getElementById('loaderBar');
-function setProgress(p) {
-  const pct = Math.round(Math.min(1, p) * 100);
-  loaderBar.style.width = pct + '%';
-}
+// The bar fills steadily over the first 4 seconds (CSS), whatever the download does.
+function setProgress() {}
 
-new GLTFLoader().load(
+// The room downloads straight away, but on a first visit it's only unpacked
+// and set up (heavy work on this thread) once the loading-screen logo has
+// landed: the logo's frames reach the screen through this thread, so doing it
+// earlier would make the jump stutter.
+const WAIT_FOR_LOGO_MAX = 4200;   // ms from page load, at the most
+function logoLanded() {
+  if (document.documentElement.classList.contains('returning') || openWorkOnLoad || params.has('debug')) return Promise.resolve();
+  return Promise.race([
+    new Promise((r) => { if (window.__logoLanded) r(); else window.addEventListener('logo:landed', r, { once: true }); }),
+    new Promise((r) => setTimeout(r, Math.max(0, WAIT_FOR_LOGO_MAX - performance.now()))),
+  ]);
+}
+const modelFile = new THREE.FileLoader().setResponseType('arraybuffer');
+modelFile.load(
   MODEL_URL,
-  (gltf) => setup(gltf).catch(showError),
+  (buffer) => logoLanded().then(() => new GLTFLoader().parse(buffer, MODEL_URL.replace(/[^/]*$/, ''), (gltf) => setup(gltf).catch(showError), showError)),
   (e) => { if (e.total) setProgress(e.loaded / e.total * 0.9); },
   (err) => showError(err)
 );
@@ -110,7 +151,7 @@ function showError(err) {
   if (typeof err === 'string') { el.textContent = err; el.classList.add('show'); hideIntro(); return; }
   el.innerHTML = location.protocol === 'file:'
     ? 'The 3D room needs a local server to load.<br>Run <code>python3 -m http.server</code> in the site folder and open<br><code>http://localhost:8000/new-portfolio/</code>'
-    : 'The 3D room could not load. <a href="../index.html">Go to the classic site</a>.';
+    : 'The 3D room could not load. Try refreshing the page.';
   el.classList.add('show');
   hideIntro();
 }
@@ -120,6 +161,10 @@ function showError(err) {
 // ─────────────────────────────────────────
 let start = null;          // { position, quaternion, fov }
 let tvView = null;         // straight-on view of the screen
+let nameBox = null;        // the "ADRIELLA KRISTIE" letters, in world space
+let phoneBox = null;       // the red phone (opens "Reach me")
+let reaching = false;      // the "Reach me" view is open
+let leaving = false;       // on the way out to About Me
 let screenInfo = null;     // screen center, normal and size in world space
 let screen = null;         // TV screen canvas painter
 let lights = null;
@@ -165,6 +210,7 @@ async function setup(gltf) {
     roomBox.setFromObject(model);
   }
   span = Math.max(roomBox.max.x - roomBox.min.x, roomBox.max.z - roomBox.min.z) || 1;
+  roomExtent = { box: roomBox.clone(), floorY: floorBox.isEmpty() ? roomBox.min.y : floorBox.max.y };   // for framing tall screens
 
   // A few pieces came out of the export at the wrong scale and enclose the
   // whole room, so the camera would only see their inside. They are hidden
@@ -218,6 +264,12 @@ async function setup(gltf) {
   const recordRoot = findShown(model, 'record_player');
   register('record', recordRoot);
   register('curtains', model.getObjectByName('pillars'));
+  const nameMesh = model.getObjectByName('typeMesh1');
+  register('name', nameMesh);   // "ADRIELLA KRISTIE" → About Me
+  if (nameMesh) nameBox = new THREE.Box3().setFromObject(nameMesh);
+  const phoneRoot = model.getObjectByName('group14');   // the red rotary phone (unnamed in Maya)
+  register('phone', phoneRoot);
+  if (phoneRoot) phoneBox = new THREE.Box3().setFromObject(phoneRoot);
   record = recordRoot ? setupRecordPlayer(recordRoot) : null;
   curtains = setupCurtains(model.getObjectByName('pillars'));
 
@@ -240,7 +292,7 @@ async function setup(gltf) {
     start = viewFrom(new THREE.Vector3(x, y, z), look, fov || 42);
     console.info('[room] Camera: ?cam override (debug).');
   }
-  if (start) mirrorName(model, start.position);
+  if (start) { start.baseFov = start.fov; start.baseQuat = start.quaternion.clone(); fitStartToScreen(); makeHome(); mirrorName(model, start.position); }
   if (!start) {
     const msg = `Camera "${CAMERA_NAME}" is not in ${MODEL_URL}. Export it from Maya/Blender with cameras included (glTF export → Include → Cameras).`;
     console.error('[room] ' + msg);
@@ -264,7 +316,7 @@ async function setup(gltf) {
 
   // Compile every shader and draw the landing view once behind the intro, so
   // nothing has to be compiled mid-flight (which shows as a stutter).
-  applyView(start);
+  applyView(home);
   // Capped at 2 s: some browsers never report parallel compiles as finished.
   await Promise.race([
     renderer.compileAsync(scene, camera).catch(() => renderer.compile(scene, camera)),
@@ -279,12 +331,21 @@ async function setup(gltf) {
   renderer.setAnimationLoop(tick);
   setProgress(1);
   loaderEl.classList.add('ready');
-  if (debug) { enter(true); return; }
+  if (debug || openWorkOnLoad) { enter(true); if (openWorkOnLoad && workTV.isOpen) tuneIn(true); return; }
+  if (returning) { enter(true); return; }   // no loading screen or fly-in this time: the room just fades in
   await new Promise((r) => setTimeout(r, Math.max(0, INTRO_MIN - performance.now())));
+  // ...and until the logo's "AK" has landed in the couch (but no later than INTRO_MAX).
+  await Promise.race([
+    new Promise((r) => { if (window.__logoLanded) r(); else window.addEventListener('logo:landed', r, { once: true }); })
+      .then(() => new Promise((r) => setTimeout(r, LOGO_HOLD))),
+    new Promise((r) => setTimeout(r, Math.max(0, INTRO_MAX - performance.now()))),
+  ]);
   enter(false);
 }
 
-const INTRO_MIN = 3000;   // ms from page load the intro stays up, at the least
+const INTRO_MIN = 5000;   // ms from page load the intro stays up, at the least
+const INTRO_MAX = 8000;   // ...and at the most, waiting for the logo
+const LOGO_HOLD = 500;    // ms the logo rests after landing before the room comes in
 
 function hideIntro() {
   loaderEl.classList.add('done');
@@ -321,6 +382,7 @@ function captureEnv(centre, hide = null, size = 256, backdrop = null) {
   if (hide) hide.visible = false;   // an object must not reflect its own inside
   const bg = scene.background, bgI = scene.backgroundIntensity;
   if (backdrop) { scene.background = backdrop.texture; scene.backgroundIntensity = backdrop.intensity; }
+  else scene.background = ROOM_DARK;
   renderer.shadowMap.needsUpdate = true;
   cube.update(renderer, scene);
   scene.background = bg; scene.backgroundIntensity = bgI;
@@ -494,11 +556,13 @@ function outsideView(v) {
 function enter(instant) {
   if (entered || !start) return;
   entered = true;
+  try { sessionStorage.setItem('ak-room-entered', '1'); } catch (e) {}
   hideIntro();
   document.body.classList.add('entered');
-  if (instant || reduceMotion) { applyView(start); seat(); }
-  else flyTo(start, 3000, seat);
+  if (instant || reduceMotion) { applyView(home); seat(); }
+  else flyTo(home, 3000, seat);
   if (screen) screen.boot();
+  resumeMusic();
   if (debug && params.get('orbit')) {
     const [az, polar, dist] = params.get('orbit').split(',').map(Number);
     setOrbit(THREE.MathUtils.degToRad(az || 0), THREE.MathUtils.degToRad(polar || 0), dist || 1);
@@ -635,7 +699,7 @@ function setupRecordPlayer(root) {
 // the song and spins the record; tapping again pauses both.
 // Put the file at new-portfolio/audio/ and set its name and title here.
 // ─────────────────────────────────────────
-const SONG = { src: 'audio/' + encodeURIComponent('Citra - Rafika Duri.mp3'), title: 'Citra — Rafika Duri' };
+const SONG = { src: 'audio/' + 'citra.m4a', title: 'Citra — Rafika Duri' };
 const music = new Audio();
 music.src = SONG.src;
 music.loop = true;
@@ -649,7 +713,9 @@ function setMusic(on) {
   else music.pause();
   if (record && record.playing !== on) record.toggle();
   workTV.setPlaying(on);
+  window.dispatchEvent(new CustomEvent('site-music:state', { detail: { on } }));   // the nav's pause button (site-music.js)
 }
+window.addEventListener('site-music:toggle', () => setMusic(!musicOn));
 
 function toggleRecord() {
   setMusic(!musicOn);
@@ -716,6 +782,7 @@ controls.enablePan = false;
 controls.rotateSpeed = 0.45;
 controls.zoomSpeed = 0.6;
 let orbitHome = null;                  // { target, distance, azimuth, polar }
+let home = null;                       // the view the room rests at (start, or closer in on a phone)
 
 function applyView(v) {
   base = v;
@@ -725,36 +792,60 @@ function applyView(v) {
   camera.updateProjectionMatrix();
 }
 
-function flyTo(v, ms = 1200, done = null) {
+function flyTo(v, ms = 1200, done = null, ease = easeInOut, onStep = null) {
   if (reduceMotion) ms = 1;
   controls.enabled = false;
   removeSway();
-  tween = { fromP: camera.position.clone(), fromQ: camera.quaternion.clone(), fromF: camera.fov, to: v, elapsed: 0, ms, done };
+  tween = { fromP: camera.position.clone(), fromQ: camera.quaternion.clone(), fromF: camera.fov, to: v, elapsed: 0, ms, done, ease, onStep };
   yaw = pitch = leanYaw = leanPitch = 0;
   swayGain = 0;
 }
 
 // Hand the default view to the orbit controls: orbit around the point the
 // default camera looks at (the TV), with limits measured from that view.
-function seat() {
+function orbitFrame() {
   const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(start.quaternion);
   const toScreen = screenInfo ? screenInfo.center.clone().sub(start.position).dot(fwd) : span * 0.5;
   const target = start.position.clone().addScaledVector(fwd, Math.max(toScreen, span * 0.1));
-  const offset = start.position.clone().sub(target);
-  const sph = new THREE.Spherical().setFromVector3(offset);
-  orbitHome = { target, distance: sph.radius, azimuth: sph.theta, polar: sph.phi };
+  return { target, sph: new THREE.Spherical().setFromVector3(start.position.clone().sub(target)) };
+}
+function seat() {
+  const { target, sph } = orbitFrame();
+  const h = new THREE.Spherical().setFromVector3(home.position.clone().sub(target));
+  orbitHome = { target, distance: h.radius, azimuth: h.theta, polar: h.phi };
 
   controls.target.copy(target);
   controls.minAzimuthAngle = sph.theta - ORBIT_AZIMUTH;
   controls.maxAzimuthAngle = sph.theta + ORBIT_AZIMUTH;
-  controls.minPolarAngle = Math.max(0.05, sph.phi - ORBIT_UP);
+  controls.minPolarAngle = Math.min(Math.max(0.05, sph.phi - ORBIT_UP), orbitHome.polar);
   controls.maxPolarAngle = Math.min(Math.PI / 2 + 0.05, sph.phi + ORBIT_DOWN);
-  controls.maxDistance = sph.radius;   // never further out than the default view
+  controls.maxDistance = sph.radius;   // never further out than the whole-room view
   controls.minDistance = sph.radius * ORBIT_ZOOM_IN;
-  applyView(start);
+  applyView(home);
   controls.update();
   controls.enabled = !tuned;
 }
+
+// Phones held upright rest closer in, looking down across the room from the
+// record player's side, so the room fills the screen. Pinching out goes back
+// to the whole-room view (start), widening the lens on the way.
+const PHONE_VIEW = { azimuth: -28, polar: -10, distance: 0.8, fov: 82 };   // degrees, share of the whole-room distance
+function makeHome() {
+  home = start;
+  if (!start || !isTall()) return;
+  let { azimuth, polar, distance, fov } = PHONE_VIEW;
+  if (debug && params.get('phone')) [azimuth, polar, distance, fov] = params.get('phone').split(',').map(Number);
+  const { target, sph } = orbitFrame();
+  const deg = THREE.MathUtils.degToRad;
+  const at = new THREE.Spherical(
+    sph.radius * distance,
+    THREE.MathUtils.clamp(sph.phi + deg(polar), 0.05, sph.phi + ORBIT_DOWN),   // may look down further than orbiting reaches
+    THREE.MathUtils.clamp(sph.theta + deg(azimuth), sph.theta - ORBIT_AZIMUTH, sph.theta + ORBIT_AZIMUTH));
+  const position = new THREE.Vector3().setFromSpherical(at).add(target);
+  const m = new THREE.Matrix4().lookAt(position, target, new THREE.Vector3(0, 1, 0));
+  home = { position, quaternion: new THREE.Quaternion().setFromRotationMatrix(m), fov: Math.min(fov, start.fov) };
+}
+const isTall = () => window.innerWidth / window.innerHeight < FRAMED_ASPECT;
 
 function setOrbit(dAzimuth, dPolar, distanceScale) {
   if (!orbitHome) return;
@@ -769,7 +860,7 @@ function setOrbit(dAzimuth, dPolar, distanceScale) {
 
 function resetView() {
   if (!orbitHome || tuned || tween) return;
-  flyTo(start, 1100, seat);
+  flyTo(home, 1100, seat);
 }
 
 // Is the view noticeably away from the default? (Shows "Reset view".)
@@ -802,11 +893,12 @@ function updateCamera(t, dt) {
   if (tween) {
     tween.elapsed += Math.min(dt, 1 / 30) * 1000;
     const k = tween.ms <= 1 ? 1 : Math.min(1, tween.elapsed / tween.ms);   // instant moves finish at once
-    const e = easeInOut(k);
+    const e = (tween.ease || easeInOut)(k);
     camera.position.lerpVectors(tween.fromP, tween.to.position, e);
     camera.quaternion.slerpQuaternions(tween.fromQ, tween.to.quaternion, e);
     camera.fov = THREE.MathUtils.lerp(tween.fromF, tween.to.fov, e);
     camera.updateProjectionMatrix();
+    if (tween.onStep) tween.onStep(k);
     if (k === 1) {
       const { to, done } = tween;
       tween = null;
@@ -819,6 +911,12 @@ function updateCamera(t, dt) {
 
   removeSway();
   controls.update();
+  if (home !== start && orbitHome) {
+    // Zooming out on a phone widens the lens toward the whole-room view.
+    const k = THREE.MathUtils.clamp((controls.getDistance() - orbitHome.distance) / (controls.maxDistance - orbitHome.distance || 1), 0, 1);
+    const fov = THREE.MathUtils.lerp(home.fov, start.fov, k);
+    if (Math.abs(fov - camera.fov) > 0.01) { camera.fov = fov; camera.updateProjectionMatrix(); }
+  }
 
   // A few centimetres of drift on an ~8 second cycle (the room is ~6 m across).
   swayGain = Math.min(1, swayGain + dt / SWAY_FADE);
@@ -854,6 +952,9 @@ const workTV = createWorkTV({
   onPlayToggle: (playing) => setMusic(playing),
   songTitle: SONG.title,
 });
+// From a case study's "All work": the Work screen is up at once, while the
+// room loads behind it (the camera is put at the TV once it's ready).
+if (openWorkOnLoad) workTV.open(true);
 
 function tuneIn(instant = false) {
   if (!tvView || !screen || tuned || !entered || tween) return;
@@ -867,16 +968,213 @@ function tuneIn(instant = false) {
 }
 
 function tuneOut() {
+  // Back pressed before the room had loaded behind the Work screen.
+  if (!tuned && workTV.isOpen) {
+    if (openWorkHash()) history.replaceState(null, '', location.pathname + location.search);
+    workTV.close();
+    return;
+  }
   if (!tuned || tween) return;
+  if (openWorkHash()) history.replaceState(null, '', location.pathname + location.search);
   workTV.close(() => {
     tuned = false;
     document.body.classList.remove('tuned');
     screen.showSlides();
     // Always back to the default view, with the orbit reset to it.
-    flyTo(start, 1400, seat);
+    flyTo(home, 1400, seat);
   });
 }
-document.getElementById('navWork').addEventListener('click', () => tuneIn());
+document.getElementById('navWork').addEventListener('click', () => (reaching ? closeReach(() => tuneIn()) : tuneIn()));
+
+// ─────────────────────────────────────────
+// About Me: the camera dives into the name, then the About page (which
+// starts on black) plays its intro.
+//   'visit' — "About Me" in the nav: one move over and into the name as the room goes dark.
+//   'zoom'  — the name itself (in the room or the nav): dive straight in, no darkening.
+// ─────────────────────────────────────────
+const ABOUT_URL = 'about/';
+const blackout = document.getElementById('blackout');
+let aboutQueued = false;
+let roomExposure = null;   // the room's brightness before the dive, to restore on Back
+
+// Straight-on view of the name from the side the default view looks from;
+// `fit` is how much of the frame the name's width fills (over 1 = past the edges).
+function nameView(fit) { return viewOf(nameBox, fit); }
+
+// Straight-on view of `box` from the side the default view looks from.
+// lift: how much of the default view's height above it to keep (0 = level).
+// shiftX / shiftY: slide the frame so the object sits off-centre (share of the frame).
+function viewOf(box, fit, { lift = 0.35, shiftX = 0, shiftY = 0 } = {}) {
+  const c = box.getCenter(new THREE.Vector3());
+  const size = box.getSize(new THREE.Vector3());
+  const dir = start.position.clone().sub(c);
+  dir.y = Math.max(dir.y, 0) * lift;
+  dir.normalize();
+  const fov = 30;
+  const vh = 2 * Math.tan(THREE.MathUtils.degToRad(fov / 2));
+  const width = Math.hypot(size.x, size.z);
+  const d = Math.max(size.y / (vh * fit), width / (vh * camera.aspect * fit));
+  const right = new THREE.Vector3().crossVectors(dir.clone().negate(), new THREE.Vector3(0, 1, 0)).normalize();
+  const up = new THREE.Vector3().crossVectors(right, dir.clone().negate()).normalize();
+  const shift = right.multiplyScalar(shiftX * vh * camera.aspect * d).add(up.multiplyScalar(shiftY * vh * d));
+  const target = c.clone().add(shift);
+  return viewFrom(target.clone().addScaledVector(dir, d), target, fov);
+}
+
+function fadeToBlack(after) {
+  blackout.classList.add('on');
+  setTimeout(after, reduceMotion ? 0 : 650);
+}
+
+function goToAbout(mode) {
+  if (leaving) return;
+  // No room to move through yet (still loading, or no name in the model): just fade out.
+  if (!entered || !start || !nameBox) { leaving = true; fadeToBlack(() => { location.href = ABOUT_URL; }); return; }
+  // Mid-move (e.g. still flying in): go as soon as the camera settles.
+  if (tween) {
+    if (!aboutQueued) { aboutQueued = true; const wait = () => (tween ? setTimeout(wait, 60) : (aboutQueued = false, goToAbout(mode))); wait(); }
+    return;
+  }
+  // The Work screen is open: switch it off first.
+  if (tuned) {
+    workTV.close(() => {
+      tuned = false;
+      document.body.classList.remove('tuned');
+      screen.showSlides();
+      goToAbout(mode);
+    });
+    return;
+  }
+  leaving = true;
+  document.body.classList.add('leaving');
+  canvas.classList.remove('pointing');
+  if (musicOn) fadeMusic(0, mode === 'zoom' ? 1700 : 2300);   // fades out through the move; About fades it back in, quietly
+  roomExposure = renderer.toneMappingExposure;
+  // Speed up into the letters. From "About Me" the room also dims to nothing
+  // on the way in; from the name it doesn't, and the page cuts straight over.
+  const dive = (dim, ms, ease) => flyTo(nameView(10), ms, () => {
+    if (dim) blackout.classList.add('on', 'instant');   // already black; this just holds it
+    location.href = ABOUT_URL;
+  }, ease, dim ? (k) => {
+    const dark = THREE.MathUtils.clamp((k - 0.3) / 0.7, 0, 1);
+    renderer.toneMappingExposure = roomExposure * (1 - dark) * (1 - dark);
+  } : null);
+  // One continuous move either way: from the name it's already close, so it
+  // accelerates hard; from "About Me" it travels further, so it's longer and speeds up more gently.
+  // On a phone the name is further from where the view rests, so the slow start of a
+  // cubic ease reads as a pause on the TV: it eases in gently but is moving from the first moment.
+  // (phones also dim to black as they go in, so no frame of the room is left showing when the page changes)
+  if (mode === 'zoom') { if (isTall()) dive(true, 2000, (t) => 0.3 * t + 0.7 * t * t * t); else dive(false, 1800, (t) => t * t * t); }
+  else dive(true, 2400, (t) => t * t);
+}
+
+function onAboutLink(mode) {
+  return (e) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // new tab: open normally
+    e.preventDefault();
+    goToAbout(mode);
+  };
+}
+document.getElementById('navAbout').addEventListener('click', onAboutLink('visit'));
+// "Room lived by AK" (top left) and "Room" in the navigation: back to the room
+// from anywhere in it — off the Work screen, away from the phone, or back to
+// the default view.
+function goRoom() {
+  if (leaving) return;
+  if (reaching) closeReach();
+  else if (tuned || workTV.isOpen) tuneOut();   // (open before the room had loaded, too)
+  else resetView();
+}
+document.getElementById('navName').addEventListener('click', (e) => {
+  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // new tab: open normally
+  e.preventDefault();
+  goRoom();
+});
+document.getElementById('navRoom').addEventListener('click', goRoom);
+
+// Coming back with the browser's Back button: lift the black and sit back in the room.
+window.addEventListener('pageshow', (e) => {
+  if (!e.persisted || !leaving) return;
+  leaving = false;
+  tween = null;
+  document.body.classList.remove('leaving');
+  blackout.classList.remove('on', 'instant');
+  if (roomExposure !== null) renderer.toneMappingExposure = roomExposure;
+  if (start) seat();
+  if (musicOn) { music.volume = 1; music.play().catch(() => {}); }
+});
+
+// ─────────────────────────────────────────
+// The song between pages: it's saved (playing or not, and where it's up to)
+// whenever this page is left. About Me carries on from there quietly; coming
+// back here, it picks up again at full volume (where the browser allows it).
+// ─────────────────────────────────────────
+const MUSIC_KEY = 'ak-music';
+const MUSIC_LOW = 0.18;   // the quiet level it fades to on the way to About Me (and plays at there)
+function saveMusic() {
+  try { sessionStorage.setItem(MUSIC_KEY, JSON.stringify({ on: musicOn && !music.paused, t: music.currentTime || 0, at: Date.now() })); } catch (e) {}
+}
+window.addEventListener('pagehide', saveMusic);
+
+let musicFade = 0;
+function fadeMusic(to, ms) {
+  const from = music.volume, t0 = performance.now(), id = ++musicFade;
+  (function step(now) {
+    if (id !== musicFade) return;
+    const k = Math.min(1, (now - t0) / ms);
+    music.volume = from + (to - from) * k;
+    if (k < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+function resumeMusic() {
+  let st = null;
+  try { st = JSON.parse(sessionStorage.getItem(MUSIC_KEY)); } catch (e) {}
+  if (!st || !st.on || musicOn) return;
+  const go = () => {
+    if (music.duration) music.currentTime = (st.t + (Date.now() - st.at) / 1000) % music.duration;
+    music.volume = MUSIC_LOW;
+    music.play().then(() => { setMusic(true); fadeMusic(1, 1500); }).catch(() => {});   // blocked: stays off
+  };
+  music.preload = 'auto';
+  if (music.readyState >= 1) go(); else { music.addEventListener('loadedmetadata', go, { once: true }); music.load(); }
+}
+
+// ─────────────────────────────────────────
+// "Reach me": the phone. The camera goes over to it and two chrome buttons
+// (Email, LinkedIn) come up beside it. "Room" in the navigation or Esc returns to the room.
+// ─────────────────────────────────────────
+const reachEl = document.getElementById('reach');
+let reachIcons = null;
+function openReach() {
+  if (!phoneBox || !entered || tween || tuned || leaving || reaching) return;
+  reaching = tuned = true;
+  document.body.classList.add('tuned', 'reaching');
+  document.body.classList.remove('moved');
+  canvas.classList.remove('pointing');
+  removeSway();
+  const portrait = camera.aspect < 1;
+  // The phone sits left of the buttons (or above them on a phone screen).
+  const view = viewOf(phoneBox, portrait ? 0.5 : 0.3, portrait ? { lift: 0.7, shiftY: -0.2 } : { lift: 0.7, shiftX: 0.2 });
+  flyTo(view, 1400, () => {
+    reachEl.hidden = false;
+    reachIcons = createReachIcons(reachEl);
+    requestAnimationFrame(() => reachEl.classList.add('on'));
+    reachEl.querySelector('.icon-link')?.focus({ preventScroll: true });
+  });
+}
+function closeReach(after) {
+  if (!reaching || tween) return;
+  reachEl.classList.remove('on');
+  setTimeout(() => { reachEl.hidden = true; if (reachIcons) { reachIcons.dispose(); reachIcons = null; } }, 300);
+  flyTo(home, 1300, () => {
+    reaching = tuned = false;
+    document.body.classList.remove('tuned', 'reaching');
+    seat();
+    if (after) after();
+  });
+}
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && reaching) closeReach(); });
 
 // ─────────────────────────────────────────
 // Pointer: drag to orbit (OrbitControls); hover and click are resolved with one raycast
@@ -884,7 +1182,7 @@ document.getElementById('navWork').addEventListener('click', () => tuneIn());
 // ─────────────────────────────────────────
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
-const pointerState = { inside: false, dirty: false, click: false };
+const pointerState = { inside: false, dirty: false, click: false, touch: false };
 let hovered = null;
 let drag = null;
 
@@ -911,7 +1209,9 @@ function resolvePointer() {
   }
   if (pointerState.click) {
     pointerState.click = false;
-    if (hit && !tuned) activate(hit.kind);
+    if (hit && !tuned && !leaving) activate(hit.kind);
+    // A finger has gone once it lifts: don't leave the room leaning toward what was tapped.
+    if (pointerState.touch) { pointerState.touch = false; pointerState.inside = false; pointerState.dirty = true; hit = null; }
   }
   if (tuned) hit = null;
   if (hit !== hovered) {
@@ -925,6 +1225,8 @@ function activate(kind) {
   if (kind === 'tv') { if (screen) screen.openCurrent(); }
   else if (kind === 'lamp') toggleLamp();
   else if (kind === 'record') toggleRecord();
+  else if (kind === 'name') goToAbout('zoom');
+  else if (kind === 'phone') openReach();
   else if (kind === 'curtains' && curtains) { if (curtains.open) curtains.close(); else curtains.openThen(() => {}); }
 }
 
@@ -949,7 +1251,8 @@ canvas.addEventListener('pointermove', (e) => {
 });
 canvas.addEventListener('dblclick', resetView);
 document.getElementById('btnReset').addEventListener('click', resetView);
-canvas.addEventListener('pointerleave', () => { pointerState.inside = false; pointerState.dirty = true; });
+// (A finger "leaves" the moment it lifts, before the tap is looked at; that's handled above.)
+canvas.addEventListener('pointerleave', (e) => { if (e.pointerType === 'touch') return; pointerState.inside = false; pointerState.dirty = true; });
 canvas.addEventListener('pointerup', (e) => {
   if (!drag) return;
   const wasClick = drag.moved < 6;
@@ -958,6 +1261,7 @@ canvas.addEventListener('pointerup', (e) => {
   if (!wasClick) return;
   setPointer(e);
   pointerState.click = true;
+  pointerState.touch = e.pointerType !== 'mouse';
 });
 canvas.addEventListener('pointercancel', () => { drag = null; canvas.classList.remove('dragging'); });
 
@@ -1046,12 +1350,33 @@ function createScreen(aspect) {
     return true;
   }
 
+  // The whole picture, never cropped or stretched. The screen is a touch
+  // taller than 16:9, so the thin gaps left above and below are filled by
+  // stretching the picture's own top and bottom rows of pixels.
+  function fit(img) {
+    if (!img || !img.complete || !img.naturalWidth) return false;
+    const nw = img.naturalWidth, nh = img.naturalHeight;
+    const r = Math.min(W / nw, H / nh);
+    const iw = nw * r, ih = nh * r, x = (W - iw) / 2, y = (H - ih) / 2;
+    if (y > 0) {
+      ctx.drawImage(img, 0, 0, nw, 1, 0, 0, W, Math.ceil(y));
+      ctx.drawImage(img, 0, nh - 1, nw, 1, 0, Math.floor(y + ih), W, Math.ceil(y));
+    }
+    if (x > 0) {
+      ctx.drawImage(img, 0, 0, 1, nh, 0, 0, Math.ceil(x), H);
+      ctx.drawImage(img, nw - 1, 0, 1, nh, Math.floor(x + iw), 0, Math.ceil(x), H);
+    }
+    ctx.drawImage(img, x, y, iw, ih);
+    return true;
+  }
+
   function drawSlide(i, t) {
     const f = FEATURED[i];
     ctx.fillStyle = '#1f2a1c';
     ctx.fillRect(0, 0, W, H);
-    cover(images[i], 0, 0, W, H);
+    if (f.titled) fit(images[i]); else cover(images[i], 0, 0, W, H);
     // Darken the top and bottom so the labels read.
+    if (!f.titled) {
     const g = ctx.createLinearGradient(0, 0, 0, H);
     g.addColorStop(0, 'rgba(0,0,0,0.55)');
     g.addColorStop(0.22, 'rgba(0,0,0,0)');
@@ -1059,6 +1384,7 @@ function createScreen(aspect) {
     g.addColorStop(1, 'rgba(0,0,0,0.88)');
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
+    }
 
     ctx.textBaseline = 'top';
     ctx.textAlign = 'left';
@@ -1074,12 +1400,14 @@ function createScreen(aspect) {
     });
 
     ctx.textBaseline = 'alphabetic';
-    ctx.fillStyle = '#f3efe4';
-    ctx.font = `${Math.round(110 * S)}px "Bebas Neue", sans-serif`;
-    ctx.fillText(f.name, 44 * S, H - 120 * S);
-    ctx.font = `${Math.round(24 * S)}px "IBM Plex Mono", monospace`;
-    ctx.fillStyle = 'rgba(243,239,228,0.9)';
-    ctx.fillText(f.line, 46 * S, H - 78 * S);
+    if (!f.titled) {
+      ctx.fillStyle = '#f3efe4';
+      ctx.font = `${Math.round(110 * S)}px "Bebas Neue", sans-serif`;
+      ctx.fillText(f.name, 44 * S, H - 120 * S);
+      ctx.font = `${Math.round(24 * S)}px "IBM Plex Mono", monospace`;
+      ctx.fillStyle = 'rgba(243,239,228,0.9)';
+      ctx.fillText(f.line, 46 * S, H - 78 * S);
+    }
     if (blink(t, 1.6)) {
       ctx.fillStyle = '#7dff8a';
       ctx.font = `${Math.round(20 * S)}px "IBM Plex Mono", monospace`;
@@ -1171,6 +1499,7 @@ const QUALITY_STEPS = [
 ];
 const quality = { level: 0, frames: 0, time: 0, grace: 1 };   // judged behind the intro, before the fly-in
 function setPixelRatio(r) {
+  if (lowPower) r = Math.min(r, 1);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, r));
   composer.setPixelRatio(Math.min(window.devicePixelRatio, r));
   composer.setSize(window.innerWidth, window.innerHeight);
@@ -1220,9 +1549,74 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
+// The default view was framed for a landscape screen. On a tall, narrow one
+// (a phone held upright) widen it, still centred on the room, until every
+// object you can tap (TV, lamp, record player, phone, name) fits across.
+const FRAMED_ASPECT = 1.3;   // screens at least this wide see the view as framed
+const MAX_FOV = 100;         // the widest it goes, however narrow the screen
+const KEEP_IN_VIEW = ['tv', 'lamp', 'record', 'phone', 'name'];
+let roomExtent = null;       // { box, floorY }: the room's walls and floor (set when it loads)
+let keepHalfAngle = null;    // degrees either side of the default view's centre those objects reach
+function keepInViewAngle() {
+  if (keepHalfAngle !== null) return keepHalfAngle;
+  const inv = start.baseQuat.clone().invert();
+  const box = new THREE.Box3(), c = new THREE.Vector3();
+  let most = 0;
+  for (const it of interactive) {
+    if (!KEEP_IN_VIEW.includes(it.kind)) continue;
+    box.makeEmpty();
+    it.meshes.forEach((m) => box.union(new THREE.Box3().setFromObject(m)));
+    for (let i = 0; i < 8; i++) {
+      c.set(i & 1 ? box.max.x : box.min.x, i & 2 ? box.max.y : box.min.y, i & 4 ? box.max.z : box.min.z)
+        .sub(start.position).applyQuaternion(inv);   // into the camera's own frame
+      if (c.z < -0.01) most = Math.max(most, Math.abs(Math.atan(c.x / -c.z)));
+    }
+  }
+  keepHalfAngle = most ? THREE.MathUtils.radToDeg(most) + 2 : 0;   // with a little margin
+  return keepHalfAngle;
+}
+function fitStartToScreen() {
+  if (!start || !start.baseFov) return;
+  const a = window.innerWidth / window.innerHeight;
+  start.quaternion.copy(start.baseQuat);
+  if (a >= FRAMED_ASPECT) { start.fov = start.baseFov; return; }
+  const deg = THREE.MathUtils.degToRad, rad = THREE.MathUtils.radToDeg;
+  // As wide across as a landscape screen sees, or wider if that's what fits everything.
+  const across = Math.max(Math.atan(Math.tan(deg(start.baseFov / 2)) * FRAMED_ASPECT), deg(keepInViewAngle()));
+  start.fov = Math.min(MAX_FOV, rad(2 * Math.atan(Math.tan(across) / a)));
+  // Then look up or down so the room sits in the middle, with equal space above and below.
+  const tilt = roomMiddleAngle();
+  if (tilt) start.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deg(tilt)));
+}
+// Degrees above (+) or below (-) the default view's centre that the middle of
+// the room's open front sits: halfway between the floor's front edge and the
+// ceiling's.
+let roomMiddleDeg = null;
+function roomMiddleAngle() {
+  if (roomMiddleDeg !== null) return roomMiddleDeg;
+  roomMiddleDeg = 0;
+  if (!roomExtent || !start) return 0;
+  const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(start.baseQuat);
+  const flat = new THREE.Vector3(fwd.x, 0, fwd.z).normalize();
+  const p = start.position;
+  const foot = roomExtent.box.clone();   // stretched to the camera's height, so a level ray finds the front
+  foot.min.y = Math.min(foot.min.y, p.y - 1); foot.max.y = Math.max(foot.max.y, p.y + 1);
+  if (foot.containsPoint(p)) return 0;   // standing inside the room: nothing to centre
+  const hit = new THREE.Ray(p.clone(), flat).intersectBox(foot, new THREE.Vector3());
+  if (!hit) return 0;
+  const up = (y) => Math.asin(THREE.MathUtils.clamp(new THREE.Vector3(hit.x, y, hit.z).sub(p).normalize().y, -1, 1));
+  const middle = (up(roomExtent.box.max.y) + up(roomExtent.floorY)) / 2 - Math.asin(THREE.MathUtils.clamp(fwd.y, -1, 1));
+  roomMiddleDeg = THREE.MathUtils.radToDeg(middle);
+  return roomMiddleDeg;
+}
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
+  // Re-fit the default view; if sitting in it, take the new framing straight away.
+  const atHome = home && !tuned && !tween && !document.body.classList.contains('moved');
+  fitStartToScreen();
+  makeHome();
+  if (atHome && orbitHome) { applyView(home); seat(); }
   renderer.setSize(window.innerWidth, window.innerHeight);
   composer.setSize(window.innerWidth, window.innerHeight);   // also resizes the AO and bloom passes
   // The close-up distance depends on the screen shape.

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OnTheWay - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../site-nav.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FFFDF7;
+      --text: #1a1814;
+      --body: #3d3a33;
+      --muted: #6b6656;
+      --faint: #8a8576;
+      --line: #e2dcc6;
+      --maroon: #582c39;
+      --cream: #f2efe6;
+      --teal-dark: #1c3538;
+      --pad: clamp(20px, 5vw, 72px);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'League Spartan', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+    a { color: inherit; }
+    a:hover { opacity: 0.8; }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .shot video { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+
+    .tv {
+      background-color: #24484c;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 4px),
+        linear-gradient(180deg, #4f7f83 0%, #2f5a5e 55%, #1c3538 100%);
+      color: var(--cream);
+    }
+
+    .hero { padding: 72px var(--pad) 0; }   /* room for the site navigation above it */
+    .site-header { position: absolute; }   /* scrolls away with the teal hero (site-nav.css) */
+    .hero-text { padding: 56px 0 40px; display: flex; flex-direction: column; gap: 16px; max-width: 720px; }
+    .hero-kicker { font-size: 16px; color: #c9d6d4; }
+    .title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; }
+    .title-row h1 { font-size: clamp(56px, 9vw, 112px); font-weight: 700; line-height: 0.9; letter-spacing: -2px; }
+    .live-link {
+      flex-shrink: 0; width: 72px; height: 72px; border-radius: 50%;
+      background: var(--cream); color: var(--teal-dark);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s ease;
+    }
+    .live-link:hover { opacity: 1; transform: scale(1.06); }
+    .live-link svg { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .live-link:hover svg { transform: translate(3px, -3px); }
+    .hero-summary { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.4; color: #e3e8e6; }
+    .hero-image {
+      aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+      margin-bottom: -140px; position: relative;
+      animation: open 0.6s ease-out both;
+    }
+    @keyframes open { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
+
+    .facts { padding: 180px var(--pad) 0; }
+    .facts .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; font-size: 16px; line-height: 1.5; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+    .facts span { color: var(--muted); }
+
+    .chapters { position: sticky; top: 0; z-index: 5; background: rgba(255,253,247,0.96); backdrop-filter: blur(6px); }
+    .chapter-links { display: flex; overflow-x: auto; padding: 0 clamp(8px, 2vw, 24px); }
+    .chapter-links a {
+      flex: 1 0 120px; display: flex; align-items: baseline; justify-content: center; gap: 8px;
+      padding: 18px 8px 14px; font-size: 16px; text-decoration: none; color: var(--faint);
+      transition: color 0.2s;
+    }
+    .chapter-links a small { font-size: 12px; color: #b5ae9c; }
+    .chapter-links a.done { color: var(--text); }
+    .chapter-links a.on { color: var(--maroon); font-weight: 600; }
+    .chapter-links a.on small { color: var(--maroon); }
+    .progress { position: relative; height: 4px; background: #e9e4d4; }
+    .progress-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--maroon); transition: width 0.12s linear; }
+    .progress-tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--bg); }
+
+    main { padding: 0 var(--pad); }
+    .statement { padding: 140px 0; font-size: clamp(32px, 4.6vw, 56px); font-weight: 500; line-height: 1.15; letter-spacing: -1px; max-width: 20ch; }
+    .statement em { font-style: normal; color: var(--maroon); }
+
+    .section { padding: 0 0 140px; display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 70px; }
+    .label { font-size: 16px; color: var(--muted); }
+    .section h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 600; line-height: 1.1; max-width: 22ch; }
+    .section p.body { font-size: 19px; line-height: 1.65; color: var(--body); max-width: 640px; }
+    .caption { font-size: 15px; color: var(--muted); }
+    .shot { aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #d9d6cc; margin-top: 12px; }
+
+    .maps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 48px 40px; margin-top: 20px; }
+    .maps figure { display: flex; flex-direction: column; gap: 14px; }
+    .maps svg { width: 100%; height: auto; display: block; }
+    .maps .name { font-size: 20px; font-weight: 600; }
+    .maps .name.us { color: var(--maroon); }
+    .maps .desc { font-size: 16px; line-height: 1.45; color: #4a4740; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 15px; color: var(--muted); }
+    .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin-right: 8px; }
+
+    .race-scroll { overflow-x: auto; margin-top: 64px; }
+    .race { min-width: 760px; padding: 0 80px; display: flex; flex-direction: column; gap: 8px; }
+    .race-head { display: flex; align-items: baseline; gap: 12px; }
+    .race-head b { font-size: 22px; font-weight: 600; }
+    .race-head span { font-size: 16px; }
+    .race-head.old { color: var(--muted); }
+    .race-head.new { color: var(--maroon); margin-top: 36px; }
+    .track { position: relative; height: 120px; }
+    .track .line { position: absolute; left: 0; top: 50%; }
+    .track.old .line { width: 88%; height: 3px; margin-top: -1.5px; background: #b5ae9c; }
+    .track.new .line { width: 44%; height: 6px; margin-top: -3px; border-radius: 3px; background: var(--maroon); }
+    .dot { position: absolute; top: 50%; border-radius: 50%; box-shadow: 0 0 0 5px var(--bg); }
+    .track.old .dot { width: 16px; height: 16px; margin: -8px 0 0 -8px; background: var(--faint); }
+    .track.new .dot { width: 20px; height: 20px; margin: -10px 0 0 -10px; background: var(--maroon); }
+    .step { position: absolute; top: calc(50% + 22px); width: 150px; margin-left: -75px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+    .step b { font-size: 16px; font-weight: 400; line-height: 1.25; }
+    .step span { font-size: 13px; }
+    .track.old .step b { color: var(--body); }
+    .track.old .step span { color: var(--muted); }
+    .track.new .step span { color: var(--maroon); }
+    .finish { position: absolute; top: 50%; font-size: 16px; font-weight: 600; white-space: nowrap; }
+    .track.old .finish { left: 88%; margin: -12px 0 0 22px; color: var(--muted); }
+    .track.new .finish { left: 44%; margin: -12px 0 0 24px; color: var(--maroon); }
+    .saved-line { position: absolute; left: calc(44% + 76px); width: calc(44% - 76px); top: 50%; border-top: 2px dashed #d8cfc0; }
+    .saved-text { position: absolute; left: calc(44% + 76px); width: calc(44% - 76px); top: calc(50% - 40px); text-align: center; font-size: 17px; color: var(--maroon); }
+
+    .tradeoffs { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px 72px; margin-top: 12px; }
+    .tradeoffs > div { border-top: 1px solid var(--text); padding-top: 18px; }
+    .three { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 48px 64px; }
+    .section h3 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+    .section .small-body { font-size: 18px; line-height: 1.6; color: var(--body); }
+
+    .quote { font-size: clamp(28px, 3.6vw, 42px); font-weight: 500; line-height: 1.2; max-width: 24ch; }
+    .numbers { display: flex; flex-wrap: wrap; gap: 40px 96px; margin-top: 24px; }
+    .numbers b { display: block; font-size: 56px; font-weight: 600; line-height: 1; }
+    .numbers span { font-size: 17px; color: #4a4740; }
+    .todo { outline: 2px dashed #d99a8f; outline-offset: 8px; }
+
+    .brand-banner { aspect-ratio: 21 / 7; border-radius: 18px; overflow: hidden; }
+    .brand-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .brand-grid div { aspect-ratio: 1; border-radius: 18px; overflow: hidden; }
+
+    .end { padding: 72px var(--pad); }
+    .end .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 32px; }
+    .next { display: flex; flex-direction: column; gap: 6px; text-decoration: none; }
+    .next span { font-size: 16px; color: #c9d6d4; }
+    .next b { font-size: clamp(36px, 5vw, 56px); font-weight: 600; }
+
+    @media (max-width: 768px) {
+      /* the race strip: less dead space, and a fade on the right that says "swipe" */
+      .race { padding: 0 20px; }
+      .race-scroll { -webkit-mask-image: linear-gradient(to right, #000 82%, transparent); mask-image: linear-gradient(to right, #000 82%, transparent); }
+      .race-scroll.at-end { -webkit-mask-image: none; mask-image: none; }
+      .hero-image { margin-bottom: -80px; }
+      .facts { padding-top: 120px; }
+      .statement, .section { padding-bottom: 96px; }
+      .statement { padding-top: 96px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero-image { animation: none; }
+      .progress-fill, .live-link, .live-link svg { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="site-brand" href="../index.html">Room lived by AK</a>
+    <nav class="site-links" aria-label="Site">
+      <a href="../index.html">Room</a>
+      <a href="../index.html#work" aria-current="true">Work</a>
+      <a href="../about/">About Me</a>
+    </nav>
+  </header>
+  <script src="../site-music.js?v=3"></script>
+  <section class="tv hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <span class="hero-kicker">Projects · CH 01</span>
+        <div class="title-row">
+          <h1>OnTheWay</h1>
+          <a class="live-link" href="https://on-the-way-sable.vercel.app/" target="_blank" rel="noopener" aria-label="Visit the live site">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 17.5L17 7"/><path d="M8.5 7H17V15.5"/></svg>
+          </a>
+        </div>
+        <p class="hero-summary">A restaurant finder that ranks food stops by how much time they add to your route, not how far they are from you.</p>
+      </div>
+      <div class="hero-image"><img src="../images/otw-hero.png" alt="OnTheWay: the app showing a route with food stops along it"></div>
+    </div>
+  </section>
+
+  <div class="facts">
+    <div class="wrap">
+      <div><span>Role</span><br>Product, design and engineering</div>
+      <div><span>Timeline</span><br>May to June 2026</div>
+      <div><span>Skills</span><br>Frontend, product design, user testing</div>
+      <div><span>Built with</span><br>JavaScript, Mapbox, Turf.js</div>
+    </div>
+  </div>
+
+  <nav class="chapters" aria-label="Sections">
+    <div class="chapter-links">
+      <a href="#s1"><small>01</small>Problem</a>
+      <a href="#s2"><small>02</small>Research</a>
+      <a href="#s3"><small>03</small>Solution</a>
+      <a href="#s4"><small>04</small>Tradeoffs</a>
+      <a href="#s5"><small>05</small>Testing</a>
+      <a href="#s6"><small>06</small>Reflection</a>
+    </div>
+    <div class="progress" aria-hidden="true">
+      <span class="progress-fill"></span>
+      <span class="progress-tick" style="left: calc(16.667% - 1px)"></span>
+      <span class="progress-tick" style="left: calc(33.333% - 1px)"></span>
+      <span class="progress-tick" style="left: calc(50% - 1px)"></span>
+      <span class="progress-tick" style="left: calc(66.667% - 1px)"></span>
+      <span class="progress-tick" style="left: calc(83.333% - 1px)"></span>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+
+      <p class="statement">Apps ask what's near me. I want to know what's <em>on the way.</em></p>
+
+      <section class="section" id="s1">
+        <span class="label">The problem</span>
+        <h2>Proximity doesn't mean convenience.</h2>
+        <p class="body">Map tools rank food by distance from where you are. But a place 0.3 miles away can still cost 15 minutes off your route. The closest place to you isn't always the closest to your trip.</p>
+      </section>
+
+      <section class="section" id="s2">
+        <span class="label">Research</span>
+        <h2>No app shows what a stop costs your trip.</h2>
+        <p class="body">Same trip, four apps. Here's where each one sends you.</p>
+
+        <div class="maps">
+          <figure>
+            <svg viewBox="0 0 240 160" role="img" aria-label="Google Maps shows restaurants in a circle around you, off the route">
+              <circle cx="20" cy="130" r="58" fill="none" stroke="#a39d8c" stroke-width="1.5" stroke-dasharray="4 5"/>
+              <circle cx="18" cy="96" r="5" fill="#a39d8c"/><circle cx="52" cy="148" r="5" fill="#a39d8c"/><circle cx="64" cy="100" r="5" fill="#a39d8c"/><circle cx="40" cy="152" r="5" fill="#a39d8c"/>
+              <path d="M20 130 C 80 122, 120 62, 220 30" fill="none" stroke="#1a1814" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="20" cy="130" r="6" fill="#1a1814"/><circle cx="220" cy="30" r="6" fill="#FFFDF7" stroke="#1a1814" stroke-width="2.5"/>
+            </svg>
+            <figcaption><div class="name">Google Maps</div><div class="desc">Shows what's around you.<br>Detour time only once you're driving.</div></figcaption>
+          </figure>
+          <figure>
+            <svg viewBox="0 0 240 160" role="img" aria-label="Yelp shows popular restaurants anywhere, ignoring the route">
+              <circle cx="168" cy="132" r="8" fill="#a39d8c"/><circle cx="200" cy="104" r="6" fill="#a39d8c"/><circle cx="58" cy="40" r="8" fill="#a39d8c"/><circle cx="104" cy="148" r="5" fill="#a39d8c"/><circle cx="130" cy="24" r="6" fill="#a39d8c"/>
+              <path d="M20 130 C 80 122, 120 62, 220 30" fill="none" stroke="#1a1814" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="20" cy="130" r="6" fill="#1a1814"/><circle cx="220" cy="30" r="6" fill="#FFFDF7" stroke="#1a1814" stroke-width="2.5"/>
+            </svg>
+            <figcaption><div class="name">Yelp</div><div class="desc">Shows what's popular.<br>Doesn't know where you're going.</div></figcaption>
+          </figure>
+          <figure>
+            <svg viewBox="0 0 240 160" role="img" aria-label="Beli shows restaurants matching your taste, ignoring the route">
+              <circle cx="122" cy="140" r="6" fill="#a39d8c"/><circle cx="40" cy="52" r="6" fill="#a39d8c"/><circle cx="206" cy="128" r="6" fill="#a39d8c"/><circle cx="88" cy="28" r="6" fill="#a39d8c"/>
+              <path d="M20 130 C 80 122, 120 62, 220 30" fill="none" stroke="#1a1814" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="20" cy="130" r="6" fill="#1a1814"/><circle cx="220" cy="30" r="6" fill="#FFFDF7" stroke="#1a1814" stroke-width="2.5"/>
+            </svg>
+            <figcaption><div class="name">Beli</div><div class="desc">Shows what fits your taste.<br>Doesn't know where you're going.</div></figcaption>
+          </figure>
+          <figure>
+            <svg viewBox="0 0 240 160" role="img" aria-label="OnTheWay shows restaurants along the route, inside a narrow band">
+              <path d="M20 130 C 80 122, 120 62, 220 30" fill="none" stroke="#582c39" stroke-opacity="0.12" stroke-width="30" stroke-linecap="round"/>
+              <circle cx="62" cy="120" r="7" fill="#582c39"/><circle cx="112" cy="84" r="7" fill="#582c39"/><circle cx="168" cy="50" r="7" fill="#582c39"/>
+              <path d="M20 130 C 80 122, 120 62, 220 30" fill="none" stroke="#1a1814" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="20" cy="130" r="6" fill="#1a1814"/><circle cx="220" cy="30" r="6" fill="#FFFDF7" stroke="#1a1814" stroke-width="2.5"/>
+            </svg>
+            <figcaption><div class="name us">OnTheWay</div><div class="desc">Shows what's along your route.<br>Ranked by the minutes each stop adds.</div></figcaption>
+          </figure>
+        </div>
+        <p class="legend"><span><i style="background:#1a1814"></i>you</span><span><i style="border:2px solid #1a1814"></i>where you're going</span><span><i style="background:#a39d8c"></i>restaurants each app shows first</span></p>
+
+        <div class="race-scroll">
+          <div class="race">
+            <div class="race-head old"><b>Today</b><span>5 steps, 3 apps</span></div>
+            <div class="track old">
+              <span class="line"></span>
+              <span class="dot" style="left:0%"></span><span class="step" style="left:0%"><b>Plan route</b><span>Maps</span></span>
+              <span class="dot" style="left:22%"></span><span class="step" style="left:22%"><b>Search restaurants</b><span>Yelp</span></span>
+              <span class="dot" style="left:44%"></span><span class="step" style="left:44%"><b>Compare locations</b><span>Yelp + Maps</span></span>
+              <span class="dot" style="left:66%"></span><span class="step" style="left:66%"><b>Check directions</b><span>Maps</span></span>
+              <span class="dot" style="left:88%"></span><span class="step" style="left:88%"><b>Estimate the detour</b><span>in your head</span></span>
+              <span class="finish">Done</span>
+            </div>
+            <div class="race-head new"><b>With OnTheWay</b><span>3 steps, 1 app</span></div>
+            <div class="track new">
+              <span class="line"></span>
+              <span class="dot" style="left:0%"></span><span class="step" style="left:0%"><b>Plan route</b><span>OnTheWay</span></span>
+              <span class="dot" style="left:22%"></span><span class="step" style="left:22%"><b>Pick a stop on the way</b><span>sees minutes added</span></span>
+              <span class="dot" style="left:44%"></span><span class="step" style="left:44%"><b>Route updates</b><span>OnTheWay</span></span>
+              <span class="finish">Done</span>
+              <span class="saved-line" aria-hidden="true"></span>
+              <span class="saved-text">2 fewer steps, no switching apps</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="s3">
+        <span class="label">The solution</span>
+        <h2>Rank by detour, not distance.</h2>
+        <p class="body">Enter where you're starting and where you're going, hit Plan trip, and the route shows up with restaurants along it.</p>
+        <div class="shot"><video src="ontheway-laptop/ontheway.mp4" poster="ontheway-laptop/poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Screen recording of OnTheWay planning a route and showing restaurants along it"></video></div>
+        <p class="caption">Built with JavaScript, Mapbox GL JS, the Mapbox Search Box API and Turf.js. Deployed on Vercel.</p>
+      </section>
+
+      <section class="section" id="s4">
+        <span class="label">Tradeoffs</span>
+        <h2>What I chose, and what I cut.</h2>
+        <div class="tradeoffs">
+          <div><h3>Ranking</h3><p class="small-body">Results rank by distance from the route first, ratings second. I cut popularity sorting because it kept pulling people far off the path.</p></div>
+          <div><h3>Coverage</h3><p class="small-body">I split the route into thirds. More sample points barely found more places but added a request each and slowed results down.</p></div>
+          <div><h3>Filtering</h3><p class="small-body">Showing everything recreated the "nearby" problem, so anything more than about 0.3 miles (0.5 km) from the route is hidden.</p></div>
+          <div><h3>Scope</h3><p class="small-body">No accounts, reservations or multi-stop trips yet. First I wanted to prove people pick food by how little it adds to their trip.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s5">
+        <span class="label">Testing</span>
+        <p class="quote">"I didn't know that I needed this. It seemed like it would exist but just doesn't."</p>
+        <span class="label">Tester commuting from Tribeca to Chelsea</span>
+        <div class="numbers">
+          <div><b>7</b><span>testers on a route they actually take</span></div>
+          <div><b>5</b><span>picked a stop without another app</span></div>
+          <div><b>~4 min</b><span>added to their trip</span></div>
+        </div>
+      </section>
+
+      <section class="section" id="s6">
+        <span class="label">Reflection</span>
+        <div class="three">
+          <div><h3>What I learned</h3><p class="small-body">Location data is messier than it looks. Address matching broke, so I switched to polygon boundaries for NYC.</p></div>
+          <div><h3>What I'd measure</h3><p class="small-body">Minutes added per stop against the top "nearby" result on the same route.</p></div>
+          <div><h3>What's next</h3><p class="small-body">A mobile version, multi-stop trips and cities beyond NYC.</p></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <span class="label">Branding</span>
+        <div class="brand-banner"><img src="../media/otw-img6.png" alt="OnTheWay branding with running figures"></div>
+        <div class="brand-grid">
+          <div><img src="../media/otw-img4.png" alt="OnTheWay icon mark"></div>
+          <div><img src="../media/otw-img5.png" alt="OnTheWay logotype"></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="tv end">
+    <div class="wrap">
+      <a class="next" href="thunk.html"><span>Next channel</span><b>Thunk →</b></a>
+    </div>
+  </footer>
+
+  <script>
+    // The race strip: drop the right-edge fade once it's scrolled to the end.
+    (function () {
+      const r = document.querySelector('.race-scroll');
+      if (!r) return;
+      const check = () => r.classList.toggle('at-end', r.scrollLeft + r.clientWidth >= r.scrollWidth - 4);
+      r.addEventListener('scroll', check, { passive: true });
+      addEventListener('resize', check);
+      check();
+    })();
+  </script>
+  <script>
+    (function () {
+      const sections = [...document.querySelectorAll('main .section[id^="s"]')];
+      const links = [...document.querySelectorAll('.chapter-links a')];
+      const fill = document.querySelector('.progress-fill');
+      const n = sections.length;
+      let frame = null;
+      const bar = document.querySelector('.chapter-links');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let shown = -1;
+
+      function update() {
+        frame = null;
+        const line = window.innerHeight * 0.35;
+        let p = 0;
+        for (let i = 0; i < n; i++) {
+          const top = sections[i].getBoundingClientRect().top;
+          const bottom = i < n - 1 ? sections[i + 1].getBoundingClientRect().top : sections[i].getBoundingClientRect().bottom;
+          if (line >= bottom) { p = i + 1; continue; }
+          if (line > top) p = i + (line - top) / (bottom - top);
+          break;
+        }
+        p = Math.max(0, Math.min(n, p));
+        fill.style.width = (p / n * 100) + '%';
+        const current = Math.min(n - 1, Math.floor(p));
+        links.forEach((a, i) => {
+          const done = p >= i + 1;
+          a.classList.toggle('done', done);
+          a.classList.toggle('on', p > 0 && i === current && !done);
+        });
+        // On a narrow screen the chapter bar scrolls sideways: keep the current chapter in view.
+        if (current !== shown && bar.scrollWidth > bar.clientWidth + 2) {
+          const a = links[current];
+          bar.scrollTo({ left: a.offsetLeft - (bar.clientWidth - a.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+        }
+        shown = current;
+      }
+
+      function onScroll() { if (!frame) frame = requestAnimationFrame(update); }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      update();
+    })();
+  </script>
+  <script src="../grain.js"></script>
+</body>
+</html>

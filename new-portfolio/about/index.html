@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Me - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../site-nav.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;600&family=League+Spartan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FFFDF7;
+      --text: #1a1814;
+      --body: #3d3a33;
+      --muted: #6b6656;
+      --cream: #f2efe6;
+      --maroon: #582c39;
+      --line: #e2dcc6;
+      --pad: clamp(20px, 5vw, 72px);
+    }
+
+    html, body { background: #000; }
+    body { font-family: 'League Spartan', sans-serif; color: var(--text); }
+    body.intro-on { overflow: hidden; }
+
+    /* ─────────────────────────────────────────
+       INTRO — black stage laid out like the 1440 × 823 prototype frames.
+       Positions are % of the stage; sizes are cqw / cqh of the stage.
+    ───────────────────────────────────────── */
+    .intro {
+      position: fixed; inset: 0; z-index: 10;
+      background: #000; color: #fff;
+      font-family: 'Jost', 'Futura', sans-serif; font-weight: 300;
+      display: grid; place-items: center;
+      overflow: hidden;
+    }
+    .intro[hidden] { display: none; }
+    .stage {
+      position: relative;
+      width: min(100vw, calc(100svh * 1440 / 823));
+      aspect-ratio: 1440 / 823;
+      container-type: size;
+      --cy: 49.7%;     /* centre of the sentence and the ring */
+      --fy: 80.4%;     /* the floor: where the ring lands and the blob floats over */
+      --d: 39cqw;      /* ring diameter (and the floor ellipse's width) */
+      --ah: 63cqh;     /* avatar height (if the avatar image is used instead of the blob) */
+      --bw: 10cqw;     /* aura size */
+      --lift: 21cqh;   /* how high the aura floats above the floor */
+      --fs: 2.75cqw;   /* sentence size */
+      --tfs: 2.75cqw;  /* word size */
+    }
+
+    .line {
+      position: absolute; left: 50%; top: var(--cy);
+      transform: translate(-50%, -50%);
+      width: max-content; max-width: 90cqw;
+      text-align: center; font-size: var(--fs); line-height: 1.2;
+    }
+    .line .w { display: inline-block; opacity: 0; }
+
+    .ring {
+      position: absolute; left: 50%;
+      top: calc(var(--cy) + (var(--fy) - var(--cy)) * var(--p, 0));
+      width: var(--d); aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .ring svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+    /* Floating aura, standing in for the avatar for now: a glowing orb with
+       a breathing halo and rings rippling out from it */
+    .figure {
+      position: absolute; left: 50%;
+      top: calc(var(--fy) - var(--lift) - var(--bw));
+      width: var(--bw); height: var(--bw);
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+    .blob-float { position: relative; width: 100%; height: 100%; animation: bob 2.8s ease-in-out infinite; }
+    /* The whole aura slowly shifts colour (teal → blue → violet → pink → back), kept soft */
+    .figure, .blob-shadow { animation: hue 6s linear infinite; }
+    @keyframes hue {
+      from { filter: hue-rotate(0deg) saturate(0.85) brightness(0.562); }
+      to   { filter: hue-rotate(360deg) saturate(0.85) brightness(0.82); }
+    }
+    .aura-halo {
+      position: absolute; inset: -60%; border-radius: 50%;
+      background: radial-gradient(circle, rgba(110, 200, 235, 0.28) 0%, rgba(47, 159, 245, 0.14) 32%, rgba(26, 125, 102, 0.06) 52%, transparent 70%);
+      filter: blur(1.2cqw);
+      animation: breathe 2.8s ease-in-out infinite;
+    }
+    .aura-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 0.18cqw solid rgba(150, 215, 240, 0.45);
+      box-shadow: 0 0 1cqw rgba(47, 159, 245, 0.35), inset 0 0 1cqw rgba(47, 159, 245, 0.2);
+      opacity: 0;
+      animation: ripple 2.4s ease-out infinite;
+    }
+    .aura-ring.r2 { animation-delay: 1.2s; }
+    .blob {
+      position: relative; width: 100%; height: 100%; overflow: hidden;
+      background: radial-gradient(circle at 38% 34%, #cfe9f0 0%, #9ed3e2 14%, #5bb6cf 36%, #2a7fc4 66%, #174f66 100%);
+      border-radius: 48% 52% 50% 50% / 50% 48% 52% 50%;
+      box-shadow: 0 0 1.6cqw rgba(47, 159, 245, 0.35), 0 0 4.5cqw rgba(26, 125, 102, 0.2), inset -0.8cqw -1.1cqw 2cqw rgba(10, 40, 70, 0.35);
+      animation: morph 5s ease-in-out infinite;
+    }
+    .blob::before {   /* slow teal/blue swirl inside the orb */
+      content: ''; position: absolute; inset: -20%;
+      background: conic-gradient(from 0deg, rgba(31, 190, 150, 0.35), transparent 28%, rgba(47, 159, 245, 0.35) 52%, transparent 78%, rgba(31, 190, 150, 0.35));
+      mix-blend-mode: screen; filter: blur(1cqw);
+      animation: swirl 5s linear infinite;
+    }
+    .blob::after {   /* soft highlight */
+      content: ''; position: absolute; left: 22%; top: 17%; width: 24%; height: 16%;
+      border-radius: 50%; background: rgba(255, 255, 255, 0.4); filter: blur(0.5cqw);
+    }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9%); } }
+    @keyframes breathe { 0%, 100% { transform: scale(0.92); opacity: 0.75; } 50% { transform: scale(1.08); opacity: 1; } }
+    @keyframes ripple { 0% { transform: scale(1); opacity: 0.85; } 100% { transform: scale(2.1); opacity: 0; } }
+    @keyframes swirl { to { transform: rotate(360deg); } }
+    @keyframes morph {
+      0%, 100% { border-radius: 48% 52% 50% 50% / 50% 48% 52% 50%; }
+      33%      { border-radius: 52% 48% 47% 53% / 46% 52% 48% 54%; }
+      66%      { border-radius: 50% 50% 53% 47% / 53% 47% 50% 50%; }
+    }
+    /* Its glow on the floor, smaller when the blob is up */
+    .blob-shadow {
+      position: absolute; left: 50%; top: var(--fy);
+      width: calc(var(--bw) * 1.3); height: calc(var(--bw) * 0.22);
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+    .blob-shadow i {
+      display: block; width: 100%; height: 100%;
+      background: radial-gradient(ellipse at center, rgba(90, 190, 255, 0.3), rgba(26, 125, 102, 0.1) 45%, transparent 70%);
+      animation: shadow 2.8s ease-in-out infinite;
+    }
+    @keyframes shadow { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.8); opacity: 0.65; } }
+
+    .avatar {
+      position: absolute; left: 50%;
+      top: calc(var(--fy) - var(--ah) + 0.6cqh);
+      height: var(--ah); width: auto;
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+
+    .tag, .anything {
+      position: absolute; left: var(--x); top: var(--y);
+      transform: translate(-50%, -50%);
+      font-size: var(--tfs); white-space: nowrap;
+      opacity: 0;
+    }
+    .anything b { font-weight: 600; }
+
+    /* Only when the browser holds sound back until a tap (e.g. iPhone Safari) */
+    .tap {
+      position: absolute; left: 50%; top: var(--cy);
+      transform: translate(-50%, -50%);
+      font: inherit; font-size: calc(var(--fs) * 0.7);
+      color: #fff; background: none;
+      border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 999px;
+      padding: 0.7em 1.6em; cursor: pointer;
+    }
+    .tap[hidden] { display: none; }
+    .tap:hover, .tap:focus-visible { background: #fff; color: #000; outline: none; }
+
+
+    .intro-controls {
+      position: fixed; right: 20px; bottom: 18px; z-index: 12;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .intro-controls button {
+      font: 400 13px 'Jost', sans-serif; letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.75); background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 999px;
+      height: 36px; padding: 0 16px; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .intro-controls .mute { width: 36px; padding: 0; }
+    .intro-controls button:hover, .intro-controls button:focus-visible { color: #fff; border-color: #fff; outline: none; }
+    .mute .off { display: none; }
+    .mute[aria-pressed="true"] .on { display: none; }
+    .mute[aria-pressed="true"] .off { display: block; }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* Phones: full-screen stage, smaller ring and blob, words stacked
+       above and below the blob instead of around it. */
+    @media (max-width: 700px), (max-aspect-ratio: 4/5) {
+      .stage {
+        width: 100vw; height: 100svh; aspect-ratio: auto;
+        --cy: 45%; --fy: 70%;
+        --d: 78cqw; --ah: 38cqh; --bw: 22cqw; --lift: 14cqh;
+        --fs: 6.4cqw; --tfs: 5cqw;
+      }
+      .tag, .anything { left: 50%; top: var(--my); }
+    }
+
+    /* ─────────────────────────────────────────
+       ABOUT ME — after the intro. Styled after reference/about-prototype:
+       near-black, lit by slow drifting glows, a warm light that follows the
+       cursor and a little film grain; the photo sits under a spotlight.
+    ───────────────────────────────────────── */
+    .about {
+      --ink: #f3ecd6;
+      --soft: rgba(243, 236, 214, .72);
+      --muted: rgba(243, 236, 214, .45);
+      --hair: rgba(243, 236, 214, .14);
+      --pink: rgba(231, 185, 166, .6);
+      --mx: 50%; --my: 30%;
+      min-height: 100vh; background: #050505; color: var(--ink);
+      overflow-x: clip;   /* not hidden: that would make this a scroll box and break the sticky photo */
+    }
+    .about[hidden] { display: none; }
+    .about a { color: inherit; }
+
+    .ambient { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .glow { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .55; mix-blend-mode: screen; }
+    .g1 { width: 62vw; height: 62vw; left: -18vw; top: -22vw; background: radial-gradient(circle, #2f6f73 0%, rgba(47,111,115,0) 65%); animation: drift1 22s ease-in-out infinite alternate; }
+    .g2 { width: 55vw; height: 55vw; right: -20vw; top: 10vh; background: radial-gradient(circle, #7a2f4a 0%, rgba(122,47,74,0) 65%); opacity: .45; animation: drift2 26s ease-in-out infinite alternate; }
+    .g3 { width: 50vw; height: 40vw; left: 20vw; bottom: -25vw; background: radial-gradient(circle, #8a6a2c 0%, rgba(138,106,44,0) 65%); opacity: .35; animation: drift3 30s ease-in-out infinite alternate; }
+    @keyframes drift1 { to { transform: translate(8vw, 6vh) scale(1.08); } }
+    @keyframes drift2 { to { transform: translate(-6vw, 10vh) scale(.95); } }
+    @keyframes drift3 { to { transform: translate(-8vw, -6vh) scale(1.1); } }
+    .torch { position: fixed; inset: 0; pointer-events: none; z-index: 1;
+      background: radial-gradient(520px circle at var(--mx) var(--my), rgba(255,236,200,.07), rgba(255,236,200,0) 70%); }
+    .grain { position: fixed; inset: 0; pointer-events: none; z-index: 3; opacity: .09; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+    /* Navigation: the shared one (../site-nav.css), floating over the page. No bar:
+       just a soft fade behind it, so text scrolling underneath doesn't run into the links. */
+    .about-nav::before { content: ""; position: absolute; inset: 0 0 -48px; z-index: -1; pointer-events: none;
+      background: linear-gradient(to bottom, rgba(5,5,5,.97) 0%, rgba(5,5,5,.9) 45%, rgba(5,5,5,0) 100%); }
+
+    .about-main { position: relative; z-index: 2; max-width: 1240px; margin: 0 auto; padding: 180px 48px 160px; }
+    .about-stage { display: grid; grid-template-columns: minmax(240px, 340px) 1fr; gap: 88px; align-items: start; }
+
+    /* The photo: sticky, under a warm spotlight with a pool of light below */
+    .photo-wrap { position: sticky; top: 140px; }
+    .spot { position: absolute; left: 50%; top: -150px; width: 600px; height: 720px; transform: translateX(-50%); pointer-events: none;
+      background:
+        radial-gradient(ellipse 34% 60% at 50% 0%, rgba(255,232,190,.20), rgba(255,232,190,0) 75%),
+        radial-gradient(ellipse 50% 40% at 50% 62%, rgba(255,226,180,.16), rgba(255,226,180,0) 70%);
+      filter: blur(8px); }
+    .portrait { position: relative; aspect-ratio: 702 / 910; border-radius: 6px; overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(255,240,220,.08), 0 50px 90px -30px rgba(0,0,0,.9), 0 0 80px rgba(255,226,180,.08); }
+    .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.03); }
+    .portrait::after { content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(255,236,205,.10) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,.35) 100%); }
+    .floor { position: absolute; left: 8%; right: 8%; bottom: -46px; height: 40px; border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(255,226,180,.14), rgba(0,0,0,0) 70%); filter: blur(6px); }
+
+    .copy { padding-top: 24px; min-width: 0; }
+    .intro-copy > p { margin-top: 26px; font-size: 19px; line-height: 1.7; font-weight: 300; color: var(--soft); max-width: 620px; }
+    .intro-copy > p.lede { margin-top: 0; font-size: 26px; line-height: 1.4; font-weight: 400; color: var(--ink); }
+    /* Why chairs: a short heading, four points and a closing line */
+    .why-chairs { margin-top: 30px; max-width: 620px; }
+    .why-title { font-size: 19px; font-weight: 600; color: var(--ink); letter-spacing: 0; margin: 0 0 12px; }
+    .why-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .why-list li { position: relative; padding-left: 22px; font-size: 19px; line-height: 1.55; font-weight: 300; color: var(--soft); }
+    .why-list li::before { content: ""; position: absolute; left: 2px; top: 0.72em; width: 8px; height: 1.5px; background: var(--muted, currentColor); }
+    .why-end { margin-top: 18px; font-size: 19px; line-height: 1.55; font-weight: 400; color: var(--ink); }
+    .pull { margin: 56px 0 8px; padding-left: 22px; border-left: 2px solid var(--pink); max-width: 560px; }
+    .pull small { display: block; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .pull p { color: var(--ink); font-size: clamp(20px, 1.9vw, 25px); line-height: 1.35; font-weight: 500; }
+
+    /* ── Favourite chairs: one row, standing on a shared floor, letter + source below each ── */
+    .chairs { margin-top: 150px; }
+    .chairs-title { font-size: clamp(30px, 3.4vw, 44px); font-weight: 600; letter-spacing: -.02em; line-height: 1.1; color: var(--ink); margin-bottom: 48px; }
+    .chair-row { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(16px, 2.6vw, 40px); align-items: start; }   /* same floor line; captions may wrap */
+    .chair-row figure { display: flex; flex-direction: column; align-items: center; }
+    .chair-img { position: relative; height: clamp(170px, 19vw, 250px); width: 100%; display: flex; align-items: flex-end; justify-content: center;
+      background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: zoom-in; border-radius: 6px;
+      -webkit-tap-highlight-color: transparent; }
+    .chair-img:focus-visible { outline: 1.5px solid var(--ink); outline-offset: 8px; }
+    .chair-img img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;
+      filter: drop-shadow(0 18px 22px rgba(0,0,0,.55)); transition: transform .35s ease; }
+    .chair-row li:hover .chair-img img, .chair-img:focus-visible img { transform: translateY(-6px); }
+    /* a pool of light on the floor under each chair */
+    .chair-img::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: -14px; height: 22px; border-radius: 50%; z-index: -1;
+      background: radial-gradient(ellipse at center, rgba(255,226,180,.16), rgba(0,0,0,0) 70%); filter: blur(4px); }
+    .chair-row figcaption { margin-top: 30px; width: 100%; padding-top: 14px; border-top: 1px solid var(--hair);
+      font-size: 14px; line-height: 1.45; font-weight: 300; color: var(--soft); text-align: center; }
+    .chair-row figcaption b { font-weight: 600; color: var(--ink); margin-right: 2px; }
+    .chair-row figcaption a { position: relative; color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--muted); }
+    .chair-row figcaption a::before, .say-links a::before { content: ""; position: absolute; inset: -14px -6px; }
+    .chair-row figcaption a:hover, .chair-row figcaption a:focus-visible { color: var(--ink); text-decoration-color: var(--ink); outline: none; }
+
+    /* The larger view */
+    .chair-view { margin: auto; max-width: min(92vw, 1100px); max-height: 92vh; padding: 0; border: 0; background: transparent; color: var(--ink, #f3ecd6); overflow: visible; }
+    .chair-view::backdrop { background: rgba(5, 5, 5, .9); backdrop-filter: blur(6px); }
+    .chair-view:focus { outline: none; }
+    .chair-view figure { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+    /* opens with a soft fade; each photo fades in only once it's loaded (no pop or flash of the last one) */
+    .chair-view[open] { animation: cvIn .3s ease both; }
+    .chair-view[open]::backdrop { animation: cvIn .3s ease both; }
+    .chair-view figure { transition: opacity .22s ease; }
+    .chair-view figure.loading { opacity: 0; }
+    @keyframes cvIn { from { opacity: 0; } to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .chair-view[open], .chair-view[open]::backdrop { animation: none; } .chair-view figure { transition: none; } }
+    .chair-view img { display: block; max-width: min(86vw, 1000px); max-height: 78vh; width: auto; height: auto; border-radius: 6px;
+      box-shadow: 0 40px 80px -30px rgba(0,0,0,.9); }
+    .chair-view figcaption { font: 300 16px/1.45 'League Spartan', sans-serif; color: rgba(243,236,214,.8); text-align: center; }
+    .chair-view figcaption b { font-weight: 600; color: #f3ecd6; margin-right: 2px; }
+    .chair-view figcaption a { color: inherit; text-underline-offset: 3px; }
+    .cv-btn { position: fixed; background: rgba(243,236,214,.08); border: 1px solid rgba(243,236,214,.3); color: #f3ecd6; cursor: pointer;
+      width: 48px; height: 48px; border-radius: 50%; font: 300 30px/1 'League Spartan', sans-serif; display: grid; place-items: center; transition: background .2s; }
+    .cv-btn:hover, .cv-btn:focus-visible { background: rgba(243,236,214,.2); outline: none; }
+    .cv-close { top: 22px; right: 22px; }
+    .cv-prev { left: 22px; top: 50%; transform: translateY(-50%); }
+    .cv-next { right: 22px; top: 50%; transform: translateY(-50%); }
+    @media (max-width: 900px) { .cv-prev, .cv-next { top: auto; bottom: 22px; transform: none; } }
+
+    /* After the chairs: who I am, outside of work, say hi */
+    .label { display: block; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+    .who { margin-top: 130px; }
+    .who .label { margin-bottom: 22px; }
+    .traits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }   /* separate cards with a small gap */
+    /* Each card: the title in the top left corner, its text in the bottom right */
+    .traits > div { background: rgba(8, 8, 8, .85); border-radius: 6px; padding: 26px 26px 28px; min-height: 260px;
+      display: flex; flex-direction: column; justify-content: space-between; gap: 36px; }
+    .traits h3 { font-size: 24px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; line-height: 1.15; align-self: flex-start; max-width: 70%; }
+    .traits p { font-size: 15px; line-height: 1.6; font-weight: 300; color: var(--soft); align-self: flex-end; text-align: right; max-width: 82%; }
+    .traits b { font-weight: 600; color: var(--ink); }
+
+    .outside { margin-top: 100px; }
+    .outside .label { margin-bottom: 18px; }
+    .outside .big { font-size: clamp(24px, 2.4vw, 30px); font-weight: 300; line-height: 1.3; color: var(--ink); }
+    .outside .big b { font-weight: 600; }
+    .outside .small { font-size: 18px; font-weight: 300; color: var(--soft); margin-top: 12px; }
+
+    .say { margin-top: 110px; padding-top: 48px; border-top: 1px solid var(--hair); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; }
+    .say h2 { font-size: clamp(44px, 5vw, 64px); font-weight: 700; line-height: 1; letter-spacing: -.03em; color: var(--ink); }
+    .say-links { display: flex; gap: 28px; margin-top: 22px; font-size: 18px; }
+    .say-links a { position: relative; text-decoration: none; color: var(--soft); border-bottom: 1px solid var(--soft); padding-bottom: 2px; transition: color .2s, border-color .2s; }
+    .say-links a:hover, .say-links a:focus-visible { color: var(--ink); border-color: var(--ink); outline: none; }
+    .say-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    .pill {
+      font: 400 14px 'League Spartan', sans-serif; letter-spacing: .16em; text-transform: uppercase; text-decoration: none;
+      padding: 14px 26px; border-radius: 999px; cursor: pointer; border: 1px solid var(--muted);
+      background: none; color: var(--ink); transition: background .2s, border-color .2s;
+    }
+    .pill:hover, .pill:focus-visible { background: rgba(243, 236, 214, .08); border-color: var(--ink); outline: none; }
+
+    /* Fade up as each block scrolls in */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s ease, transform .9s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .about-main { padding: 120px 22px 100px; }
+      .about-stage { grid-template-columns: 1fr; gap: 56px; }
+      .photo-wrap { position: relative; top: 0; max-width: 280px; margin: 0 auto; width: 100%; }
+      .intro-copy > p.lede { font-size: 21px; }
+      .intro-copy > p { font-size: 17px; }
+      .why-title, .why-list li, .why-end { font-size: 17px; }
+      .pull p { font-size: 20px; }
+      .traits { grid-template-columns: 1fr; }
+      .traits > div { min-height: 210px; }
+      .who { margin-top: 88px; }
+      .chairs { margin-top: 100px; }
+      /* smaller screens: the chairs wrap onto rows (three across, two on a phone), the last row centred */
+      .chair-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 48px 22px; }
+      .chair-row li { flex: 0 0 calc((100% - 44px) / 3); }
+      .chair-img { height: 190px; }
+    }
+    @media (max-width: 600px) {
+      .chair-row { gap: 40px 18px; }
+      .chair-row li { flex-basis: calc((100% - 18px) / 2); }
+      .chair-img { height: 150px; }
+      .chair-row figcaption { margin-top: 22px; }
+      .say { align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .glow { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+<body class="intro-on">
+
+  <!-- ── INTRO ── -->
+  <div class="intro" id="intro">
+    <p class="sr-only">Intro: a voice says "Adriella, show me your world." Then: Creative Technologist, Computer Engineer, Artist, Tech Enthusiast, Believer, Eternal Learner. I can be anything.</p>
+    <div class="stage" id="stage">
+      <p class="line" id="line" aria-hidden="true"></p>
+
+      <div class="ring" id="ring" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="ringGrad" gradientUnits="userSpaceOnUse" x1="2" y1="0" x2="98" y2="0">
+              <stop offset="0" stop-color="#1a7d66"/>
+              <stop offset="0.45" stop-color="#2a8fae"/>
+              <stop offset="1" stop-color="#2f9ff5"/>
+            </linearGradient>
+            <filter id="ringBlur" filterUnits="userSpaceOnUse" x="-20" y="-20" width="140" height="140">
+              <feGaussianBlur stdDeviation="1.8"/>
+            </filter>
+            <filter id="hiBlur" filterUnits="userSpaceOnUse" x="-20" y="-20" width="140" height="140">
+              <feGaussianBlur stdDeviation="0.45"/>
+            </filter>
+          </defs>
+          <path class="ring-glow" pathLength="100" fill="none" stroke="url(#ringGrad)" stroke-width="4" filter="url(#ringBlur)" opacity="0.5"/>
+          <path class="ring-base" pathLength="100" fill="none" stroke="url(#ringGrad)" stroke-width="1.7" stroke-linecap="round"/>
+          <path class="ring-hi" pathLength="100" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-dasharray="7 93" filter="url(#hiBlur)" opacity="0"/>
+        </svg>
+      </div>
+
+      <!-- Floating aura for now. To use the avatar image instead, swap these two
+           for: <img class="figure avatar" id="figure" src="avatar.png" alt=""> -->
+      <div class="blob-shadow" id="blobShadow" aria-hidden="true"><i></i></div>
+      <div class="figure" id="figure" aria-hidden="true"><div class="blob-float"><div class="aura-halo"></div><div class="aura-ring"></div><div class="aura-ring r2"></div><div class="blob"></div></div></div>
+
+      <!-- --x / --y: desktop position from the frames. --my: stacked position on phones. -->
+      <span class="tag" aria-hidden="true" style="--x:22.5%; --y:61.8%; --my:13.5%">Creative Technologist</span>
+      <span class="tag" aria-hidden="true" style="--x:76%;   --y:26.8%; --my:19%">Computer Engineer</span>
+      <span class="tag" aria-hidden="true" style="--x:31%;   --y:28.2%; --my:24.5%">Artist</span>
+      <span class="tag" aria-hidden="true" style="--x:73.4%; --y:61.8%; --my:78%">Tech Enthusiast</span>
+      <span class="tag" aria-hidden="true" style="--x:87.1%; --y:47%;   --my:83.5%">Believer</span>
+      <span class="tag" aria-hidden="true" style="--x:50%;   --y:10%;   --my:89%">Eternal Learner</span>
+      <p class="anything" aria-hidden="true" style="--x:22.45%; --y:44.3%; --my:7%">I can be <b>Anything</b></p>
+      <button type="button" class="tap" id="tap" hidden>Tap to begin</button>
+
+    </div>
+    <div class="intro-controls">
+      <button type="button" class="mute" id="mute" aria-pressed="false" aria-label="Mute">
+        <svg class="on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+        <svg class="off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>
+      </button>
+      <button type="button" id="skip">Skip intro</button>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ME ── -->
+  <main class="about" id="about" hidden>
+    <div class="ambient" aria-hidden="true"><div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div></div>
+    <div class="torch" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header about-nav">
+      <a class="site-brand" href="../index.html">Room lived by AK</a>
+      <nav class="site-links" aria-label="Site">
+        <a href="../index.html">Room</a>
+        <a href="../index.html#work">Work</a>
+        <a href="./" aria-current="page">About Me</a>
+      </nav>
+    </header>
+  <script src="../site-music.js?v=3"></script>
+
+    <div class="about-main">
+      <div class="about-stage">
+        <div class="photo-wrap reveal">
+          <div class="spot" aria-hidden="true"></div>
+          <div class="portrait"><img src="../images/about-photo.png" alt="Adriella Kristie, hand-lettered: Hello, I'm Adriella Kristie, &amp; my work lives in this room"></div>
+          <div class="floor" aria-hidden="true"></div>
+        </div>
+
+        <div class="copy">
+          <section class="intro-copy">
+            <h1 class="sr-only">About Me</h1>
+            <p class="lede reveal"> Computer Engineer + Integrated Design &amp; Media @ NYU, and something about me, I love chairs.</p>
+            <div class="why-chairs reveal">
+              <h2 class="why-title">Why Chairs?</h2>
+              <ul class="why-list">
+                <li>Somewhere to rest, wait, or gather with others.</li>
+                <li>Something functional, comfortable, or just nice to look at.</li>
+                <li>So many shapes, details, and little features that make each one unique.</li>
+                <li>A mix of creativity, practicality, and clever engineering.</li>
+              </ul>
+              <p class="why-end">To me, chairs are where design and engineering meet.</p>
+            </div>
+            <p class="reveal">I design the things I build, and I build the things I design. Engineering teaches me how things work, while design reminds me to think about how people experience them. Because countless solutions can exist, but what's the point if people don't actually enjoy using them, see their value, or want to come back to them?</p>
+            <blockquote class="mindset pull reveal" hidden>   <!-- hidden for now -->
+              <small>Mindset:</small>
+              <p>The best way to control your future, is to control your present<br>- Joe DeVico, Senior Managing Director at BlackRock</p>
+            </blockquote>
+          </section>
+        </div>
+      </div>
+
+      <!-- Favourite chairs: a one-row catalogue. Each caption is a letter and its source. -->
+      <section class="chairs" aria-labelledby="chairsTitle">
+        <h2 class="chairs-title reveal" id="chairsTitle">Some of my favorite chairs</h2>
+        <ul class="chair-row reveal">
+          <li><figure>
+            <button type="button" class="chair-img" data-full="../images/chairs/chair-a-full.jpg" aria-haspopup="dialog"><img src="../images/chairs/chair-a.png" alt="A tree-like chair of bent beech branches ending in round grey felt cushions, with a man curled up in it" loading="lazy"></button>
+            <figcaption><b>a.</b> Globe Garden, Peter Opsvik</figcaption>
+          </figure></li>
+          <li><figure>
+            <button type="button" class="chair-img" data-full="../images/chairs/chair-b-full.jpg" aria-haspopup="dialog"><img src="../images/chairs/chair-b.png" alt="A low chrome triangle-framed lounger with a stretched ochre seat, cowhide headrest and matching footstool" loading="lazy"></button>
+            <figcaption><b>b.</b> Mies chair, Archizoom Associates</figcaption>
+          </figure></li>
+          <li><figure>
+            <button type="button" class="chair-img" data-full="../images/chairs/chair-c-full.jpg" aria-haspopup="dialog"><img src="../images/chairs/chair-c.png?v=3" alt="A puffy brown leather armchair, its cushions folded like a knot, cradled in looping chrome tubes" loading="lazy"></button>
+            <figcaption><b>c.</b> Anne Dereaux</figcaption>
+          </figure></li>
+          <li><figure>
+            <button type="button" class="chair-img" data-full="../images/chairs/chair-d-full.jpg" aria-haspopup="dialog"><img src="../images/chairs/chair-d.png" alt="A round woven reading chair with a yellow cushion, books slotted into its rim and a lamp arching overhead" loading="lazy"></button>
+            <figcaption><b>d.</b> <a href="https://www.pinterest.com/pin/1143210686697991024/" target="_blank" rel="noopener">source (Pinterest)</a></figcaption>
+          </figure></li>
+          <li><figure>
+            <button type="button" class="chair-img" data-full="../images/chairs/chair-e-full.jpg" aria-haspopup="dialog"><img src="../images/chairs/chair-e.png" alt="Sketch of The Elephant Chair: the ear is the backrest with a speaker and ambient lighting, the trunk a table, the tail an adjustable lamp, a rock for an eye and bookshelves in the legs" loading="lazy"></button>
+            <figcaption><b>e.</b> own imagination, soon realization</figcaption>
+          </figure></li>
+        </ul>
+      </section>
+
+      <div class="about-rest">
+          <section class="who">
+            <span class="label reveal">Who I am</span>
+            <div class="traits reveal">
+              <div><h3>Computer Engineer</h3><p>Computer Engineering Major at NYU, Web development for an NYU Course, Ex Mobile Engineer intern @ startup, Dean's List</p></div>
+              <div><h3>Creative Technologist</h3><p>I love creating interactive web experiences, generative art, product design, and this 3D room you walked in through</p></div>
+              <div><h3>Artist</h3><p>Drawing, painting, animating, 3D modeling, film photography all bring me so much joy! I enjoy seeing things look good, and I think people call that taste</p></div>
+              <div><h3>Eternal Learner</h3><p>To live is to learn. You can learn to do anything. Knowledge is abundantly easier to attain now. Learn from machines, learn from people, learn from experiences.</p></div>
+              <div><h3>Believer</h3><p>&ldquo;For in this hope we were saved. But hope that is seen is no hope at all. Who hopes for what they already have? But if we hope for what we do not yet have, we wait for it patiently.&rdquo;</p></div>
+              <div><h3>Anything</h3><p>Growing up I loved Barbies and now their motto has really stuck with me:<br>&ldquo;You can be <b>Anything</b>&rdquo;</p></div>
+            </div>
+          </section>
+
+          <section class="outside reveal">
+            <span class="label">Outside of work</span>
+            <p class="big">I am also the <b>BIGGEST brioche bread</b> fan</p>
+            <p class="small">Shoutout to Trader Joe's French Brioche Toast</p>
+          </section>
+
+          <footer class="say reveal">
+            <div>
+              <h2>Say hi.</h2>
+              <div class="say-links">
+                <a href="mailto:adriellakristie@gmail.com">Email</a>
+                <a href="https://www.linkedin.com/in/adriella-kristie/" target="_blank" rel="noopener">LinkedIn</a>
+              </div>
+            </div>
+            <div class="say-actions">
+              <button type="button" class="pill ghost" id="replay">Replay intro</button>
+            </div>
+          </footer>
+      </div>
+    </div>
+
+    <!-- A chair, larger: the original photo with its caption -->
+    <dialog class="chair-view" id="chairView" aria-labelledby="chairViewCap" tabindex="-1">
+      <figure>
+        <img id="chairViewImg" alt="">
+        <figcaption id="chairViewCap"></figcaption>
+      </figure>
+      <button type="button" class="cv-btn cv-close" aria-label="Close">&times;</button>
+      <button type="button" class="cv-btn cv-prev" aria-label="Previous chair">&lsaquo;</button>
+      <button type="button" class="cv-btn cv-next" aria-label="Next chair">&rsaquo;</button>
+    </dialog>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script>
+    (function () {
+      // ── Edit these ─────────────────────────────────────────────
+      // When each word appears, in seconds from the start of voice.mp3.
+      // (Also used as the timing when there is no sound at all.)
+      // An optional third entry is how the built-in voice should say the word
+      // (only used when there's no voice.mp3).
+      const WORDS = [
+        ['Adriella,', 0.12, 'Ahdree yella,'],
+        ['show',      1.23],
+        ['me',        1.45],
+        ['your',      1.60],
+        ['world',     1.78],
+      ];
+      const LINE_BREAK_AFTER = 2;            // "Adriella, show me / your world"
+      const VOICE_URL = 'voice.mp3';
+      const SPEECH_TEXT = WORDS.map(([w, , say]) => say || w).join(' ') + '.';
+      const PREFERRED_VOICES = ['Samantha', 'Google US English', 'Microsoft Aria', 'Microsoft Jenny', 'Microsoft Zira', 'Ava', 'Allison', 'Susan', 'Victoria'];
+      // ───────────────────────────────────────────────────────────
+
+      const $ = (id) => document.getElementById(id);
+      const intro = $('intro'), stage = $('stage'), line = $('line'), ring = $('ring'), figure = $('figure'), blobShadow = $('blobShadow');
+      const about = $('about'), tapBtn = $('tap'), muteBtn = $('mute'), skipBtn = $('skip');
+      const ringSvg = ring.querySelector('svg');
+      const ringPaths = ring.querySelectorAll('path');
+      const glow = ring.querySelector('.ring-glow'), hi = ring.querySelector('.ring-hi');
+      const tags = [...stage.querySelectorAll('.tag')];
+      const anything = stage.querySelector('.anything');
+      const lastStart = WORDS[WORDS.length - 1][1];
+
+      $('replay').addEventListener('click', () => { location.href = './?intro'; });
+
+      // The room's song carries on quietly here (site-music.js plays it and gives it a pause button).
+      const song = window.siteMusic ? window.siteMusic.audio : null;
+
+      let done = false;      // About Me is showing
+      let ending = false;    // fading out (finished or skipped)
+      let tl = null, slide = null;
+      function showAbout() {
+        if (done) return;
+        done = ending = true;
+        stopVoice();
+        if (tl) tl.kill();
+        if (slide) slide.kill();
+        intro.hidden = true;
+        document.body.classList.remove('intro-on');
+        about.hidden = false;
+        lightUp();
+        if (window.gsap) gsap.fromTo(about, { opacity: 0 }, { opacity: 1, duration: 0.9, ease: 'power1.out' });
+        if (location.search.includes('intro')) history.replaceState(null, '', location.pathname);
+      }
+
+      // ── About Me: the warm light follows the cursor; blocks fade up as they scroll in ──
+      function lightUp() {
+        let tx = 50, ty = 30, cx = 50, cy = 30;
+        addEventListener('pointermove', (e) => { tx = e.clientX / innerWidth * 100; ty = e.clientY / innerHeight * 100; });
+        (function loop() {
+          cx += (tx - cx) * 0.06; cy += (ty - cy) * 0.06;
+          about.style.setProperty('--mx', cx + '%'); about.style.setProperty('--my', cy + '%');
+          requestAnimationFrame(loop);
+        })();
+        const blocks = about.querySelectorAll('.reveal');
+        if (!('IntersectionObserver' in window)) { blocks.forEach((el) => el.classList.add('in')); return; }
+        const io = new IntersectionObserver((es) => es.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        }), { threshold: 0.15 });
+        blocks.forEach((el, i) => { el.style.transitionDelay = Math.min(i * 70, 420) + 'ms'; io.observe(el); });
+      }
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const forced = new URLSearchParams(location.search).has('intro');
+      // Plays on every visit; only reduced motion goes straight to the content.
+      if (!window.gsap || (!forced && reduceMotion)) { showAbout(); return; }
+
+      // ── Set up the stage ──
+      const wordEls = WORDS.map(([w], i) => {
+        const s = document.createElement('span');
+        s.className = 'w';
+        s.textContent = w;
+        line.appendChild(s);
+        line.appendChild(i === LINE_BREAK_AFTER ? document.createElement('br') : document.createTextNode(' '));
+        return s;
+      });
+      const ellipse = (ry) => `M50 ${50 - ry} A48 ${ry} 0 1 1 50 ${50 + ry} A48 ${ry} 0 1 1 50 ${50 - ry}`;
+      ringPaths.forEach((p) => p.setAttribute('d', ellipse(48)));
+      gsap.set(wordEls, { opacity: 0, y: '0.15em' });
+      gsap.set([glow, ring.querySelector('.ring-base')], { attr: { 'stroke-dasharray': '100 100' }, strokeDashoffset: 100 });
+      gsap.set(ring, { '--p': 0 });
+      gsap.set(figure, { xPercent: -50, x: 0, y: 0 });
+      gsap.set(blobShadow, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
+      gsap.set([...tags, anything], { xPercent: -50, yPercent: -50, x: 0, y: 0 });
+      if (figure.tagName === 'IMG') figure.addEventListener('error', () => { figure.style.display = 'none'; });
+
+      let revealed = 0;
+      function reveal(n) {
+        for (; revealed < Math.min(n, wordEls.length); revealed++) {
+          gsap.to(wordEls[revealed], { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
+        }
+      }
+
+      // ── Voice ──
+      // src: where the word clock comes from. kind 'audio' (voice.mp3),
+      // 'speech' (speechSynthesis) or 'timer' (silent, WORDS timings).
+      let muted = false;
+      let src = null;
+      let audio = null;
+      let speechToken = 0;
+      let voicePick = null;
+
+      function stopVoice() {
+        if (audio) { audio.pause(); }
+        if (src && src.kind === 'speech') { speechToken++; try { speechSynthesis.cancel(); } catch (e) {} }
+      }
+
+      function timerSource() {
+        const t0 = performance.now();
+        return { kind: 'timer', ended: false, lag: 0, time: () => (performance.now() - t0) / 1000 };
+      }
+
+      // Each returns a Promise of a source, or of 'blocked' when the browser
+      // wants a tap first. Nothing is awaited before play()/speak(), so a tap
+      // that calls these still counts as the gesture.
+      function startAudio() {
+        audio.currentTime = 0;
+        audio.muted = muted;
+        const s = { kind: 'audio', ended: false, lag: 0, time: () => audio.currentTime };
+        audio.onended = () => { s.ended = true; };
+        return audio.play().then(() => s, (e) => (e && e.name === 'NotAllowedError' ? 'blocked' : null));
+      }
+
+      function startSpeech() {
+        return new Promise((resolve) => {
+          const token = ++speechToken;
+          const u = new SpeechSynthesisUtterance(SPEECH_TEXT);
+          u.lang = 'en-US';
+          if (voicePick) u.voice = voicePick;
+          u.rate = 0.95;
+          // Where each word starts in SPEECH_TEXT, to match the voice's word events.
+          const starts = [];
+          let at = 0;
+          for (const [w, , say] of WORDS) { starts.push(at); at += (say || w).length + 1; }
+          let t0 = 0;
+          const s = { kind: 'speech', ended: false, lag: 0.5, time: () => (t0 ? (performance.now() - t0) / 1000 : 0) };
+          let settled = false;
+          const settle = (v) => { if (!settled) { settled = true; resolve(v); } };
+          u.onstart = () => { t0 = performance.now(); settle(s); };
+          u.onboundary = (e) => {
+            if (token !== speechToken || e.name === 'sentence') return;
+            let i = 0;
+            while (i + 1 < starts.length && starts[i + 1] <= e.charIndex) i++;
+            reveal(i + 1);
+          };
+          u.onend = () => { if (token === speechToken) s.ended = true; };
+          u.onerror = (e) => {
+            if (token !== speechToken) return;
+            if (e.error === 'not-allowed') settle('blocked');
+            else { s.ended = true; settle(null); }
+          };
+          speechSynthesis.cancel();
+          speechSynthesis.speak(u);
+          // Some browsers never start without a tap and say nothing about it.
+          setTimeout(() => { if (!t0 && token === speechToken) { speechSynthesis.cancel(); settle('blocked'); } }, 1500);
+        });
+      }
+
+      function loadVoices() {
+        return new Promise((resolve) => {
+          const pick = () => {
+            const all = speechSynthesis.getVoices();
+            if (!all.length) return false;
+            const us = all.filter((v) => v.lang === 'en-US' || v.lang === 'en_US');
+            voicePick = PREFERRED_VOICES.map((n) => us.find((v) => v.name.includes(n)) || all.find((v) => v.name.includes(n))).find(Boolean)
+              || us.find((v) => /female|woman/i.test(v.name)) || us[0] || null;
+            return true;
+          };
+          if (pick()) return resolve();
+          speechSynthesis.addEventListener('voiceschanged', () => { pick(); resolve(); }, { once: true });
+          setTimeout(resolve, 1000);
+        });
+      }
+
+      let mode = 'timer';
+      async function chooseMode() {
+        try {
+          const r = await fetch(VOICE_URL, { method: 'HEAD', cache: 'no-store' });
+          if (r.ok) { audio = new Audio(VOICE_URL); audio.preload = 'auto'; return 'audio'; }
+        } catch (e) {}
+        if ('speechSynthesis' in window) { await loadVoices(); return 'speech'; }
+        return 'timer';
+      }
+
+      function startVoice() {
+        if (muted || mode === 'timer') return Promise.resolve(timerSource());
+        return (mode === 'audio' ? startAudio() : startSpeech()).then((s) => {
+          if (s === 'blocked') return s;
+          if (!s && mode === 'audio' && 'speechSynthesis' in window) { mode = 'speech'; return loadVoices().then(startSpeech).then((v) => v || timerSource()); }
+          return s || timerSource();
+        });
+      }
+
+      // Reveals words on the clock (as a back-up for speech, whose own word
+      // events drive it) and resolves once the sentence is over.
+      function runSentence() {
+        return new Promise((resolve) => {
+          (function frame() {
+            if (ending) return;
+            const t = src.time();
+            reveal(WORDS.filter(([, start]) => start + src.lag <= t).length);
+            const over = src.ended || t > lastStart + (src.kind === 'timer' ? 0.8 : 6);
+            if (over) { reveal(WORDS.length); setTimeout(resolve, 350); }
+            else requestAnimationFrame(frame);
+          })();
+        });
+      }
+
+      // ── The rest of the intro, after the sentence ──
+      function runVisuals() {
+        slide = gsap.to(hi, { strokeDashoffset: -100, duration: 2.6, ease: 'none', repeat: -1, paused: true });
+        tl = gsap.timeline({ onComplete: fadeOut });
+        tl.set(ring, { opacity: 1 })
+          // 2. the ring draws round the words, then pulses like it's listening
+          .to([glow, ring.querySelector('.ring-base')], { strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, 0.1)
+          .add(() => slide.play(), 0.8)
+          .to(hi, { opacity: 1, duration: 0.5 }, 0.8)
+          .to(glow, { opacity: 0.95, duration: 0.7, ease: 'sine.inOut', yoyo: true, repeat: 3 }, 1.3)
+          .to(ringSvg, { scale: 1.03, transformOrigin: '50% 50%', duration: 0.7, ease: 'sine.inOut', yoyo: true, repeat: 3 }, 1.3)
+          // 3. words out; the ring tilts down onto the floor and the blob rises in over it
+          .to(line, { opacity: 0, duration: 0.6 }, 3.9)
+          .to(ring, { '--p': 1, duration: 1.1, ease: 'power2.inOut' }, 4.4)
+          .to(ringPaths, { attr: { d: ellipse(4.9) }, duration: 1.1, ease: 'power2.inOut' }, 4.4)
+          .fromTo(figure, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 4.9)
+          .to(blobShadow, { opacity: 1, duration: 0.8, ease: 'power1.out' }, 5.0)
+          // 4. the words around her, one at a time
+          .fromTo(tags, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', stagger: 0.6 }, 5.8)
+          // 5. "I can be Anything", then hold
+          .addLabel('anything', '+=0.2')
+          .fromTo(anything, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' }, 'anything')
+          .to({}, { duration: 2 });
+      }
+
+      // 6. fade to black, then the About Me content
+      function fadeOut() {
+        if (ending) return;
+        ending = true;
+        gsap.to(stage, { opacity: 0, duration: 0.8, ease: 'power1.in', onComplete: showAbout });
+      }
+
+      // ── Controls ──
+      function skip() {
+        if (ending) return;
+        ending = true;
+        if (tl) tl.kill();
+        stopVoice();
+        gsap.to(stage, { opacity: 0, duration: 0.35, onComplete: showAbout });
+      }
+      skipBtn.addEventListener('click', skip);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !intro.hidden) skip(); });
+
+      muteBtn.addEventListener('click', () => {
+        muted = !muted;
+        muteBtn.setAttribute('aria-pressed', String(muted));
+        muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+        if (audio) audio.muted = muted;
+        if (song) song.muted = muted;
+        // Speech can't be muted mid-sentence: stop it and let the words carry on silently.
+        if (muted && src && src.kind === 'speech' && !src.ended) {
+          speechToken++;
+          speechSynthesis.cancel();
+          src.kind = 'timer';
+          src.lag = 0;
+        }
+        if (muted && !tapBtn.hidden) begin(timerSource());   // waiting for a tap for sound, but sound's off: just go
+      });
+
+      // ── Go ──
+      let begun = false;
+      function begin(s) {
+        if (begun || ending) return;
+        begun = true;
+        tapBtn.hidden = true;
+        src = s;
+        runSentence().then(() => { if (!ending) runVisuals(); });
+      }
+
+      function attempt() {
+        startVoice().then((s) => {
+          if (ending || begun) return;
+          if (s === 'blocked') {
+            // The browser wants a tap before sound (e.g. Safari after a page load).
+            tapBtn.hidden = false;
+            tapBtn.focus({ preventScroll: true });
+          } else begin(s);
+        });
+      }
+      tapBtn.addEventListener('click', () => { tapBtn.hidden = true; attempt(); });
+
+      chooseMode().then((m) => { mode = m; attempt(); });
+    })();
+  </script>
+  <script>
+    // Favourite chairs: tap one to see its original photo, larger. Arrows (or ← →) step through; Esc closes.
+    (function () {
+      const view = document.getElementById('chairView');
+      if (!view || !view.showModal) return;
+      const img = document.getElementById('chairViewImg'), cap = document.getElementById('chairViewCap');
+      const items = [...document.querySelectorAll('.chair-row li')];
+      const fig = view.querySelector('figure');
+      let at = 0, token = 0;
+      // Fetch the big photos ahead of time, so opening one is instant.
+      const ready = items.map((li) => { const im = new Image(); im.src = li.querySelector('.chair-img').dataset.full; return im.decode ? im.decode().catch(() => {}) : Promise.resolve(); });
+      // Swap the photo while hidden; show it once it's decoded (never the previous chair, never half-loaded).
+      function show(i) {
+        at = (i + items.length) % items.length;
+        const li = items[at], btn = li.querySelector('.chair-img'), mine = ++token;
+        fig.classList.add('loading');
+        return ready[at].then(() => {
+          if (mine !== token) return;
+          img.src = btn.dataset.full;
+          img.alt = btn.querySelector('img').alt;
+          cap.innerHTML = li.querySelector('figcaption').innerHTML;
+          return (img.decode ? img.decode().catch(() => {}) : Promise.resolve()).then(() => { if (mine === token) fig.classList.remove('loading'); });
+        });
+      }
+      items.forEach((li, i) => {
+        const btn = li.querySelector('.chair-img');
+        btn.setAttribute('aria-label', 'View larger: ' + li.querySelector('figcaption').textContent.trim());
+        btn.addEventListener('click', (e) => {
+          show(i);
+          if (view.open) return;
+          view.showModal();
+          // Opened with a mouse or finger: start focus on the view itself, so the × doesn't light up.
+          if (e.detail > 0) view.focus({ preventScroll: true });
+        });
+      });
+      view.querySelector('.cv-close').addEventListener('click', () => view.close());
+      view.querySelector('.cv-prev').addEventListener('click', () => show(at - 1));
+      view.querySelector('.cv-next').addEventListener('click', () => show(at + 1));
+      view.addEventListener('click', (e) => { if (e.target === view) view.close(); });   // the backdrop
+      view.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); show(at - 1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); show(at + 1); }
+      });
+      // Back to the chair it came from (no focus ring unless the keyboard is in use).
+      view.addEventListener('close', () => items[at].querySelector('.chair-img').focus({ preventScroll: true, focusVisible: false }));
+    })();
+  </script>
+</body>
+</html>

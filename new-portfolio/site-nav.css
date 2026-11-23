@@ -1,0 +1,90 @@
+/*
+ * site-nav.css — the one navigation every page shares (room, case studies,
+ * About Me). Same markup everywhere:
+ *
+ *   <header class="site-header">
+ *     <a class="site-brand" href="…/index.html">Room lived by AK</a>
+ *     <nav class="site-links" aria-label="Site">
+ *       <a href="…/index.html">Room</a>
+ *       <a href="…/index.html#work">Work</a>
+ *       <a href="…/about/">About Me</a>
+ *     </nav>
+ *   </header>
+ *
+ * The current page's link carries aria-current ("page", or "true" for a page
+ * inside that section, e.g. a case study under Work) and is underlined.
+ * A page only decides how the bar sits (fixed or scrolling away); the look is set here.
+ */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 26px 44px;
+  font-family: 'League Spartan', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: #f3ecd6;
+}
+.site-brand,
+.site-links a,
+.site-links button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-bottom: 1.5px solid transparent;
+  padding: 0 0 4px;
+  margin: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+.site-brand { font-weight: 700; }
+.site-links { display: flex; align-items: center; gap: clamp(24px, 4vw, 52px); margin-left: auto; }
+.site-links a,
+.site-links button { font-weight: 400; color: rgba(243, 236, 214, 0.72); }
+.site-links a:hover,
+.site-links button:hover,
+.site-links [aria-current] { color: #f3ecd6; }
+.site-links [aria-current],
+.site-brand:hover,
+.site-brand:focus-visible,
+.site-links a:focus-visible,
+.site-links button:focus-visible { border-bottom-color: #f3ecd6; outline: none; }
+.site-links a:focus-visible,
+.site-links button:focus-visible { color: #f3ecd6; }
+
+/* Bigger tap areas than the words themselves (about 44px tall), without changing the look */
+.site-brand,
+.site-links a,
+.site-links button { position: relative; }
+.site-brand::before,
+.site-links a::before,
+.site-links button::before { content: ""; position: absolute; inset: -12px -8px -8px; }
+
+@media (max-width: 700px) {
+  .site-header { padding: 18px 20px; font-size: 14px; }
+  .site-links { gap: 20px; }
+}
+
+/* The song's play/pause (site-music.js adds it once the song has been played):
+   four bars that dance while it plays and lie flat when paused. */
+.site-links .site-music { display: inline-flex; align-items: flex-end; height: 19px; padding: 0 2px 4px; }
+.site-links .site-music[hidden] { display: none; }
+.site-music-bars { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
+.site-music-bars i { display: block; width: 2px; height: 3px; background: currentColor; border-radius: 1px; transition: height 0.3s ease; }
+.site-music.on .site-music-bars i { animation: site-music-bar 0.9s ease-in-out infinite alternate; }
+.site-music.on .site-music-bars i:nth-child(2) { animation-delay: -0.45s; animation-duration: 0.7s; }
+.site-music.on .site-music-bars i:nth-child(3) { animation-delay: -0.2s; animation-duration: 1.1s; }
+.site-music.on .site-music-bars i:nth-child(4) { animation-delay: -0.6s; animation-duration: 0.8s; }
+@keyframes site-music-bar { from { height: 3px; } to { height: 12px; } }
+@media (prefers-reduced-motion: reduce) { .site-music.on .site-music-bars i { animation: none; height: 9px; } }

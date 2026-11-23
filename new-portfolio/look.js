@@ -484,12 +484,14 @@ export const FilmShader = {
     float rand(vec2 co) { return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453); }
     void main() {
       vec2 d = vUv - 0.5;
-      vec3 c = texture2D(tDiffuse, vUv).rgb * tint;
+      vec4 base = texture2D(tDiffuse, vUv);
+      vec3 c = base.rgb * tint;
       c = mix(vec3(dot(c, vec3(0.2126, 0.7152, 0.0722))), c, saturation);
       vec3 s = clamp(c, 0.0, 1.0);
       c = mix(c, s * s * (3.0 - 2.0 * s), contrast);
       c *= mix(1.0, smoothstep(0.95, 0.25, length(d * vec2(1.1, 1.0))), vignette);
       c += (rand(vUv * vec2(1931.0, 1171.0) + fract(time)) - 0.5) * grain;
-      gl_FragColor = vec4(c, 1.0);
+      // Keep the see-through background see-through (the page's white shows behind the room).
+      gl_FragColor = vec4(c * base.a, base.a);
     }`,
 };

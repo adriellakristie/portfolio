@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merangkai - Adriella Kristie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../site-nav.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FFFDF7;
+      --text: #1a1814;
+      --body: #3d3a33;
+      --muted: #6b6656;
+      --faint: #8a8576;
+      --line: #e2dcc6;
+      --maroon: #582c39;
+      --cream: #f2efe6;
+      --teal-dark: #1c3538;
+      --pad: clamp(20px, 5vw, 72px);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'League Spartan', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+    a { color: inherit; }
+    a:hover { opacity: 0.8; }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+
+    .tv {
+      background-color: #24484c;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 4px),
+        linear-gradient(180deg, #4f7f83 0%, #2f5a5e 55%, #1c3538 100%);
+      color: var(--cream);
+    }
+
+    .hero { padding: 72px var(--pad) 0; }   /* room for the site navigation above it */
+    .site-header { position: absolute; }   /* scrolls away with the teal hero (site-nav.css) */
+    .hero-text { padding: 56px 0 40px; display: flex; flex-direction: column; gap: 16px; max-width: 720px; }
+    .hero-kicker { font-size: 16px; color: #c9d6d4; }
+    .title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; }
+    .title-row h1 { font-size: clamp(56px, 9vw, 112px); font-weight: 700; line-height: 0.9; letter-spacing: -2px; }
+    .live-link {
+      flex-shrink: 0; width: 72px; height: 72px; border-radius: 50%;
+      background: var(--cream); color: var(--teal-dark);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s ease;
+    }
+    .live-link:hover { opacity: 1; transform: scale(1.06); }
+    .live-link svg { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .live-link:hover svg { transform: translate(3px, -3px); }
+    .hero-summary { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.4; color: #e3e8e6; }
+    .hero-image {
+      aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+      margin-bottom: -140px; position: relative;
+      animation: open 0.6s ease-out both;
+    }
+    @keyframes open { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
+
+    .facts { padding: 180px var(--pad) 0; }
+    .facts .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; font-size: 16px; line-height: 1.5; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+    .facts span { color: var(--muted); }
+
+    .chapters { position: sticky; top: 0; z-index: 5; background: rgba(255,253,247,0.96); backdrop-filter: blur(6px); }
+    .chapter-links { display: flex; overflow-x: auto; padding: 0 clamp(8px, 2vw, 24px); }
+    .chapter-links a {
+      flex: 1 0 120px; display: flex; align-items: baseline; justify-content: center; gap: 8px;
+      padding: 18px 8px 14px; font-size: 16px; text-decoration: none; color: var(--faint);
+      transition: color 0.2s;
+    }
+    .chapter-links a small { font-size: 12px; color: #b5ae9c; }
+    .chapter-links a.done { color: var(--text); }
+    .chapter-links a.on { color: var(--maroon); font-weight: 600; }
+    .chapter-links a.on small { color: var(--maroon); }
+    .progress { position: relative; height: 4px; background: #e9e4d4; }
+    .progress-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--maroon); transition: width 0.12s linear; }
+    .progress-tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--bg); }
+
+    main { padding: 0 var(--pad); }
+    .statement { padding: 140px 0; font-size: clamp(32px, 4.6vw, 56px); font-weight: 500; line-height: 1.15; letter-spacing: -1px; max-width: 20ch; }
+    .statement em { font-style: normal; color: var(--maroon); }
+
+    .section { padding: 0 0 140px; display: flex; flex-direction: column; gap: 28px; scroll-margin-top: 70px; }
+    .label { font-size: 16px; color: var(--muted); }
+    .section h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 600; line-height: 1.1; max-width: 22ch; }
+    .section p.body { font-size: 19px; line-height: 1.65; color: var(--body); max-width: 640px; }
+    .caption { font-size: 15px; color: var(--muted); }
+    .shot { aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #d9d6cc; margin-top: 12px; }
+
+    .maps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 48px 40px; margin-top: 20px; }
+    .maps figure { display: flex; flex-direction: column; gap: 14px; }
+    .maps svg { width: 100%; height: auto; display: block; }
+    .maps .name { font-size: 20px; font-weight: 600; }
+    .maps .name.us { color: var(--maroon); }
+    .maps .desc { font-size: 16px; line-height: 1.45; color: #4a4740; }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 15px; color: var(--muted); }
+    .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin-right: 8px; }
+
+    .race-scroll { overflow-x: auto; margin-top: 64px; }
+    .race { min-width: 760px; padding: 0 80px; display: flex; flex-direction: column; gap: 8px; }
+    .race-head { display: flex; align-items: baseline; gap: 12px; }
+    .race-head b { font-size: 22px; font-weight: 600; }
+    .race-head span { font-size: 16px; }
+    .race-head.old { color: var(--muted); }
+    .race-head.new { color: var(--maroon); margin-top: 36px; }
+    .track { position: relative; height: 120px; }
+    .track .line { position: absolute; left: 0; top: 50%; }
+    .track.old .line { width: 88%; height: 3px; margin-top: -1.5px; background: #b5ae9c; }
+    .track.new .line { width: 44%; height: 6px; margin-top: -3px; border-radius: 3px; background: var(--maroon); }
+    .dot { position: absolute; top: 50%; border-radius: 50%; box-shadow: 0 0 0 5px var(--bg); }
+    .track.old .dot { width: 16px; height: 16px; margin: -8px 0 0 -8px; background: var(--faint); }
+    .track.new .dot { width: 20px; height: 20px; margin: -10px 0 0 -10px; background: var(--maroon); }
+    .step { position: absolute; top: calc(50% + 22px); width: 150px; margin-left: -75px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+    .step b { font-size: 16px; font-weight: 400; line-height: 1.25; }
+    .step span { font-size: 13px; }
+    .track.old .step b { color: var(--body); }
+    .track.old .step span { color: var(--muted); }
+    .track.new .step span { color: var(--maroon); }
+    .finish { position: absolute; top: 50%; font-size: 16px; font-weight: 600; white-space: nowrap; }
+    .track.old .finish { left: 88%; margin: -12px 0 0 22px; color: var(--muted); }
+    .track.new .finish { left: 44%; margin: -12px 0 0 24px; color: var(--maroon); }
+    .saved-line { position: absolute; left: calc(44% + 76px); width: calc(44% - 76px); top: 50%; border-top: 2px dashed #d8cfc0; }
+    .saved-text { position: absolute; left: calc(44% + 76px); width: calc(44% - 76px); top: calc(50% - 40px); text-align: center; font-size: 17px; color: var(--maroon); }
+
+    .tradeoffs { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px 72px; margin-top: 12px; }
+    .tradeoffs > div { border-top: 1px solid var(--text); padding-top: 18px; }
+    .three { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 48px 64px; }
+    .section h3 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+    .section .small-body { font-size: 18px; line-height: 1.6; color: var(--body); }
+
+    .quote { font-size: clamp(28px, 3.6vw, 42px); font-weight: 500; line-height: 1.2; max-width: 24ch; }
+    .numbers { display: flex; flex-wrap: wrap; gap: 40px 96px; margin-top: 24px; }
+    .numbers b { display: block; font-size: 56px; font-weight: 600; line-height: 1; }
+    .numbers span { font-size: 17px; color: #4a4740; }
+    .todo { outline: 2px dashed #d99a8f; outline-offset: 8px; }
+
+    .brand-banner { aspect-ratio: 21 / 7; border-radius: 18px; overflow: hidden; }
+    .brand-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .brand-grid div { aspect-ratio: 1; border-radius: 18px; overflow: hidden; }
+
+    .end { padding: 72px var(--pad); }
+    .end .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 32px; }
+    .next { display: flex; flex-direction: column; gap: 6px; text-decoration: none; }
+    .next span { font-size: 16px; color: #c9d6d4; }
+    .next b { font-size: clamp(36px, 5vw, 56px); font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .hero-image { margin-bottom: -80px; }
+      .facts { padding-top: 120px; }
+      .statement, .section { padding-bottom: 96px; }
+      .statement { padding-top: 96px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hero-image { animation: none; }
+      .progress-fill, .live-link, .live-link svg { transition: none; }
+    }
+
+    /* Shared extras for case studies beyond OnTheWay */
+    .steps { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); gap: 36px 72px; margin-top: 12px; counter-reset: step; }
+    .steps li { border-top: 1px solid var(--line); padding-top: 16px; display: grid; grid-template-columns: 36px 1fr; gap: 4px 12px; }
+    .steps li::before { counter-increment: step; content: counter(step, decimal-leading-zero); grid-row: span 3; font-size: 15px; color: var(--maroon); padding-top: 3px; }
+    .steps b { font-size: 19px; font-weight: 600; }
+    .steps p { font-size: 17px; line-height: 1.55; color: var(--body); }
+    .steps small { font-size: 14px; color: var(--faint); }
+    .num { display: block; font-size: 15px; color: var(--maroon); margin-bottom: 8px; }
+    .kicker-small { display: block; font-size: 15px; color: var(--muted); margin-bottom: 6px; }
+    .natural { aspect-ratio: auto; }
+    .natural img { height: auto; }
+
+    .explored { display: block; margin-top: 12px; font-size: 16px; color: var(--maroon); }
+    .lottie-wrap { position: relative; aspect-ratio: 1511 / 828; border-radius: 18px; overflow: hidden; background: #7f1f1f; margin-top: 12px; }
+    .lottie-wrap svg { display: block; }
+    .lottie-fallback { position: absolute; inset: 0; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="site-brand" href="../index.html">Room lived by AK</a>
+    <nav class="site-links" aria-label="Site">
+      <a href="../index.html">Room</a>
+      <a href="../index.html#work" aria-current="true">Work</a>
+      <a href="../about/">About Me</a>
+    </nav>
+  </header>
+  <script src="../site-music.js?v=3"></script>
+  <section class="tv hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <span class="hero-kicker">Projects · CH 03</span>
+        <div class="title-row">
+          <h1>Merangkai</h1>
+          <a class="live-link" href="https://merangkai-by-adriellakristie.vercel.app/" target="_blank" rel="noopener" aria-label="Visit the live site">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 17.5L17 7"/><path d="M8.5 7H17V15.5"/></svg>
+          </a>
+        </div>
+        <p class="hero-summary">An interactive gallery that turns Indonesian traditions, Ondel-ondel, Barong and batik, into animation, interaction and generative art.</p>
+      </div>
+      <div class="hero-image"><img src="../images/merangkai-hero.jpg" alt="Merangkai shown in two browser windows: the woven-pattern welcome screen and the Merangkai title page"></div>
+    </div>
+  </section>
+
+  <div class="facts">
+    <div class="wrap">
+      <div><span>Role</span><br>Design and development</div>
+      <div><span>Timeline</span><br>April 2026</div>
+      <div><span>Skills</span><br>Frontend, interaction design, creative coding</div>
+      <div><span>Built with</span><br>React, p5.js, Processing, Lottie</div>
+    </div>
+  </div>
+
+  <nav class="chapters" aria-label="Sections">
+    <div class="chapter-links">
+      <a href="#s1"><small>01</small>Problem</a>
+      <a href="#s2"><small>02</small>Research</a>
+      <a href="#s3"><small>03</small>Solution</a>
+      <a href="#s4"><small>04</small>Tradeoffs</a>
+      <a href="#s5"><small>05</small>Evaluation</a>
+      <a href="#s6"><small>06</small>Reflection</a>
+    </div>
+    <div class="progress" aria-hidden="true">
+      <span class="progress-fill"></span>
+      <span class="progress-tick" style="left: calc(16.667% - 1px)"></span>
+      <span class="progress-tick" style="left: calc(33.333% - 1px)"></span>
+      <span class="progress-tick" style="left: calc(50% - 1px)"></span>
+      <span class="progress-tick" style="left: calc(66.667% - 1px)"></span>
+      <span class="progress-tick" style="left: calc(83.333% - 1px)"></span>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+
+      <p class="statement">Preserving culture doesn't have to mean archiving it. It can mean new ways to <em>experience</em> it.</p>
+
+      <section class="section" id="s1">
+        <span class="label">The problem</span>
+        <h2>Heritage, behind glass.</h2>
+        <p class="body">Indonesian traditions are rich with stories, symbols and craft. But online, they mostly live as photos and text, which feels distant to younger, digitally native audiences. You can read about batik anywhere. You rarely get to play with it.</p>
+        <p class="body"><b>How might we</b> preserve Indonesian cultural heritage while making it feel engaging, accessible and relevant in a digital world?</p>
+      </section>
+
+      <section class="section" id="s2">
+        <span class="label">Research</span>
+        <h2>Three traditions, three ways in.</h2>
+        <p class="body">I chose traditions with strong visual languages, then asked what each one does best: move, tell a story, or repeat as pattern. That quality became its interaction.</p>
+        <div class="three">
+          <div><span class="kicker-small">Betawi, Jakarta</span><h3>Ondel-ondel</h3><p class="small-body">Giant paraded figures, traditionally believed to ward off bad spirits.</p><span class="explored">Explored through animated narrative</span></div>
+          <div><span class="kicker-small">Bali</span><h3>Barong</h3><p class="small-body">A protective spirit at the center of a dance of good against evil.</p><span class="explored">Explored through interactive visuals</span></div>
+          <div><span class="kicker-small">Java and across Indonesia</span><h3>Batik</h3><p class="small-body">Wax-resist cloth where every motif holds meaning.</p><span class="explored">Explored through generative patterns</span></div>
+        </div>
+
+        <span class="label" style="margin-top: 36px;">The opportunity</span>
+        <div class="tradeoffs" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px 40px;">
+          <div><span class="num">01</span><p class="small-body">Make heritage approachable to digital audiences.</p></div>
+          <div><span class="num">02</span><p class="small-body">Preserve cultural stories through new media.</p></div>
+          <div><span class="num">03</span><p class="small-body">Turn traditional visual systems into interaction.</p></div>
+          <div><span class="num">04</span><p class="small-body">Reinterpret culture without losing its identity.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s3">
+        <span class="label">The solution</span>
+        <h2>Reimagine, don't just archive.</h2>
+        <p class="body">Merangkai means "to string together." The gallery connects tradition and technology: visitors explore Ondel-ondel, Barong and batik through animated stories, interactive visuals and generative patterns, so each tradition is something you experience, not just read about.</p>
+        <div class="lottie-wrap" id="solutionLottie" role="img" aria-label="Animated batik curtains opening on the line: Warisan bukan untuk disimpan, tetapi untuk terus dihidupkan (Heritage is not meant to be stored, but to be kept alive).">
+          <img class="lottie-fallback" src="../media/merangkai1.png" alt="">
+        </div>
+        <p class="caption">Built with React, Vite, p5.js, Processing, Figma and Lottie. Deployed on Vercel.</p>
+      </section>
+
+      <section class="section" id="s4">
+        <span class="label">Tradeoffs</span>
+        <h2>What I chose, and what I cut.</h2>
+        <div class="three">
+          <div><h3>Depth over breadth</h3><p class="small-body">Three traditions, each built out fully, instead of a wide archive that only shows photos and captions.</p></div>
+          <div><h3>Reinterpret, stay recognizable</h3><p class="small-body">Generative art invites new forms, but each piece keeps the original motifs readable so the tradition is never lost in the effect.</p></div>
+          <div><h3>Atmosphere vs. speed</h3><p class="small-body">An animated Lottie intro sets the mood before the gallery opens. It adds a moment of load time, but frames the site as an experience, not a database.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s5">
+        <span class="label">Evaluation</span>
+        <h2>How I'd know it works.</h2>
+        <p class="body">Merangkai is an experience, not a task-based tool, so "did they finish the flow" isn't the right test. These are the signals I'd track instead.</p>
+        <div class="three">
+          <div><span class="kicker-small">Engagement</span><h3>Do visitors stay and interact, or just scroll past?</h3><p class="small-body">Time spent and interactions per tradition, compared with a static page of the same content.</p></div>
+          <div><span class="kicker-small">Understanding</span><h3>Can someone explain what Barong stands for afterward?</h3><p class="small-body">A one-question recall check at the end. Engagement without understanding would mean the art overshadowed the culture.</p></div>
+          <div><span class="kicker-small">Recognition</span><h3>Do Indonesian visitors see home in it?</h3><p class="small-body">Feedback from people who grew up with these traditions is the real check that the reinterpretation stayed true.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="s6">
+        <span class="label">Reflection</span>
+        <div class="three">
+          <div><h3>What I learned</h3><p class="small-body">Small details break real launches. A filename casing mismatch worked on my Mac but failed Vercel's Linux build, so now I test the production build before shipping.</p></div>
+          <div><h3>What I'd measure</h3><p class="small-body">Whether understanding keeps up with engagement. If people play but can't say what they saw, the gallery needs more story.</p></div>
+          <div><h3>What's next</h3><p class="small-body">More traditions from other islands, and sharing the gallery with Indonesian communities abroad for feedback.</p></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <span class="label">Design</span>
+        <div class="brand-grid">
+          <div><img src="../media/merangkai2.png" alt="Merangkai design detail"></div>
+          <div><img src="../media/merangkai3.png" alt="Merangkai design detail"></div>
+        </div>
+        <div class="brand-banner natural"><img src="../media/merangkai4.png" alt="Merangkai design detail"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="tv end">
+    <div class="wrap">
+      <a class="next" href="ecobite.html"><span>Next channel</span><b>EcoBite →</b></a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const sections = [...document.querySelectorAll('main .section[id^="s"]')];
+      const links = [...document.querySelectorAll('.chapter-links a')];
+      const fill = document.querySelector('.progress-fill');
+      const n = sections.length;
+      let frame = null;
+      const bar = document.querySelector('.chapter-links');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let shown = -1;
+
+      function update() {
+        frame = null;
+        const line = window.innerHeight * 0.35;
+        let p = 0;
+        for (let i = 0; i < n; i++) {
+          const top = sections[i].getBoundingClientRect().top;
+          const bottom = i < n - 1 ? sections[i + 1].getBoundingClientRect().top : sections[i].getBoundingClientRect().bottom;
+          if (line >= bottom) { p = i + 1; continue; }
+          if (line > top) p = i + (line - top) / (bottom - top);
+          break;
+        }
+        p = Math.max(0, Math.min(n, p));
+        fill.style.width = (p / n * 100) + '%';
+        const current = Math.min(n - 1, Math.floor(p));
+        links.forEach((a, i) => {
+          const done = p >= i + 1;
+          a.classList.toggle('done', done);
+          a.classList.toggle('on', p > 0 && i === current && !done);
+        });
+        // On a narrow screen the chapter bar scrolls sideways: keep the current chapter in view.
+        if (current !== shown && bar.scrollWidth > bar.clientWidth + 2) {
+          const a = links[current];
+          bar.scrollTo({ left: a.offsetLeft - (bar.clientWidth - a.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+        }
+        shown = current;
+      }
+
+      function onScroll() { if (!frame) frame = requestAnimationFrame(update); }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      update();
+    })();
+  </script>
+  <script src="../grain.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script src="../media/merangkai-lottie.js"></script>
+  <script>
+    (function () {
+      const wrap = document.getElementById('solutionLottie');
+      if (!wrap || typeof lottie === 'undefined' || !window.MERANGKAI_LOTTIE) return;   // the still image stays
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const anim = lottie.loadAnimation({
+        container: wrap, renderer: 'svg', loop: !reduceMotion, autoplay: false,
+        animationData: window.MERANGKAI_LOTTIE,
+        rendererSettings: { preserveAspectRatio: 'xMidYMid slice' },
+      });
+      anim.addEventListener('DOMLoaded', function () {
+        wrap.querySelector('.lottie-fallback')?.remove();
+        if (reduceMotion) { anim.goToAndStop(anim.totalFrames - 1, true); return; }
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { e.isIntersecting ? anim.play() : anim.pause(); });
+        }, { threshold: 0.25 }).observe(wrap);
+      });
+    })();
+  </script>
+</body>
+</html>
